@@ -2,14 +2,13 @@
 #' @export
 write_manifest <- function(content_folder, 
                            primary_document = NULL,
-                           base_folder = here("inst/content/"),
                            ignore_files = list("config.yml", ".gitignore", 
                                                "manifest.json", ".DS_Store",
                                                ".gitignore"
                            )
 ) {
   
-  full_path <- path(base_folder, content_folder)
+  full_path <- path(content_folder)
   
   app_files <- dir_ls(full_path, all = TRUE)
   
