@@ -1,6 +1,7 @@
 #' @importFrom rsconnect writeManifest
-#' @importFrom purrr map keep walk
+#' @importFrom purrr map keep walk set_names map_dfr
 #' @importFrom here here
+#' @importFrom yaml read_yaml
 #' @importFrom crayon cyan black blue red green magenta
 #' @import ggplot2
 #' @import ggiraph
