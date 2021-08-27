@@ -1,5 +1,5 @@
 #' @export
-write_manifest <- function(content_folder, 
+write_manifest <- function(folder_location, 
                            primary_document = NULL,
                            ignore_files = list("config.yml", ".gitignore", 
                                                "manifest.json", ".DS_Store",
@@ -7,8 +7,7 @@ write_manifest <- function(content_folder,
                            )
 ) {
   
-  full_path <- path(content_folder)
-  
+  full_path <- path_abs(folder_location)
   app_files <- dir_ls(full_path, all = TRUE)
   
   app_file_names <- path_file(app_files)
@@ -26,7 +25,7 @@ write_manifest <- function(content_folder,
   
   if(is.null(primary_document)) {
     primary_docs <- map(
-      c("*.Rmd", "*.py", "*.R", "*.ipynb"),
+      c("*.Rmd", "*.py", "*app.R", "*.ipynb", "*plumber.R"),
       ~{
         dl <- dir_ls(full_path, glob = .x)
         path_file(dl)
@@ -37,9 +36,8 @@ write_manifest <- function(content_folder,
       ~ length(.x) > 0
     )
     primary_doc <-  ifelse(length(primary_match) > 0, primary_match[[1]], NA) 
-    if(is.na(primary_doc)) stop("No identifies primary doc")
+    if(is.na(primary_doc)) cat(red("No identifies primary doc"))
     if(length(primary_match) > 1) stop("There are more then one primary doc")
-    
   } else {
     primary_doc <- primary_document
   }
@@ -58,4 +56,10 @@ write_manifest <- function(content_folder,
     appPrimaryDoc = primary_doc
   )
   cat(magenta("Manifest complete\n\n"))
+  mf <- path(full_path, "manifest.json")
+  if(file_exists(mf)) {
+    mf
+  } else {
+    NA
+  }
 }

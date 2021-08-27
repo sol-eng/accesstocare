@@ -26,4 +26,6 @@ Imports:
     ggiraph,
     dplyr,
     rlang,
-    magrittr
+    magrittr,
+    tibble
+

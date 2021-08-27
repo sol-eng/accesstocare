@@ -1,5 +1,5 @@
 #' @export
-atc_content_package <- function() {
+atc_package_content <- function() {
   folder_content_metadata(system.file(package = "accesstocare", "content"))
 }
 
@@ -26,13 +26,23 @@ folder_content_metadata <- function(location = ".") {
   atl <- set_names(atl, seq_along(atl)) 
   return(structure(
     atl,
-    class = c("atc_content_list", "list")
+    class = c("metadata_list", "list")
   ))
 }
 
 #' @export
-print.atc_content_list <- function(x, ...) {
-  print(map_dfr(x, ~.x))
+as_tibble.metadata_list <- function(x) {
+  map_dfr(x, ~.x)
+}
+
+#' @export
+print.metadata_list <- function(x, ...) {
+  print(as_tibble(x))
   invisible(x)
 }
 
+#' @export
+atc_package_content_copy <- function(target_folder = here::here()) {
+  content_path <- system.file(package = "accesstocare", "content")
+  full_file_copy(content_path, target_folder)
+}
