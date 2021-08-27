@@ -27,5 +27,6 @@ Imports:
     dplyr,
     rlang,
     magrittr,
-    tibble
+    tibble,
+    yaml
 

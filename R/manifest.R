@@ -1,10 +1,11 @@
 #' @export
-write_manifest <- function(folder_location, 
+atc_write_manifest <- function(folder_location, 
                            primary_document = NULL,
                            ignore_files = list("config.yml", ".gitignore", 
                                                "manifest.json", ".DS_Store",
                                                ".gitignore"
-                           )
+                           ),
+                           silent = FALSE
 ) {
   
   full_path <- path_abs(folder_location)
@@ -36,30 +37,51 @@ write_manifest <- function(folder_location,
       ~ length(.x) > 0
     )
     primary_doc <-  ifelse(length(primary_match) > 0, primary_match[[1]], NA) 
-    if(is.na(primary_doc)) cat(red("No identifies primary doc"))
+    if(is.na(primary_doc)) {
+      return(NULL)
+      if(!silent) cat(red("No identifies primary doc"))
+    } 
     if(length(primary_match) > 1) stop("There are more then one primary doc")
   } else {
     primary_doc <- primary_document
   }
   
-  cat(green("Full path: ", full_path, "\n"))
-  cat(red("Application files\n"))
-  walk(
-    app_file_names,
-    ~ cat(cyan("--- ", .x, "\n"))
-  )
-  cat(paste0(red("Primary file: "), cyan(primary_doc, "\n")))
-  cat(magenta("Compiling manifest...\n"))
+  if(!silent) {
+    cat(green("Full path: ", full_path, "\n")) 
+    cat(red("Application files\n"))
+    walk(
+      app_file_names,
+      ~ cat(cyan("--- ", .x, "\n"))
+    )
+    cat(paste0(red("Primary file: "), cyan(primary_doc, "\n")))
+    cat(magenta("Compiling manifest...\n"))
+  } 
+  
   rsconnect::writeManifest(
     appDir = full_path,
     appFiles = app_file_names,
     appPrimaryDoc = primary_doc
   )
-  cat(magenta("Manifest complete\n\n"))
+  if(!silent) cat(magenta("Manifest complete\n\n"))
   mf <- path(full_path, "manifest.json")
   if(file_exists(mf)) {
     mf
   } else {
-    NA
+    NULL
   }
+}
+
+#' @export
+atc_write_all_manifests <- function(content_folder = ".") {
+  map_dfr(
+    dir_ls(content_folder, type = "directory"), 
+    ~{
+      res <- atc_write_manifest(.x, silent = TRUE)
+      created <- ifelse(!is.null(res), "YES", "SKIPPED")
+      tibble(
+        content = path_file(.x),
+        created = created
+      )
+    }
+  ) 
 }
