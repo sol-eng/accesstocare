@@ -8,8 +8,8 @@
 A tibble with 4 variables and 51 rows:
 \describe{
 \item{state}{Two letter state abbreviation}
-\item{x} Sets the 'x' position
-\item{x} Sets the 'y' position
+\item{x}{Sets the 'x' position}
+\item{x}{Sets the 'y' position}
 \item{state_name}{Name of the state}
 }
 }

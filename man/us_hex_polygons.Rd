@@ -7,8 +7,8 @@
 \format{
 A tibble with 3 variables and 306 rows:
 \describe{
-\item{x} Sets the 'x' position
-\item{x} Sets the 'y' position
+\item{x}{Sets the 'x' position}
+\item{x}{Sets the 'y' position}
 \item{state}{Two letter state abbreviation}
 }
 }
