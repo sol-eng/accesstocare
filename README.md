@@ -1,4 +1,10 @@
 
+<!-- badges: start -->
+
+[![Codecov test
+coverage](https://codecov.io/gh/sol-eng/accesstocare/branch/main/graph/badge.svg)](https://codecov.io/gh/sol-eng/accesstocare?branch=main)
+<!-- badges: end -->
+
 # Access to Care
 
 <img src="man/figures/access-to-care-diagram.png" width = "1000px">
