@@ -1,14 +1,15 @@
 Package: accesstocare
 Title: Example content of Access to Care project
-Version: 0.0.1.9008
+Version: 0.0.1.9009
 Authors@R: 
     person(given = "Edgar",
            family = "Ruiz",
            role = c("aut", "cre"),
            email = "edgar@rstudio.com"
            )
-Description: Contains example content, data, and common functions used within the
-    examples
+Description: Contains the example documents, applications and 'API's that are
+    part of the Access To Care analysis.  The package also contains the data and
+    helper functions to make it easy to run the example code.
 License: MIT + file LICENSE
 Encoding: UTF-8
 LazyData: true
