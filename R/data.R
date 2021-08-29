@@ -59,3 +59,26 @@
 #' }
 "us_large_cities"
 
+#' Coordinates to center each state's hexagon
+#' @description A manually created list of 'x' and 'y' coordinates to place the
+#' hexagons representing each state in the USA. These are relative positions from
+#' each of the other states.
+#' @format A tibble with 4 variables and 51 rows:
+#' \describe{
+#' \item{state}{Two letter state abbreviation}
+#' \item{x} Sets the 'x' position 
+#' \item{x} Sets the 'y' position 
+#' \item{state_name}{Name of the state}
+#' }
+"us_hex_positions"
+
+#' Position of the 6 corners for each state's hexagon
+#' @format A tibble with 3 variables and 306 rows:
+#' \describe{
+#' \item{x} Sets the 'x' position 
+#' \item{x} Sets the 'y' position 
+#' \item{state}{Two letter state abbreviation}
+#' }
+"us_hex_polygons"
+
+
