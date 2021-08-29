@@ -5,7 +5,7 @@
 \alias{us_counties}
 \title{List of US Counties}
 \format{
-A tibble with 9 rows and 3,142 variables:
+A tibble with 9 variables and 3,142 rows:
 \describe{
 \item{fips}{County FIPS}
 \item{state}{Two letter state abbriviation}
