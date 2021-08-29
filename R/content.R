@@ -1,10 +1,18 @@
+#' A list of the Access To Care examples
 #' @export
 atc_package_content <- function() {
-  folder_content_metadata(system.file(package = "accesstocare", "content"))
+  folder_content_metadata(
+    system.file(package = "accesstocare", "content")
+    )
 }
 
+#' A list of examples in a folder
+#' @description It uses the information from the 'metadata.yml' file to create
+#' a list containing the name, description, type and path of each
+#' example content. 
+#' @param content_location The root folder of where the examples are located
 #' @export
-folder_content_metadata <- function(location = ".") {
+folder_content_metadata <- function(content_location = ".") {
   atl <- map(
     dir_ls(location, type = "directory"), 
     ~{
@@ -41,8 +49,12 @@ print.metadata_list <- function(x, ...) {
   invisible(x)
 }
 
+#' Copies the Access To Care examples
+#' @param target_folder A folder location to transfer the examples to
 #' @export
 atc_package_content_copy <- function(target_folder = here::here()) {
-  content_path <- system.file(package = "accesstocare", "content")
-  full_file_copy(content_path, target_folder)
+  full_file_copy(
+    system.file(package = "accesstocare", "content"), 
+    target_folder
+    )
 }

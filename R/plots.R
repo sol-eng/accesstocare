@@ -1,3 +1,14 @@
+#' Plot of all counties hospital and population 
+#' 
+#' @description Returns a scatter plot comparing Hospital vs Population counts 
+#' in a given county
+#' 
+#' @param population_max Top end limit for population count to display in the
+#' plot. Defaults to 11 million. 
+#' @param model_colors A list of 3 colors to use for counties below, above or
+#' at the level of expected hospitals as per the model.
+#' @param show_model_results To highlight which counties are above or below the
+#' expected number of hospitals
 #' @export
 atc_plot_hospitals <- function(population_max = 11000000,
                                model_colors = list(above = palette_atc$above, 
@@ -24,7 +35,8 @@ atc_plot_hospitals <- function(population_max = 11000000,
   
   gp <- ggplot(data = prep_counties) +
     geom_point_interactive(
-      aes(hospitals, population, data_id = fips, tooltip = tooltip), color = "#cc9900"
+      aes(hospitals, population, data_id = fips, tooltip = tooltip), 
+      color = "#cc9900"
     ) +
     scale_y_continuous(breaks = p_breaks, labels = p_labels) +
     labs(x = "Hospitals", y = "Population") +
@@ -58,12 +70,29 @@ atc_plot_hospitals <- function(population_max = 11000000,
     ) 
     
     gp <- gp +
-      geom_polygon(aes(x, y), data = lwr_tbl, alpha = 0.4, fill = model_colors$below) +
-      geom_polygon(aes(x, y), data = upr_tbl, alpha = 0.4, fill = model_colors$above) 
+      geom_polygon(
+        aes(x, y), data = lwr_tbl, alpha = 0.4, fill = model_colors$below
+        ) +
+      geom_polygon(
+        aes(x, y), data = upr_tbl, alpha = 0.4, fill = model_colors$above
+        ) 
   }
   gp
 }
 
+#' Hex plot of the USA
+#' @description Creates a hex plot of all the states.  It positions them in a 
+#' relatively close location where they would be in a map.  All of the states
+#' have the same size Hex, this makes them easy to find and compare to others. 
+#' 
+#' @param variable The variable to use as the driver for the color or level of
+#' transparency that will be displayed.  There are four options: population of
+#' the state, the number of hospitals in that state, highlight states with
+#' counties with counties above or below the model's predictions.  The values
+#' that can be used are: population, hospitals, abover or below.  The default
+#' is population.
+#' @param colors A list of two colors. One set the value of the high number
+#' and the other for the low number.
 #' @export
 atc_plot_us_map <- function(variable = c("population", "hospitals", "above", "below"),
                             colors = list(high = palette_atc$high, low = palette_atc$low)
@@ -127,6 +156,20 @@ atc_plot_us_map <- function(variable = c("population", "hospitals", "above", "be
   
 }
 
+#' Plot of county level data 
+#' @description Returns a plot with actual shape of the state, and highlights 
+#' each county with a color.  The color will depend on which variable is being
+#' used to plot.  
+#' @param state The state's name. Use "All US" if a map of all states is to be
+#' plotted. 
+#' @param variable The variable to use for the plot. Possible values are: model,
+#' population or hospitals.
+#' @param colors A list of two colors. One set the value of the high number
+#' and the other for the low number.
+#' @param model_colors A list of 3 colors to use for counties below, above or
+#' at the level of expected hospitals as per the model.
+#' @param top_cities Plots the most populated cities.  The default to plot the
+#' 3 most populated cities.  To avoid displaying any cities, use 0.
 #' @export
 atc_plot_state_map <- function(state = "Florida", 
                                variable = c("model", "population", "hospitals"),
