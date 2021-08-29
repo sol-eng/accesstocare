@@ -1,11 +1,23 @@
+#' Prepares manifest file
+#' @description A convinience function that simplifies the creation of the 
+#' manifest file needed for publication.
+#' 
+#' @param folder_location The folder containing the files of a single asset to
+#' be published
+#' @param primary_document An optional argument. If passed, the function will 
+#' use that as the name of the primary document
+#' @param igrnore_files A list of files to be disregarded when creating the
+#' manifest file.  
+#' @param silent To run with or without console updates
+#' 
 #' @export
 atc_write_manifest <- function(folder_location, 
-                           primary_document = NULL,
-                           ignore_files = list("config.yml", ".gitignore", 
-                                               "manifest.json", ".DS_Store",
-                                               ".gitignore"
-                           ),
-                           silent = FALSE
+                               primary_document = NULL,
+                               ignore_files = list("config.yml", ".gitignore", 
+                                                   "manifest.json", ".DS_Store",
+                                                   ".gitignore"
+                                                   ),
+                               silent = FALSE
 ) {
   
   full_path <- path_abs(folder_location)
@@ -71,6 +83,10 @@ atc_write_manifest <- function(folder_location,
   }
 }
 
+#' Batch creation of manifests
+#' @description Attempts to create manifests for all sub-folders inside a given
+#' content folder.
+#' @param content_folder The root folder location.
 #' @export
 atc_write_all_manifests <- function(content_folder = ".") {
   map_dfr(
