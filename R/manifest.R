@@ -6,7 +6,7 @@
 #' be published
 #' @param primary_document An optional argument. If passed, the function will 
 #' use that as the name of the primary document
-#' @param igrnore_files A list of files to be disregarded when creating the
+#' @param ignore_files A list of files to be disregarded when creating the
 #' manifest file.  
 #' @param silent To run with or without console updates
 #' 

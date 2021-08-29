@@ -22,6 +22,8 @@ A tibble with 9 rows and 3,142 variables:
 us_counties
 }
 \description{
-List of US Counties
+It contains the number of hospitals, population and the prediction
+results.  It also contains the county's 'FIPS' number which is used as the
+primary identifier.
 }
 \keyword{datasets}

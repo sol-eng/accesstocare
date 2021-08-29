@@ -19,10 +19,10 @@ be published}
 \item{primary_document}{An optional argument. If passed, the function will
 use that as the name of the primary document}
 
-\item{silent}{To run with or without console updates}
-
-\item{igrnore_files}{A list of files to be disregarded when creating the
+\item{ignore_files}{A list of files to be disregarded when creating the
 manifest file.}
+
+\item{silent}{To run with or without console updates}
 }
 \description{
 A convinience function that simplifies the creation of the

@@ -1,5 +1,7 @@
 #' List of US Counties 
-
+#' @description It contains the number of hospitals, population and the prediction
+#' results.  It also contains the county's 'FIPS' number which is used as the
+#' primary identifier.
 #' @format A tibble with 9 rows and 3,142 variables:
 #' \describe{
 #' \item{fips}{County FIPS}

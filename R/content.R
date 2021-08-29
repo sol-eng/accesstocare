@@ -14,7 +14,7 @@ atc_package_content <- function() {
 #' @export
 folder_content_metadata <- function(content_location = ".") {
   atl <- map(
-    dir_ls(location, type = "directory"), 
+    dir_ls(content_location, type = "directory"), 
     ~{
       description <- ""
       type <- ""
