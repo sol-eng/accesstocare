@@ -214,3 +214,10 @@ atc_plot_state_map <- function(state = "Florida",
       ) 
   }
 }
+
+globalVariables(c(
+  "x", "y", "city_name", "group", "fill", "fips", "tooltip", "palette_atc", 
+  "hospitals", "population", "us_atc_model", "state", "state_name", 
+  "us_atc_county_polygons", "us_atc_state_polygons", "us_counties", 
+  "us_large_cities"
+  ))

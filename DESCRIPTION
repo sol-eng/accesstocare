@@ -24,9 +24,7 @@ Imports:
     rsconnect,
     ggplot2,
     ggiraph,
-    dplyr,
     rlang,
-    magrittr,
     tibble,
     yaml
 
