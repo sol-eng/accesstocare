@@ -3,6 +3,7 @@
 
 [![Codecov test
 coverage](https://codecov.io/gh/sol-eng/accesstocare/branch/main/graph/badge.svg)](https://codecov.io/gh/sol-eng/accesstocare?branch=main)
+[![R-CMD-check](https://github.com/sol-eng/accesstocare/workflows/R-CMD-check/badge.svg)](https://github.com/sol-eng/accesstocare/actions)
 <!-- badges: end -->
 
 # Access to Care
