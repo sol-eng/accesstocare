@@ -1,19 +1,37 @@
 test_that("Manifests are being written to content folder", {
-  temp_dir <- paste0(tempdir(), "/atc-manifest")
+  temp_folder <- paste0(tempdir(), "/atc-manifest-test")
+  temp_html <- paste0(temp_folder, "/html")
+  temp_other <- paste0(temp_folder, "/other")
+  dir.create(temp_folder)
+  dir.create(temp_html)
+  dir.create(temp_other)
   
-  atc_package_content_copy(target_folder = temp_dir)
+  writeLines("<p>", con = paste0(temp_html, "/test.html"))
   
-  mnf <- atc_write_all_manifests(temp_dir)
+  res <- atc_write_all_manifests(temp_folder)
   
-  expect_length(
-    nrow(mnf),
-    16
+  atc_write_manifest(
+    temp_html,
+    primary_document = "test.html", 
+    silent = FALSE
   )
   
-  unlink(temp_dir, recursive = TRUE, force = TRUE)  
+  expect_length(
+    res,
+    2
+  )
   
   expect_length(
-    dir(temp_dir),
+    dir(temp_html),
+    2
+  ) 
+  
+  unlink(temp_folder, recursive = TRUE, force = TRUE)  
+  
+  expect_length(
+    dir(temp_folder),
     0
   )  
 })
+
+
