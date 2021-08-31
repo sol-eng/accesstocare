@@ -14,7 +14,7 @@ atc_package_content <- function() {
 #' @export
 folder_content_metadata <- function(content_location = ".") {
   atl <- map(
-    dir_ls(content_location, type = "directory"),
+    sort(dir_ls(content_location, type = "directory")),
     ~ {
       description <- ""
       type <- ""
@@ -40,8 +40,16 @@ folder_content_metadata <- function(content_location = ".") {
 
 #' @export
 print.metadata_list <- function(x, ...) {
-  cat(bold(set_console_width("Name", 25), "Type", "\n"))
-  walk(x, ~ cat(set_console_width(.x[[1]], 25), .x[[3]], "\n"))
+  cat(bold(
+    "No. ", 
+    set_console_width("Name", 25), 
+    "Type", "\n"
+    ))
+  purrr::iwalk(x, ~ cat(
+    set_console_width(.y, 4),
+    set_console_width(.x[[1]], 25),
+    .x[[3]], "\n"
+  ))
   invisible(x)
 }
 
@@ -54,21 +62,23 @@ atc_package_copy_content <- function(target_folder = here::here(),
                                      silent = FALSE,
                                      content_no = NULL) {
   ac <- atc_package_content()
+  
+  copt <- length(ac) + 1
 
   if (is.null(content_no)) {
-    cat(bold("No. ", set_console_width("Name", 25), "Type", "\n"))
-    purrr::iwalk(ac, ~ cat(
-      set_console_width(.y, 4),
-      set_console_width(.x[[1]], 25),
-      .x[[3]], "\n"
-    ))
+    print(ac)
+    cat(red(
+      set_console_width(copt, 4), 
+      set_console_width("Cancel", 25), 
+      "", "\n")
+      )
     if (interactive()) {
       content_no <- readline(prompt = "Enter the content number to copy: ")
     } else {
       return(NA)
     }
   }
-
+  if(content_no == copt) return("Cancelled")
   full_file_copy(
     ac[[content_no]]$full_path,
     path(target_folder, path_file(ac[[content_no]]$full_path)),
