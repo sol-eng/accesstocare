@@ -39,22 +39,31 @@ folder_content_metadata <- function(content_location = ".") {
 }
 
 #' @export
-as_tibble.metadata_list <- function(x) {
-  map_dfr(x, ~.x)
-}
-
-#' @export
 print.metadata_list <- function(x, ...) {
-  print(as_tibble(x))
+  cat(bold(set_console_width("Name", 25), "Type", "\n"))
+  walk(x, ~ cat(set_console_width(.x[[1]], 25), .x[[3]], "\n"))
   invisible(x)
 }
 
 #' Copies the Access To Care examples
 #' @param target_folder A folder location to transfer the examples to
+#' @param silent Send updates to the connsole 
 #' @export
-atc_package_content_copy <- function(target_folder = here::here()) {
+atc_package_content_copy <- function(target_folder = here::here(), 
+                                     silent = FALSE
+                                     ) {
   full_file_copy(
     system.file(package = "accesstocare", "content"), 
-    target_folder
+    target_folder,
+    silent = silent
     )
+}
+
+set_console_width  <- function(x, size = 10) {
+  if(nchar(x) < size) {
+    spad <- paste0(rep(" " , size - nchar(x)), collapse = "")
+    paste0(x, spad)
+  } else {
+    substr(x, 1, size)
+  }
 }

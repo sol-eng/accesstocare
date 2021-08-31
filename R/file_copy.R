@@ -1,4 +1,4 @@
-full_file_copy <- function(folder, new_folder, exclude_exts = NULL) {
+full_file_copy <- function(folder, new_folder, exclude_exts = NULL, silent = FALSE) {
   if (!dir_exists(new_folder)) dir_create(new_folder)
   fls <- sanitized_file_list(
     folder = folder,
@@ -12,9 +12,9 @@ full_file_copy <- function(folder, new_folder, exclude_exts = NULL) {
       new_file <- path(new_folder, .x)
       if(!file_exists(new_file)) {
         file_copy(path(folder, .x), new_file)  
-        cat(green(paste0(new_file, " - copied\n")))
+        if(!silent) cat(green(paste0(new_file, " - copied\n")))
       } else {
-        cat(red(paste0(new_file, " - already exists\n")))
+        if(!silent) cat(red(paste0(new_file, " - already exists\n")))
       }
     } 
     )

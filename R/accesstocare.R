@@ -4,7 +4,7 @@
 #' @importFrom yaml read_yaml
 #' @importFrom stats predict
 #' @importFrom tibble as_tibble tibble
-#' @importFrom crayon cyan black blue red green magenta
+#' @importFrom crayon cyan black blue red green magenta bold
 #' @import ggplot2
 #' @import ggiraph
 #' @import rlang
