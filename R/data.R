@@ -1,4 +1,4 @@
-#' List of US Counties 
+#' List of US Counties
 #' @description It contains the number of hospitals, population and the prediction
 #' results.  It also contains the county's 'FIPS' number which is used as the
 #' primary identifier.
@@ -67,7 +67,7 @@
 #' \describe{
 #' \item{state}{Two letter state abbreviation}
 #' \item{x}{Sets the 'x' position}
-#' \item{x}{Sets the 'y' position} 
+#' \item{x}{Sets the 'y' position}
 #' \item{state_name}{Name of the state}
 #' }
 "us_hex_positions"
@@ -75,7 +75,7 @@
 #' Position of the 6 corners for each state's hexagon
 #' @format A tibble with 3 variables and 306 rows:
 #' \describe{
-#' \item{x}{Sets the 'x' position} 
+#' \item{x}{Sets the 'x' position}
 #' \item{x}{Sets the 'y' position}
 #' \item{state}{Two letter state abbreviation}
 #' }
@@ -88,11 +88,11 @@
 
 #' A list of color defaults
 #' @description It has a list of the default hex color value for the different
-#' plots used in the examples.  
+#' plots used in the examples.
 #' @format A list with 6 elements
 "palette_atc"
 
-#' Coordinates to draw state's hexagons 
+#' Coordinates to draw state's hexagons
 #' @description It joins the us_states and us_hex_polygons data sets
 #' @format A tibble with 11 variables and 306 rows:
 #' \describe{
@@ -102,7 +102,7 @@
 #' \item{per_person}{Population divided by the number of hospitals in the state}
 #' \item{per_person_quartile}{Quartile for per_person variable}
 #' \item{state_name}{Name of the state}
-#' \item{x}{Sets the 'x' position} 
+#' \item{x}{Sets the 'x' position}
 #' \item{x}{Sets the 'y' position}
 #' }
 "us_atc_state_polygons"

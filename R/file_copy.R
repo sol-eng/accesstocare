@@ -7,17 +7,17 @@ full_file_copy <- function(folder, new_folder, exclude_exts = NULL, silent = FAL
   fd <- path(new_folder, folder_list(fls))
   dir_create(fd[!dir_exists(fd)])
   walk(
-    fls, 
+    fls,
     ~ {
       new_file <- path(new_folder, .x)
-      if(!file_exists(new_file)) {
-        file_copy(path(folder, .x), new_file)  
-        if(!silent) cat(green(paste0(new_file, " - copied\n")))
+      if (!file_exists(new_file)) {
+        file_copy(path(folder, .x), new_file)
+        if (!silent) cat(green(paste0(new_file, " - copied\n")))
       } else {
-        if(!silent) cat(red(paste0(new_file, " - already exists\n")))
+        if (!silent) cat(red(paste0(new_file, " - already exists\n")))
       }
-    } 
-    )
+    }
+  )
 }
 
 folder_list <- function(file_list) {
