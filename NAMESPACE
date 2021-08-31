@@ -2,7 +2,8 @@
 
 S3method(print,metadata_list)
 export(atc_package_content)
-export(atc_package_content_copy)
+export(atc_package_copy_all_content)
+export(atc_package_copy_content)
 export(atc_plot_hospitals)
 export(atc_plot_state_map)
 export(atc_plot_us_map)

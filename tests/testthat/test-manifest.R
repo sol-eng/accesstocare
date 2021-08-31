@@ -7,6 +7,7 @@ test_that("Manifests are being written to content folder", {
   dir.create(temp_other)
 
   writeLines("<p>", con = paste0(temp_html, "/test.html"))
+  writeLines("config.yml", con = paste0(temp_html, "/.gitignore"))
 
   res <- atc_write_all_manifests(temp_folder)
 

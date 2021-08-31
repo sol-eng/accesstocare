@@ -6,23 +6,34 @@ test_that("Content metadata works", {
   )
 })
 
-test_that("Content is copied", {
-  temp_dir <- paste0(tempdir(), "/atc-coverage")
+test_that("Single content folder is copied", {
+  temp_dir <- paste0(tempdir(), "/atc-single")
 
-  atc_package_content_copy(target_folder = temp_dir, 
-                           silent = TRUE,
-                           content_no = 17
-                           )
-
-  expect_length(
-    dir(temp_dir),
-    16
+  atc_package_copy_content(
+    target_folder = temp_dir,
+    silent = TRUE,
+    content_no = 1
   )
+
+  expect_length(dir(temp_dir), 1)
 
   unlink(temp_dir, recursive = TRUE, force = TRUE)
 
-  expect_length(
-    dir(temp_dir),
-    0
+  expect_length(dir(temp_dir), 0)
+})
+
+
+test_that("All content folder is copied", {
+  temp_dir <- paste0(tempdir(), "/atc-all")
+
+  atc_package_copy_all_content(
+    target_folder = temp_dir,
+    silent = TRUE
   )
+
+  expect_length(dir(temp_dir), 16)
+
+  unlink(temp_dir, recursive = TRUE, force = TRUE)
+
+  expect_length(dir(temp_dir), 0)
 })
