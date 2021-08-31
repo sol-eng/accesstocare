@@ -47,15 +47,46 @@ print.metadata_list <- function(x, ...) {
 
 #' Copies the Access To Care examples
 #' @param target_folder A folder location to transfer the examples to
-#' @param silent Send updates to the connsole
+#' @param silent Send updates to the console
+#' @param content_no Select which content folder to copy
 #' @export
 atc_package_content_copy <- function(target_folder = here::here(),
-                                     silent = FALSE) {
-  full_file_copy(
-    system.file(package = "accesstocare", "content"),
-    target_folder,
-    silent = silent
-  )
+                                     silent = FALSE,
+                                     content_no = NULL
+                                     ) {
+  ac <- atc_package_content()
+  
+  all_no <- length(ac) + 1 
+  
+  if(is.null(content_no)) {
+    cat(bold("No. ", set_console_width("Name", 25), "Type", "\n"))
+    purrr::iwalk(ac, ~ cat(
+      set_console_width(.y, 4), 
+      set_console_width(.x[[1]], 25), 
+      .x[[3]], "\n")
+      )
+    cat(all_no," ", set_console_width("All Content", 25), "\n")
+    
+    if(interactive()) {
+      content_no <- readline(prompt="Enter the content number to copy: ")
+    } else {
+      content_no <- all_no
+    }
+  }
+  
+  if(content_no == all_no) {
+    full_file_copy(
+      system.file(package = "accesstocare", "content"),
+      target_folder,
+      silent = silent
+    )
+  } else {
+    full_file_copy(
+      ac[[content_no]]$full_path,
+      path_file(ac[[content_no]]$full_path),
+      silent = silent
+    )
+  }
 }
 
 set_console_width <- function(x, size = 10) {

@@ -9,7 +9,10 @@ test_that("Content metadata works", {
 test_that("Content is copied", {
   temp_dir <- paste0(tempdir(), "/atc-coverage")
 
-  atc_package_content_copy(target_folder = temp_dir, silent = TRUE)
+  atc_package_content_copy(target_folder = temp_dir, 
+                           silent = TRUE,
+                           content_no = 17
+                           )
 
   expect_length(
     dir(temp_dir),

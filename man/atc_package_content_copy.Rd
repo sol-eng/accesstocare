@@ -4,12 +4,18 @@
 \alias{atc_package_content_copy}
 \title{Copies the Access To Care examples}
 \usage{
-atc_package_content_copy(target_folder = here::here(), silent = FALSE)
+atc_package_content_copy(
+  target_folder = here::here(),
+  silent = FALSE,
+  content_no = NULL
+)
 }
 \arguments{
 \item{target_folder}{A folder location to transfer the examples to}
 
-\item{silent}{Send updates to the connsole}
+\item{silent}{Send updates to the console}
+
+\item{content_no}{Select which content folder to copy}
 }
 \description{
 Copies the Access To Care examples
