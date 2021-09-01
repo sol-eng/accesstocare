@@ -25,3 +25,25 @@ format_currency <- function(x, round_digits = 0) {
   )
   paste0("$", res)
 }
+
+
+toc <- function() {
+  re <- readLines("README.Rmd")
+  has_title <- as.logical(lapply(re, function(x) substr(x, 1, 2) == "##"))
+  only_titles <- re[has_title]
+  titles <- trimws(gsub("#", "", only_titles))
+  links <- trimws(gsub("`", "", titles))
+  links <- tolower(links)
+  links <- trimws(gsub(" ", "-", links))
+  links <- trimws(gsub("\\.", "-", links))
+  links <- trimws(gsub("\\,", "", links))
+  toc_list <- lapply(
+    seq_along(titles),
+    function(x) {
+      pad <- ifelse(substr(only_titles[x], 1, 3) == "###", "    - ", "  - ")
+      paste0(pad, "[", titles[x], "](#",links[x], ")")
+    }
+  )
+  toc_full <- paste(toc_list, collapse = "\n") 
+  cat(toc_full)
+}
