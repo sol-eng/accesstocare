@@ -56,6 +56,9 @@
 <li>
       <a href="../articles/manifests.html">RStudio Connect Git Manifests</a>
     </li>
+    <li>
+      <a href="../articles/plots.html">Interactive plots</a>
+    </li>
   </ul>
 </li>
       </ul>
@@ -118,134 +121,56 @@
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">dashboard_path</span> <span class="op">&lt;-</span> <span class="fu"><a href="http://fs.r-lib.org/reference/path.html">path</a></span><span class="op">(</span><span class="va">temp_folder</span>, <span class="st">"flexdashboard"</span><span class="op">)</span>
 
-<span class="fu"><a href="http://fs.r-lib.org/reference/dir_tree.html">dir_tree</a></span><span class="op">(</span><span class="va">dashboard_path</span><span class="op">)</span>
-<span class="co">#&gt; /var/folders/l8/v1ym1mc10_b0dftql5wrrm8w0000gn/T/RtmpyQqfMU/temp/flexdashboard</span>
-<span class="co">#&gt; ├── access-to-care.Rmd</span>
-<span class="co">#&gt; └── metadata.yml</span></code></pre></div>
+<span class="fu"><a href="http://fs.r-lib.org/reference/dir_tree.html">dir_tree</a></span><span class="op">(</span><span class="va">dashboard_path</span><span class="op">)</span></code></pre></div>
+<pre><code>/var/folders/l8/v1ym1mc10_b0dftql5wrrm8w0000gn/T/RtmpBkacCE/temp/flexdashboard
+├── access-to-care.Rmd
+└── metadata.yml</code></pre>
 <p>The folder contains the example, a <code>metadata.yml</code>, and a <code>.gitignore</code> file.</p>
 <p>Now, we run create the manifest using <code><a href="../reference/atc_write_manifest.html">atc_write_manifest()</a></code>. The function will automatically identify the primary document, and process the files listed in<code>.gitignore</code> file.</p>
-<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu"><a href="../reference/atc_write_manifest.html">atc_write_manifest</a></span><span class="op">(</span><span class="va">dashboard_path</span><span class="op">)</span>
-<span class="co">#&gt; Full path:  /var/folders/l8/v1ym1mc10_b0dftql5wrrm8w0000gn/T/RtmpyQqfMU/temp/flexdashboard </span>
-<span class="co">#&gt; Application files</span>
-<span class="co">#&gt; ---  access-to-care.Rmd </span>
-<span class="co">#&gt; ---  metadata.yml </span>
-<span class="co">#&gt; Primary file: access-to-care.Rmd </span>
-<span class="co">#&gt; Compiling manifest...</span>
-<span class="co">#&gt; Manifest complete</span>
-<span class="co">#&gt; /var/folders/l8/v1ym1mc10_b0dftql5wrrm8w0000gn/T/RtmpyQqfMU/temp/flexdashboard/manifest.json</span></code></pre></div>
-<p>The <code>manifest.json</code> file is now available in the sub-folder.</p>
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu"><a href="http://fs.r-lib.org/reference/dir_tree.html">dir_tree</a></span><span class="op">(</span><span class="va">dashboard_path</span><span class="op">)</span>
-<span class="co">#&gt; /var/folders/l8/v1ym1mc10_b0dftql5wrrm8w0000gn/T/RtmpyQqfMU/temp/flexdashboard</span>
-<span class="co">#&gt; ├── access-to-care.Rmd</span>
-<span class="co">#&gt; ├── manifest.json</span>
-<span class="co">#&gt; └── metadata.yml</span></code></pre></div>
+<code class="sourceCode R"><span class="fu"><a href="../reference/atc_write_manifest.html">atc_write_manifest</a></span><span class="op">(</span><span class="va">dashboard_path</span><span class="op">)</span></code></pre></div>
+<pre><code>Full path:  /var/folders/l8/v1ym1mc10_b0dftql5wrrm8w0000gn/T/RtmpBkacCE/temp/flexdashboard 
+Application files
+---  access-to-care.Rmd 
+---  metadata.yml 
+Primary file: access-to-care.Rmd 
+Compiling manifest...
+Manifest complete
+
+/var/folders/l8/v1ym1mc10_b0dftql5wrrm8w0000gn/T/RtmpBkacCE/temp/flexdashboard/manifest.json</code></pre>
+<p>The <code>manifest.json</code> file is now available in the sub-folder.</p>
+<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="fu"><a href="http://fs.r-lib.org/reference/dir_tree.html">dir_tree</a></span><span class="op">(</span><span class="va">dashboard_path</span><span class="op">)</span></code></pre></div>
+<pre><code>/var/folders/l8/v1ym1mc10_b0dftql5wrrm8w0000gn/T/RtmpBkacCE/temp/flexdashboard
+├── access-to-care.Rmd
+├── manifest.json
+└── metadata.yml</code></pre>
 </div>
 <div id="batch-create-all-manifests" class="section level3">
 <h3 class="hasAnchor">
 <a href="#batch-create-all-manifests" class="anchor"></a>Batch create all manifests</h3>
 <p>To create the manifests for all of the sub-folders, use <code><a href="../reference/atc_write_all_manifests.html">atc_write_all_manifests()</a></code>. This function will silently run the manifest writer for each sub-folder. For those that it fails for, it skips the creation. The function returns a <code>list</code> object with all of the results. Printing the object on the R Console shows which were skipped, and which were created.</p>
-<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="../reference/atc_write_all_manifests.html">atc_write_all_manifests</a></span><span class="op">(</span><span class="va">temp_folder</span><span class="op">)</span></code></pre></div>
-<pre><code>#&gt; # A tibble: 16 × 2
-#&gt;    content              created
-#&gt;    &lt;chr&gt;                &lt;chr&gt;  
-#&gt;  1 RMarkdown-DataPrep   YES    
-#&gt;  2 RMarkdown-html       YES    
-#&gt;  3 RMarkdown-pdf        YES    
-#&gt;  4 RNotebook            YES    
-#&gt;  5 connectwidgets       YES    
-#&gt;  6 dash                 YES    
-#&gt;  7 flexdashboard        YES    
-#&gt;  8 htmlwidgets          SKIPPED
-#&gt;  9 jupyter              YES    
-#&gt; 10 launcher-programatic YES    
-#&gt; 11 plot                 SKIPPED
-#&gt; 12 plumber-api          YES    
-#&gt; 13 powerpoint           YES    
-#&gt; 14 powerpoint-state     YES    
-#&gt; 15 presentation         YES    
-#&gt; 16 shiny                YES</code></pre>
-<div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu"><a href="http://fs.r-lib.org/reference/dir_tree.html">dir_tree</a></span><span class="op">(</span><span class="va">temp_folder</span><span class="op">)</span>
-<span class="co">#&gt; /var/folders/l8/v1ym1mc10_b0dftql5wrrm8w0000gn/T/RtmpyQqfMU/temp</span>
-<span class="co">#&gt; ├── RMarkdown-DataPrep</span>
-<span class="co">#&gt; │   ├── access-to-care-dataprep.Rmd</span>
-<span class="co">#&gt; │   ├── manifest.json</span>
-<span class="co">#&gt; │   └── metadata.yml</span>
-<span class="co">#&gt; ├── RMarkdown-html</span>
-<span class="co">#&gt; │   ├── access-to-care-rmarkdown.Rmd</span>
-<span class="co">#&gt; │   ├── email</span>
-<span class="co">#&gt; │   │   └── access-to-care-email.Rmd</span>
-<span class="co">#&gt; │   ├── manifest.json</span>
-<span class="co">#&gt; │   └── metadata.yml</span>
-<span class="co">#&gt; ├── RMarkdown-pdf</span>
-<span class="co">#&gt; │   ├── access-to-care-pdf.Rmd</span>
-<span class="co">#&gt; │   ├── access-to-care-pdf.pdf</span>
-<span class="co">#&gt; │   ├── manifest.json</span>
-<span class="co">#&gt; │   └── metadata.yml</span>
-<span class="co">#&gt; ├── RNotebook</span>
-<span class="co">#&gt; │   ├── access-to-care.Rmd</span>
-<span class="co">#&gt; │   ├── manifest.json</span>
-<span class="co">#&gt; │   └── metadata.yml</span>
-<span class="co">#&gt; ├── connectwidgets</span>
-<span class="co">#&gt; │   ├── app.R</span>
-<span class="co">#&gt; │   ├── manifest.json</span>
-<span class="co">#&gt; │   └── metadata.yml</span>
-<span class="co">#&gt; ├── dash</span>
-<span class="co">#&gt; │   ├── app.py</span>
-<span class="co">#&gt; │   ├── assets</span>
-<span class="co">#&gt; │   │   ├── dash.css</span>
-<span class="co">#&gt; │   │   └── dashboard.css</span>
-<span class="co">#&gt; │   ├── manifest.json</span>
-<span class="co">#&gt; │   ├── metadata.yml</span>
-<span class="co">#&gt; │   └── requirements.txt</span>
-<span class="co">#&gt; ├── flexdashboard</span>
-<span class="co">#&gt; │   ├── access-to-care.Rmd</span>
-<span class="co">#&gt; │   ├── manifest.json</span>
-<span class="co">#&gt; │   └── metadata.yml</span>
-<span class="co">#&gt; ├── htmlwidgets</span>
-<span class="co">#&gt; │   ├── access-to-care-hospitals.R</span>
-<span class="co">#&gt; │   └── metadata.yml</span>
-<span class="co">#&gt; ├── jupyter</span>
-<span class="co">#&gt; │   ├── access-to-care.ipynb</span>
-<span class="co">#&gt; │   ├── manifest.json</span>
-<span class="co">#&gt; │   └── metadata.yml</span>
-<span class="co">#&gt; ├── launcher-programatic</span>
-<span class="co">#&gt; │   ├── access-to-care-rmarkdown.Rmd</span>
-<span class="co">#&gt; │   ├── manifest.json</span>
-<span class="co">#&gt; │   ├── metadata.yml</span>
-<span class="co">#&gt; │   └── start-here.R</span>
-<span class="co">#&gt; ├── plot</span>
-<span class="co">#&gt; │   ├── access-to-care-ggplot.R</span>
-<span class="co">#&gt; │   └── metadata.yml</span>
-<span class="co">#&gt; ├── plumber-api</span>
-<span class="co">#&gt; │   ├── manifest.json</span>
-<span class="co">#&gt; │   ├── metadata.yml</span>
-<span class="co">#&gt; │   └── plumber.R</span>
-<span class="co">#&gt; ├── powerpoint</span>
-<span class="co">#&gt; │   ├── access-to-care.Rmd</span>
-<span class="co">#&gt; │   ├── access-to-care.pptx</span>
-<span class="co">#&gt; │   ├── manifest.json</span>
-<span class="co">#&gt; │   ├── metadata.yml</span>
-<span class="co">#&gt; │   └── template.potx</span>
-<span class="co">#&gt; ├── powerpoint-state</span>
-<span class="co">#&gt; │   ├── access-to-care-rmarkdown.Rmd</span>
-<span class="co">#&gt; │   ├── access-to-care-rmarkdown.pptx</span>
-<span class="co">#&gt; │   ├── manifest.json</span>
-<span class="co">#&gt; │   ├── metadata.yml</span>
-<span class="co">#&gt; │   └── template.potx</span>
-<span class="co">#&gt; ├── presentation</span>
-<span class="co">#&gt; │   ├── access-to-care.Rmd</span>
-<span class="co">#&gt; │   ├── include</span>
-<span class="co">#&gt; │   │   └── presentation.css</span>
-<span class="co">#&gt; │   ├── manifest.json</span>
-<span class="co">#&gt; │   └── metadata.yml</span>
-<span class="co">#&gt; └── shiny</span>
-<span class="co">#&gt;     ├── app.R</span>
-<span class="co">#&gt;     ├── manifest.json</span>
-<span class="co">#&gt;     └── metadata.yml</span></code></pre></div>
+<pre><code># A tibble: 16 × 2
+   content              created
+   &lt;chr&gt;                &lt;chr&gt;  
+ 1 RMarkdown-DataPrep   YES    
+ 2 RMarkdown-html       YES    
+ 3 RMarkdown-pdf        YES    
+ 4 RNotebook            YES    
+ 5 connectwidgets       YES    
+ 6 dash                 YES    
+ 7 flexdashboard        YES    
+ 8 htmlwidgets          SKIPPED
+ 9 jupyter              YES    
+10 launcher-programatic YES    
+11 plot                 SKIPPED
+12 plumber-api          YES    
+13 powerpoint           YES    
+14 powerpoint-state     YES    
+15 presentation         YES    
+16 shiny                YES   </code></pre>
 </div>
 </div>
   </div>

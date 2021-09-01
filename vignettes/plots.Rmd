@@ -1,0 +1,123 @@
+---
+title: "Interactive plots"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Interactive plots}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>",
+  fig.width = 6,
+  fig.height = 4
+)
+```
+
+The `accesstocare` has 3 functions that return `ggplot`/`ggiraph` plots.  They are primarily meant to keep all of the examples consistent and easier to change.  They can also be used in an interactive R session, or in your own data product.  
+
+The included plots are:
+
+- `atc_plot_hospitals()` returns a scatter plot comparing Hospital vs Population counts in a given county.
+- `atc_plot_us_map()` returns a "hexagon" map of the USA, which includes Hawaii, Alaska, and DC. It overlays data from the Access To Care analysis.
+- `atc_plot_state_map()` returns a plot with actual shape of the state, and highlights each county with a color. The color will depend on which variable is being used to plot.
+
+
+```{r setup}
+library(accesstocare)
+```
+
+## US Map
+
+### Usage and options
+
+```{r}
+atc_plot_us_map()
+```
+
+```{r}
+atc_plot_us_map("below")
+```
+
+```{r}
+atc_plot_us_map("hospitals", 
+                colors = list(high = "orange", low = "blue")
+                )
+```
+
+### Interactive
+
+```{r, eval = FALSE}
+ggiraph::girafe(ggobj = atc_plot_us_map())
+```
+
+## County level plot
+
+### Usage and options
+
+```{r}
+atc_plot_state_map()
+```
+
+```{r}
+atc_plot_state_map("New York")
+```
+
+```{r}
+atc_plot_state_map("New York", 
+                   model_colors = list(above = "blue", below = "orange", ok = "white")
+                   )
+```
+
+```{r}
+atc_plot_state_map("New York", 
+                   variable = "population"
+                   )
+```
+
+```{r}
+atc_plot_state_map("New York", 
+                   variable = "population",
+                   colors = list(low = "orange", high = "blue")
+                   )
+```
+
+```{r}
+atc_plot_state_map("New York", top_cities = 6)
+```
+
+```{r}
+atc_plot_state_map("All US", top_cities = 0)
+```
+
+### Interactive
+
+```{r, eval = FALSE}
+ggiraph::girafe(ggobj = atc_plot_state_map())
+```
+
+## Hospital vs Population plot
+
+### Usage and options
+
+```{r}
+atc_plot_hospitals()
+```
+
+```{r}
+atc_plot_hospitals(show_model_results = TRUE)
+```
+
+```{r}
+atc_plot_hospitals(show_model_results = TRUE,
+                   model_colors = list(above = "green", below = "orange")
+                   )
+```
+
+### Interactive
+
+```{r, eval = FALSE}
+ggiraph::girafe(ggobj = atc_plot_hospitals())
+```
