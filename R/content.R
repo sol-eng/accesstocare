@@ -45,6 +45,22 @@ print.metadata_list <- function(x, ...) {
   invisible(x)
 }
 
+#' Opens an examples in RSTudio
+#' @param content_no Select which content folder to copy
+#' @param silent Send updates to the console
+#' @export
+atc_open_content <- function(content_no = NULL, 
+                             silent = TRUE
+) {
+  package_copy_content(
+    content_no = content_no,
+    target_folder = tempdir(),
+    silent = silent,
+    open = TRUE,
+    open_fail = TRUE
+  )
+} 
+
 #' Copies the Access To Care examples
 #' @param target_folder A folder location to transfer the examples to
 #' @param content_no Select which content folder to copy
@@ -58,20 +74,6 @@ atc_copy_content <- function(content_no = NULL,
     content_no = content_no,
     target_folder = target_folder,
     silent = silent
-  )
-} 
-
-#' @rdname atc_copy_content
-#' @export
-atc_open_content <- function(content_no = NULL, 
-                                     silent = TRUE
-                                     ) {
-  package_copy_content(
-    content_no = content_no,
-    target_folder = tempdir(),
-    silent = silent,
-    open = TRUE,
-    open_fail = TRUE
   )
 } 
 

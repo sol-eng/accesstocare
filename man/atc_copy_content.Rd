@@ -2,7 +2,6 @@
 % Please edit documentation in R/content.R
 \name{atc_copy_content}
 \alias{atc_copy_content}
-\alias{atc_open_content}
 \alias{atc_copy_all_content}
 \title{Copies the Access To Care examples}
 \usage{
@@ -11,8 +10,6 @@ atc_copy_content(
   target_folder = here::here(),
   silent = FALSE
 )
-
-atc_open_content(content_no = NULL, silent = TRUE)
 
 atc_copy_all_content(target_folder = here::here(), silent = FALSE)
 }

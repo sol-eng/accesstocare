@@ -1,1 +1,19 @@
 url: https://sol-eng.github.io/accesstocare
+reference:
+- title: Open an example
+  contents:
+  - starts_with("atc_open_")
+- title: Copy one or all examples
+  contents:
+  - starts_with("atc_copy_")
+- title: Write manifests
+  contents:
+  - starts_with("atc_write")
+- title: Plots
+  contents:
+  - starts_with("atc_plot")
+- title: Data
+  contents:
+  - starts_with("us_")
+  - starts_with("cms")
+  
