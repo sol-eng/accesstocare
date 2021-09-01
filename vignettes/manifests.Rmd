@@ -1,0 +1,89 @@
+---
+title: "RStudio Connect Git Manifests"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{RStudio Connect Git Manifests}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  #eval = FALSE,
+  collapse = TRUE,
+  comment = "#>"
+)
+```
+
+
+## Background
+
+Most of the examples in the `accesstocare` package can be deployed to RStudio Connect by using the RStudio IDE's button push deployment.  All of the examples are designed to be deployed using RStudio Connect's [Git Backed Deployment](https://docs.rstudio.com/connect/user/git-backed/).  This means that we tell RStudio Connect where the code repository exists, and then have RStudio Connect download the latest code everytime the repository is updated.
+
+A major step to accomplish this, is to have a "manifest" file.  It contains the metadata of the example, such as package versions, R version, primary file, etc.  It is produced using the `rsconnect` package.  In `accesstocare`, there are two utility functions to make it easier to create the manifest files.
+
+
+## Functions
+
+There are two functions included in `accesstocare` to help with creating the manifests: 
+
+- `atc_write_manifest()` creates the manifest for a single example
+- `atc_write_all_manifests()` batch creates all of the manifests 
+
+## Usage
+
+We will the `fs` package to make it easy to see the changes in the directories.
+
+```{r setup}
+library(accesstocare)
+library(fs)
+```
+
+All of the examples are copied into a temporary folder
+
+```{r}
+temp_folder <- path(tempdir(), "temp")
+
+atc_copy_all_content(temp_folder, silent = TRUE)
+```
+
+
+### Single example
+
+```{r}
+dashboard_path <- path(temp_folder, "flexdashboard")
+
+dir_tree(dashboard_path)
+```
+
+```{r}
+atc_write_manifest(dashboard_path)
+```
+
+```{r}
+dir_tree(dashboard_path)
+```
+
+### Batch create all manifests
+
+```{r, include = FALSE}
+t <- atc_write_all_manifests(temp_folder)
+```
+
+```{r, eval = FALSE}
+atc_write_all_manifests(temp_folder)
+```
+
+```{r, echo = FALSE}
+t
+```
+
+
+```{r}
+dir_tree(temp_folder)
+```
+
+```{r, include = FALSE}
+unlink(temp_folder, recursive = TRUE, force = TRUE)
+```
+

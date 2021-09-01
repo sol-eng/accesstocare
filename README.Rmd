@@ -15,16 +15,17 @@ knitr::opts_chunk$set(
 [![R-CMD-check](https://github.com/sol-eng/accesstocare/workflows/R-CMD-check/badge.svg)](https://github.com/sol-eng/accesstocare/actions)
 <!-- badges: end -->
 
-# Access to Care
-
-An R package to make it easy to view, copy, interact and publish the data products resulting from the Access to Care analysis.  It also contains handly utlity functions, and the data needed to create a consistent set of examples across the multiple data product types.
-
- - [Analysis Background](#analysis-background)
+  - [Access to Care](#access-to-care)
+  - [Analysis Background](#analysis-background)
   - [Installation](#installation)
   - [Usage](#usage)
     - [Run an example](#run-an-example)
     - [Copy example](#copy-example)
     - [Copy all examples](#copy-all-examples)
+
+## Access to Care
+
+An R package to make it easy to view, copy, interact and publish the data products resulting from the Access to Care analysis.  It also contains handly utlity functions, and the data needed to create a consistent set of examples across the multiple data product types.
 
 ## Analysis Background 
 
