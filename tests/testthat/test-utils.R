@@ -22,9 +22,10 @@ test_that("Format functions return expected results", {
 })
 
 test_that("TOC works", {
-  expect_silent(
+  expect_output(
     toc(system.file(
-      package = "accesstocare", "content", "RMarkdown-html", "access-to-care-rmarkdown.html"
+      "content", "RMarkdown-html", "access-to-care-rmarkdown.rmd",
+      package = "accesstocare"
       ))
   )
 })
