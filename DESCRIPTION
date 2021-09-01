@@ -22,7 +22,6 @@ Imports:
     fs,
     here,
     purrr,
-    dplyr,
     rsconnect,
     ggplot2,
     ggiraph,

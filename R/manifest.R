@@ -75,7 +75,7 @@ atc_write_manifest <- function(folder_location,
 #' @param content_folder The root folder location.
 #' @export
 atc_write_all_manifests <- function(content_folder = ".") {
-  map_dfr(
+  t <- map(
     dir_ls(content_folder, type = "directory"),
     ~ {
       res <- atc_write_manifest(.x, silent = TRUE)
@@ -85,6 +85,10 @@ atc_write_all_manifests <- function(content_folder = ".") {
         created = created
       )
     }
+  )
+  tibble(
+    content = map_chr(t, ~.x$content),
+    created = map_chr(t, ~.x$created)
   )
 }
 
