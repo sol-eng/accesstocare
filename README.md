@@ -6,17 +6,19 @@ coverage](https://codecov.io/gh/sol-eng/accesstocare/branch/main/graph/badge.svg
 [![R-CMD-check](https://github.com/sol-eng/accesstocare/workflows/R-CMD-check/badge.svg)](https://github.com/sol-eng/accesstocare/actions)
 <!-- badges: end -->
 
--   [Analysis Background](#analysis-background)
--   [Installation](#installation)
--   [Usage](#usage)
-    -   [Run an example](#run-an-example)
-
 # Access to Care
 
 An R package to make it easy to view, copy, interact and publish the
 data products resulting from the Access to Care analysis. It also
 contains handly utlity functions, and the data needed to create a
 consistent set of examples across the multiple data product types.
+
+-   [Analysis Background](#analysis-background)
+-   [Installation](#installation)
+-   [Usage](#usage)
+    -   [Run an example](#run-an-example)
+    -   [Copy example](#copy-example)
+    -   [Copy all examples](#copy-all-examples)
 
 ## Analysis Background
 
@@ -25,6 +27,8 @@ provided by Medicare. A linear model is used to determine if a county is
 over, or under served based on the size of the population.
 
 ## Installation
+
+Install `accesstocare` from GitHub using:
 
 ``` r
 devtools::install_github("sol-eng/accesstocare")
@@ -100,5 +104,49 @@ To run an example without the prompt, pass the `content_no` argument
 with the number. Again, to open the `flexdashboard` use:
 
 ``` r
-atc_copy_content(3)
+atc_open_content(3)
 ```
+
+### Copy example
+
+An example can be copied to your working directory by using
+`atc_copy_content()`. It will create a new sub-folder and load the files
+for that particular example.
+
+It has the same interactive mechanism as the open example function.
+
+``` r
+atc_copy_content()
+```
+
+    #> No.  Name                      Type 
+    #> 1    connectwidgets            Report 
+    #> 2    dash                      Dashboard 
+    #> 3    flexdashboard             Dashboard 
+    #> 4    htmlwidgets               Plot 
+    #> 5    jupyter                   Jupyter 
+    #> 6    launcher-programatic      Launcher 
+    #> 7    plot                      Plot 
+    #> 8    plumber-api               REST API 
+    #> 9    powerpoint                PowerPoint 
+    #> 10   powerpoint-state          PowerPoint 
+    #> 11   presentation              Presentation 
+    #> 12   RMarkdown-DataPrep        Scheduled R Script 
+    #> 13   RMarkdown-html            Report 
+    #> 14   RMarkdown-pdf             Report 
+    #> 15   RNotebook                 Notebook 
+    #> 16   shiny                     Dashboard
+    #> 17   Cancel
+    #> Enter the content number:
+
+To avoid the interactive menu, pass the number to the left of the
+example, as an argument of the function:
+
+``` r
+atc_copy_content(3)  # Copies the `flexdashboard` folder
+```
+
+### Copy all examples
+
+`atc_copy_all_content()` will copy all of the examples. It will as many
+sub-folders as there are examples available.
