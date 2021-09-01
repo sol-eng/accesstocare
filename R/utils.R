@@ -27,8 +27,8 @@ format_currency <- function(x, round_digits = 0) {
 }
 
 
-toc <- function() {
-  re <- readLines("README.Rmd")
+toc <- function(readme_file = "README.Rmd") {
+  re <- readLines(readme_file)
   has_title <- as.logical(lapply(re, function(x) substr(x, 1, 2) == "##"))
   only_titles <- re[has_title]
   titles <- trimws(gsub("#", "", only_titles))

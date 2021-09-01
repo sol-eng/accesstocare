@@ -20,3 +20,11 @@ test_that("Format functions return expected results", {
     "$123"
   )
 })
+
+test_that("TOC works", {
+  expect_silent(
+    toc(system.file(
+      package = "accesstocare", "content", "RMarkdown-html", "access-to-care-rmarkdown.html"
+      ))
+  )
+})
