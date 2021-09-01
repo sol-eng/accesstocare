@@ -156,6 +156,18 @@ and the other for the low number.</p></td>
     </table>
 
 
+    <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
+    <pre class="examples"><div class='input'><span class='kw'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='op'>(</span><span class='va'><a href='https://sol-eng.github.io/accesstocare'>accesstocare</a></span><span class='op'>)</span>
+
+<span class='fu'>atc_plot_us_map</span><span class='op'>(</span><span class='op'>)</span>
+</div><div class='img'><img src='atc_plot_us_map-1.png' alt='' width='700' height='433' /></div><div class='input'>
+<span class='fu'>atc_plot_us_map</span><span class='op'>(</span><span class='st'>"below"</span><span class='op'>)</span>
+</div><div class='img'><img src='atc_plot_us_map-2.png' alt='' width='700' height='433' /></div><div class='input'>
+<span class='fu'>atc_plot_us_map</span><span class='op'>(</span>
+  <span class='st'>"hospitals"</span>, 
+  colors <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span><span class='op'>(</span>high <span class='op'>=</span> <span class='st'>"orange"</span>, low <span class='op'>=</span> <span class='st'>"blue"</span><span class='op'>)</span>
+<span class='op'>)</span>
+</div><div class='img'><img src='atc_plot_us_map-3.png' alt='' width='700' height='433' /></div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">

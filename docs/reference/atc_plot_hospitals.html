@@ -157,6 +157,19 @@ expected number of hospitals</p></td>
     </table>
 
 
+    <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
+    <pre class="examples"><div class='input'><span class='kw'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='op'>(</span><span class='va'><a href='https://sol-eng.github.io/accesstocare'>accesstocare</a></span><span class='op'>)</span>
+
+<span class='fu'>atc_plot_hospitals</span><span class='op'>(</span><span class='op'>)</span>
+</div><div class='img'><img src='atc_plot_hospitals-1.png' alt='' width='700' height='433' /></div><div class='input'>
+<span class='fu'>atc_plot_hospitals</span><span class='op'>(</span>show_model_results <span class='op'>=</span> <span class='cn'>TRUE</span><span class='op'>)</span>
+</div><div class='img'><img src='atc_plot_hospitals-2.png' alt='' width='700' height='433' /></div><div class='input'>
+<span class='fu'>atc_plot_hospitals</span><span class='op'>(</span>
+    show_model_results <span class='op'>=</span> <span class='cn'>TRUE</span>,
+    model_colors <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span><span class='op'>(</span>above <span class='op'>=</span> <span class='st'>"green"</span>, below <span class='op'>=</span> <span class='st'>"orange"</span><span class='op'>)</span>
+<span class='op'>)</span>
+</div><div class='img'><img src='atc_plot_hospitals-3.png' alt='' width='700' height='433' /></div><div class='input'>
+</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">

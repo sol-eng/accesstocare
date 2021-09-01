@@ -25,3 +25,15 @@ Creates a hex plot of all the states.  It positions them in a
 relatively close location where they would be in a map.  All of the states
 have the same size Hex, this makes them easy to find and compare to others.
 }
+\examples{
+library(accesstocare)
+
+atc_plot_us_map()
+
+atc_plot_us_map("below")
+
+atc_plot_us_map(
+  "hospitals", 
+  colors = list(high = "orange", low = "blue")
+)
+}

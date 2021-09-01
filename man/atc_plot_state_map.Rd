@@ -34,3 +34,27 @@ Returns a plot with actual shape of the state, and highlights
 each county with a color.  The color will depend on which variable is being
 used to plot.
 }
+\examples{
+library(accesstocare)
+
+atc_plot_state_map()
+
+atc_plot_state_map("New York")
+
+atc_plot_state_map(
+  "New York", 
+  model_colors = list(above = "blue", below = "orange", ok = "white")
+)
+
+atc_plot_state_map(
+  "New York", 
+  variable = "population"
+)
+
+atc_plot_state_map(
+  "New York", 
+  variable = "population",
+  colors = list(low = "orange", high = "blue")
+)
+atc_plot_state_map("New York", top_cities = 6)
+}

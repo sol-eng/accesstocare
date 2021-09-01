@@ -25,3 +25,16 @@ expected number of hospitals}
 Returns a scatter plot comparing Hospital vs Population counts
 in a given county
 }
+\examples{
+library(accesstocare)
+
+atc_plot_hospitals()
+
+atc_plot_hospitals(show_model_results = TRUE)
+
+atc_plot_hospitals(
+    show_model_results = TRUE,
+    model_colors = list(above = "green", below = "orange")
+)
+
+}
