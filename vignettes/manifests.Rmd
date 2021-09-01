@@ -9,7 +9,7 @@ vignette: >
 
 ```{r, include = FALSE}
 knitr::opts_chunk$set(
-  #eval = FALSE,
+  eval = FALSE,
   collapse = TRUE,
   comment = "#>"
 )
@@ -58,6 +58,12 @@ dashboard_path <- path(temp_folder, "flexdashboard")
 dir_tree(dashboard_path)
 ```
 
+```
+/var/folders/l8/v1ym1mc10_b0dftql5wrrm8w0000gn/T/RtmpBkacCE/temp/flexdashboard
+├── access-to-care.Rmd
+└── metadata.yml
+```
+
 The folder contains the example, a `metadata.yml`, and a `.gitignore` file.
 
 Now, we run create the manifest using `atc_write_manifest()`.  The function will automatically identify the primary document, and process the files listed in`.gitignore` file.  
@@ -66,10 +72,29 @@ Now, we run create the manifest using `atc_write_manifest()`.  The function will
 atc_write_manifest(dashboard_path)
 ```
 
+```
+Full path:  /var/folders/l8/v1ym1mc10_b0dftql5wrrm8w0000gn/T/RtmpBkacCE/temp/flexdashboard 
+Application files
+---  access-to-care.Rmd 
+---  metadata.yml 
+Primary file: access-to-care.Rmd 
+Compiling manifest...
+Manifest complete
+
+/var/folders/l8/v1ym1mc10_b0dftql5wrrm8w0000gn/T/RtmpBkacCE/temp/flexdashboard/manifest.json
+```
+
 The `manifest.json` file is now available in the sub-folder.
 
 ```{r}
 dir_tree(dashboard_path)
+```
+
+```
+/var/folders/l8/v1ym1mc10_b0dftql5wrrm8w0000gn/T/RtmpBkacCE/temp/flexdashboard
+├── access-to-care.Rmd
+├── manifest.json
+└── metadata.yml
 ```
 
 ### Batch create all manifests
@@ -87,10 +112,26 @@ atc_write_all_manifests(temp_folder)
 ```{r, echo = FALSE}
 t
 ```
-
-
-```{r}
-dir_tree(temp_folder)
+```
+# A tibble: 16 × 2
+   content              created
+   <chr>                <chr>  
+ 1 RMarkdown-DataPrep   YES    
+ 2 RMarkdown-html       YES    
+ 3 RMarkdown-pdf        YES    
+ 4 RNotebook            YES    
+ 5 connectwidgets       YES    
+ 6 dash                 YES    
+ 7 flexdashboard        YES    
+ 8 htmlwidgets          SKIPPED
+ 9 jupyter              YES    
+10 launcher-programatic YES    
+11 plot                 SKIPPED
+12 plumber-api          YES    
+13 powerpoint           YES    
+14 powerpoint-state     YES    
+15 presentation         YES    
+16 shiny                YES   
 ```
 
 ```{r, include = FALSE}
