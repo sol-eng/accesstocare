@@ -58,9 +58,10 @@ print.metadata_list <- function(x, ...) {
 #' @param content_no Select which content folder to copy
 #' @param silent Send updates to the console
 #' @export
-atc_package_copy_content <- function(target_folder = here::here(),
-                                     silent = FALSE,
-                                     content_no = NULL) {
+atc_package_copy_content <- function(content_no = NULL, 
+                                     target_folder = here::here(),
+                                     silent = FALSE
+                                     ) {
   ac <- atc_package_content()
   
   copt <- length(ac) + 1
@@ -89,8 +90,8 @@ atc_package_copy_content <- function(target_folder = here::here(),
 #' @rdname atc_package_copy_content
 #' @export
 atc_package_copy_all_content <- function(target_folder = here::here(),
-                                         silent = FALSE,
-                                         content_no = NULL) {
+                                         silent = FALSE
+                                         ) {
   full_file_copy(
     system.file(package = "accesstocare", "content"),
     target_folder,

@@ -13,7 +13,7 @@ app = dash.Dash(__name__, external_stylesheets=["dashboard"])
 all_states = ["AL", "MS", "CA", "NY", "SC", "CO", "VA"]
 
 app.layout = html.Div(children=[
-    html.H1(children= ["Access to Hospital Care", html.Img(src="assets/RStudio1.png")]),
+    html.H1(children= ["Access to Hospital Care"]),
 
     dcc.Dropdown(
         id="state",
