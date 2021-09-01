@@ -106,7 +106,7 @@
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://sol-eng.github.io/accesstocare">accesstocare</a></span><span class="op">)</span>
 <span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="http://fs.r-lib.org">fs</a></span><span class="op">)</span></code></pre></div>
-<p>All of the examples are copied into a temporary folder</p>
+<p>For the usage examples, we will copy all of the <code>accesstocare</code> examples into a temporary folder.</p>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">temp_folder</span> <span class="op">&lt;-</span> <span class="fu"><a href="http://fs.r-lib.org/reference/path.html">path</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/tempfile.html">tempdir</a></span><span class="op">(</span><span class="op">)</span>, <span class="st">"temp"</span><span class="op">)</span>
 
@@ -114,26 +114,30 @@
 <div id="single-example" class="section level3">
 <h3 class="hasAnchor">
 <a href="#single-example" class="anchor"></a>Single example</h3>
+<p>To show how to create the manifest of a single example, we will point to the “flexdashboard” sub-folder. The <code><a href="../reference/atc_copy_content.html">atc_copy_all_content()</a></code> command created that sub-folder.</p>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">dashboard_path</span> <span class="op">&lt;-</span> <span class="fu"><a href="http://fs.r-lib.org/reference/path.html">path</a></span><span class="op">(</span><span class="va">temp_folder</span>, <span class="st">"flexdashboard"</span><span class="op">)</span>
 
 <span class="fu"><a href="http://fs.r-lib.org/reference/dir_tree.html">dir_tree</a></span><span class="op">(</span><span class="va">dashboard_path</span><span class="op">)</span>
-<span class="co">#&gt; /var/folders/l8/v1ym1mc10_b0dftql5wrrm8w0000gn/T/RtmpiDOxMH/temp/flexdashboard</span>
+<span class="co">#&gt; /var/folders/l8/v1ym1mc10_b0dftql5wrrm8w0000gn/T/RtmpyQqfMU/temp/flexdashboard</span>
 <span class="co">#&gt; ├── access-to-care.Rmd</span>
 <span class="co">#&gt; └── metadata.yml</span></code></pre></div>
+<p>The folder contains the example, a <code>metadata.yml</code>, and a <code>.gitignore</code> file.</p>
+<p>Now, we run create the manifest using <code><a href="../reference/atc_write_manifest.html">atc_write_manifest()</a></code>. The function will automatically identify the primary document, and process the files listed in<code>.gitignore</code> file.</p>
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="../reference/atc_write_manifest.html">atc_write_manifest</a></span><span class="op">(</span><span class="va">dashboard_path</span><span class="op">)</span>
-<span class="co">#&gt; Full path:  /var/folders/l8/v1ym1mc10_b0dftql5wrrm8w0000gn/T/RtmpiDOxMH/temp/flexdashboard </span>
+<span class="co">#&gt; Full path:  /var/folders/l8/v1ym1mc10_b0dftql5wrrm8w0000gn/T/RtmpyQqfMU/temp/flexdashboard </span>
 <span class="co">#&gt; Application files</span>
 <span class="co">#&gt; ---  access-to-care.Rmd </span>
 <span class="co">#&gt; ---  metadata.yml </span>
 <span class="co">#&gt; Primary file: access-to-care.Rmd </span>
 <span class="co">#&gt; Compiling manifest...</span>
 <span class="co">#&gt; Manifest complete</span>
-<span class="co">#&gt; /var/folders/l8/v1ym1mc10_b0dftql5wrrm8w0000gn/T/RtmpiDOxMH/temp/flexdashboard/manifest.json</span></code></pre></div>
+<span class="co">#&gt; /var/folders/l8/v1ym1mc10_b0dftql5wrrm8w0000gn/T/RtmpyQqfMU/temp/flexdashboard/manifest.json</span></code></pre></div>
+<p>The <code>manifest.json</code> file is now available in the sub-folder.</p>
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="http://fs.r-lib.org/reference/dir_tree.html">dir_tree</a></span><span class="op">(</span><span class="va">dashboard_path</span><span class="op">)</span>
-<span class="co">#&gt; /var/folders/l8/v1ym1mc10_b0dftql5wrrm8w0000gn/T/RtmpiDOxMH/temp/flexdashboard</span>
+<span class="co">#&gt; /var/folders/l8/v1ym1mc10_b0dftql5wrrm8w0000gn/T/RtmpyQqfMU/temp/flexdashboard</span>
 <span class="co">#&gt; ├── access-to-care.Rmd</span>
 <span class="co">#&gt; ├── manifest.json</span>
 <span class="co">#&gt; └── metadata.yml</span></code></pre></div>
@@ -141,6 +145,7 @@
 <div id="batch-create-all-manifests" class="section level3">
 <h3 class="hasAnchor">
 <a href="#batch-create-all-manifests" class="anchor"></a>Batch create all manifests</h3>
+<p>To create the manifests for all of the sub-folders, use <code><a href="../reference/atc_write_all_manifests.html">atc_write_all_manifests()</a></code>. This function will silently run the manifest writer for each sub-folder. For those that it fails for, it skips the creation. The function returns a <code>list</code> object with all of the results. Printing the object on the R Console shows which were skipped, and which were created.</p>
 <div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="../reference/atc_write_all_manifests.html">atc_write_all_manifests</a></span><span class="op">(</span><span class="va">temp_folder</span><span class="op">)</span></code></pre></div>
 <pre><code>#&gt; # A tibble: 16 × 2
@@ -164,7 +169,7 @@
 #&gt; 16 shiny                YES</code></pre>
 <div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="http://fs.r-lib.org/reference/dir_tree.html">dir_tree</a></span><span class="op">(</span><span class="va">temp_folder</span><span class="op">)</span>
-<span class="co">#&gt; /var/folders/l8/v1ym1mc10_b0dftql5wrrm8w0000gn/T/RtmpiDOxMH/temp</span>
+<span class="co">#&gt; /var/folders/l8/v1ym1mc10_b0dftql5wrrm8w0000gn/T/RtmpyQqfMU/temp</span>
 <span class="co">#&gt; ├── RMarkdown-DataPrep</span>
 <span class="co">#&gt; │   ├── access-to-care-dataprep.Rmd</span>
 <span class="co">#&gt; │   ├── manifest.json</span>

@@ -3,7 +3,7 @@ pkgdown: 1.6.1
 pkgdown_sha: ~
 articles:
   manifests: manifests.html
-last_built: 2021-09-01T21:57Z
+last_built: 2021-09-01T22:25Z
 urls:
   reference: https://sol-eng.github.io/accesstocare/reference
   article: https://sol-eng.github.io/accesstocare/articles

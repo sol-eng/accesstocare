@@ -39,7 +39,7 @@ library(accesstocare)
 library(fs)
 ```
 
-All of the examples are copied into a temporary folder
+For the usage examples, we will copy all of the `accesstocare` examples into a temporary folder. 
 
 ```{r}
 temp_folder <- path(tempdir(), "temp")
@@ -50,21 +50,31 @@ atc_copy_all_content(temp_folder, silent = TRUE)
 
 ### Single example
 
+To show how to create the manifest of a single example, we will point to the "flexdashboard" sub-folder. The `atc_copy_all_content()` command created that sub-folder. 
+
 ```{r}
 dashboard_path <- path(temp_folder, "flexdashboard")
 
 dir_tree(dashboard_path)
 ```
 
+The folder contains the example, a `metadata.yml`, and a `.gitignore` file.
+
+Now, we run create the manifest using `atc_write_manifest()`.  The function will automatically identify the primary document, and process the files listed in`.gitignore` file.  
+
 ```{r}
 atc_write_manifest(dashboard_path)
 ```
+
+The `manifest.json` file is now available in the sub-folder.
 
 ```{r}
 dir_tree(dashboard_path)
 ```
 
 ### Batch create all manifests
+
+To create the manifests for all of the sub-folders, use `atc_write_all_manifests()`.  This function will silently run the manifest writer for each sub-folder.  For those that it fails for, it skips the creation.  The function returns a `list` object with all of the results.  Printing the object on the R Console shows which were skipped, and which were created. 
 
 ```{r, include = FALSE}
 t <- atc_write_all_manifests(temp_folder)
