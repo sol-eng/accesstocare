@@ -9,7 +9,7 @@ test_that("Content metadata works", {
 test_that("Single content folder is copied", {
   temp_dir <- paste0(tempdir(), "/atc-single")
 
-  atc_package_copy_content(
+  atc_copy_content(
     target_folder = temp_dir,
     silent = TRUE,
     content_no = 1
@@ -26,7 +26,7 @@ test_that("Single content folder is copied", {
 test_that("All content folder is copied", {
   temp_dir <- paste0(tempdir(), "/atc-all")
 
-  atc_package_copy_all_content(
+  atc_copy_all_content(
     target_folder = temp_dir,
     silent = TRUE
   )

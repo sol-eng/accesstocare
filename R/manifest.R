@@ -35,28 +35,15 @@ atc_write_manifest <- function(folder_location,
     app_file_names <- app_file_names[app_file_names != ig[i]]
   }
 
-  if (is.null(primary_document)) {
-    primary_docs <- map(
-      c("*.Rmd", "*.py", "*app.R", "*.ipynb", "*plumber.R"),
-      ~ {
-        dl <- dir_ls(full_path, glob = .x)
-        path_file(dl)
-      }
-    )
-    primary_match <- keep(
-      primary_docs,
-      ~ length(.x) > 0
-    )
-    primary_doc <- ifelse(length(primary_match) > 0, primary_match[[1]], NA)
+  primary_doc <- primary_document
+  
+  if (is.null(primary_doc)) {
+    primary_doc <- primary_docs(full_path)
     if (is.na(primary_doc)) {
       return(NULL)
       if (!silent) cat(red("No identifies primary doc"))
-    }
-    if (length(primary_match) > 1) stop("There are more then one primary doc")
-  } else {
-    primary_doc <- primary_document
+    } 
   }
-
   if (!silent) {
     cat(green("Full path: ", full_path, "\n"))
     cat(red("Application files\n"))
@@ -99,4 +86,23 @@ atc_write_all_manifests <- function(content_folder = ".") {
       )
     }
   )
+}
+
+primary_docs <- function(full_path) {
+  pf <- map(
+    c("*.Rmd", "*.py", "*app.R", "*.ipynb", "*plumber.R"),
+    ~ {
+      dl <- dir_ls(full_path, glob = .x)
+      path_file(dl)
+    }
+  )
+  pd <- keep(
+    pf,
+    ~ length(.x) > 0
+  )
+  if(length(pd) == 0) return(NA)
+  pd <- pd[[1]]
+  if(length(pd) > 1) res <- NA
+  if(length(pd) == 1) res <- pd
+  res
 }

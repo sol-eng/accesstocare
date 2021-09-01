@@ -28,7 +28,8 @@ Imports:
     ggiraph,
     rlang,
     tibble,
-    yaml
+    yaml,
+    rstudioapi
 Suggests: 
     covr,
     testthat (>= 3.0.0)
