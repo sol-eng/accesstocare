@@ -33,8 +33,7 @@ atc_plot_hospitals()
 atc_plot_hospitals(show_model_results = TRUE)
 
 atc_plot_hospitals(
-    show_model_results = TRUE,
-    model_colors = list(above = "green", below = "orange")
+  show_model_results = TRUE,
+  model_colors = list(above = "green", below = "orange")
 )
-
 }

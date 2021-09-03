@@ -33,7 +33,7 @@ atc_plot_us_map()
 atc_plot_us_map("below")
 
 atc_plot_us_map(
-  "hospitals", 
+  "hospitals",
   colors = list(high = "orange", low = "blue")
 )
 }

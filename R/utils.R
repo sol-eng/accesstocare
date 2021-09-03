@@ -41,9 +41,9 @@ toc <- function(readme_file = "README.Rmd") {
     seq_along(titles),
     function(x) {
       pad <- ifelse(substr(only_titles[x], 1, 3) == "###", "    - ", "  - ")
-      paste0(pad, "[", titles[x], "](#",links[x], ")")
+      paste0(pad, "[", titles[x], "](#", links[x], ")")
     }
   )
-  toc_full <- paste(toc_list, collapse = "\n") 
+  toc_full <- paste(toc_list, collapse = "\n")
   cat(toc_full)
 }

@@ -41,7 +41,7 @@ folder_content_metadata <- function(content_location = ".") {
 #' @export
 print.metadata_list <- function(x, ...) {
   cat(bold("No. ", print_w("Name", 25), "Type", "\n"))
-  purrr::iwalk(x, ~ cat(print_w(.y, 4), print_w(.x[[1]], 25),.x[[3]], "\n"))
+  purrr::iwalk(x, ~ cat(print_w(.y, 4), print_w(.x[[1]], 25), .x[[3]], "\n"))
   invisible(x)
 }
 
@@ -49,9 +49,8 @@ print.metadata_list <- function(x, ...) {
 #' @param content_no Select which content folder to copy
 #' @param silent Send updates to the console
 #' @export
-atc_open_content <- function(content_no = NULL, 
-                             silent = TRUE
-) {
+atc_open_content <- function(content_no = NULL,
+                             silent = TRUE) {
   package_copy_content(
     content_no = content_no,
     target_folder = tempdir(),
@@ -59,29 +58,27 @@ atc_open_content <- function(content_no = NULL,
     open = TRUE,
     open_fail = TRUE
   )
-} 
+}
 
 #' Copies the Access To Care examples
 #' @param target_folder A folder location to transfer the examples to
 #' @param content_no Select which content folder to copy
 #' @param silent Send updates to the console
 #' @export
-atc_copy_content <- function(content_no = NULL, 
-                                     target_folder = here::here(),
-                                     silent = FALSE
-                                     ) {
+atc_copy_content <- function(content_no = NULL,
+                             target_folder = here::here(),
+                             silent = FALSE) {
   package_copy_content(
     content_no = content_no,
     target_folder = target_folder,
     silent = silent
   )
-} 
+}
 
 #' @rdname atc_copy_content
 #' @export
 atc_copy_all_content <- function(target_folder = here::here(),
-                                         silent = FALSE
-                                         ) {
+                                 silent = FALSE) {
   full_file_copy(
     system.file(package = "accesstocare", "content"),
     target_folder,
@@ -89,12 +86,11 @@ atc_copy_all_content <- function(target_folder = here::here(),
   )
 }
 
-package_copy_content <- function(content_no = NULL, 
+package_copy_content <- function(content_no = NULL,
                                  target_folder = here::here(),
                                  silent = FALSE,
-                                 open = FALSE, 
-                                 open_fail = FALSE
-) { 
+                                 open = FALSE,
+                                 open_fail = FALSE) {
   ac <- atc_package_content()
   copt <- length(ac) + 1
   if (is.null(content_no)) {
@@ -106,20 +102,22 @@ package_copy_content <- function(content_no = NULL,
       return(NA)
     }
   }
-  if(content_no == copt) return("Cancelled")
-  
+  if (content_no == copt) {
+    return("Cancelled")
+  }
+
   fp <- ac[[content_no]]$full_path
   pd <- primary_docs(fp)
-  
-  if(open_fail && open) {
-    if(is.na(pd)) stop("No primary document identified, copy instead")
+
+  if (open_fail && open) {
+    if (is.na(pd)) stop("No primary document identified, copy instead")
   }
-  
+
   np <- path(target_folder, fp)
-  
+
   full_file_copy(fp, np, silent = silent)
-  
-  if(open) navigateToFile(path(np, pd))
+
+  if (open) navigateToFile(path(np, pd))
 }
 
 print_w <- function(x, size = 10) {

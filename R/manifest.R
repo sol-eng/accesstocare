@@ -36,13 +36,13 @@ atc_write_manifest <- function(folder_location,
   }
 
   primary_doc <- primary_document
-  
+
   if (is.null(primary_doc)) {
     primary_doc <- primary_docs(full_path)
     if (is.na(primary_doc)) {
       return(NULL)
       if (!silent) cat(red("No identifies primary doc"))
-    } 
+    }
   }
   if (!silent) {
     cat(green("Full path: ", full_path, "\n"))
@@ -87,8 +87,8 @@ atc_write_all_manifests <- function(content_folder = ".") {
     }
   )
   tibble(
-    content = map_chr(t, ~.x$content),
-    created = map_chr(t, ~.x$created)
+    content = map_chr(t, ~ .x$content),
+    created = map_chr(t, ~ .x$created)
   )
 }
 
@@ -104,9 +104,11 @@ primary_docs <- function(full_path) {
     pf,
     ~ length(.x) > 0
   )
-  if(length(pd) == 0) return(NA)
+  if (length(pd) == 0) {
+    return(NA)
+  }
   pd <- pd[[1]]
-  if(length(pd) > 1) res <- NA
-  if(length(pd) == 1) res <- pd
+  if (length(pd) > 1) res <- NA
+  if (length(pd) == 1) res <- pd
   res
 }

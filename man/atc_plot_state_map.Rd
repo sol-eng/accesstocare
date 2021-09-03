@@ -42,17 +42,17 @@ atc_plot_state_map()
 atc_plot_state_map("New York")
 
 atc_plot_state_map(
-  "New York", 
+  "New York",
   model_colors = list(above = "blue", below = "orange", ok = "white")
 )
 
 atc_plot_state_map(
-  "New York", 
+  "New York",
   variable = "population"
 )
 
 atc_plot_state_map(
-  "New York", 
+  "New York",
   variable = "population",
   colors = list(low = "orange", high = "blue")
 )

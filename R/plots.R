@@ -9,18 +9,17 @@
 #' at the level of expected hospitals as per the model.
 #' @param show_model_results To highlight which counties are above or below the
 #' expected number of hospitals
-#' @examples 
+#' @examples
 #' library(accesstocare)
-#' 
+#'
 #' atc_plot_hospitals()
-#' 
+#'
 #' atc_plot_hospitals(show_model_results = TRUE)
-#' 
+#'
 #' atc_plot_hospitals(
-#'     show_model_results = TRUE,
-#'     model_colors = list(above = "green", below = "orange")
+#'   show_model_results = TRUE,
+#'   model_colors = list(above = "green", below = "orange")
 #' )
-#' 
 #' @export
 atc_plot_hospitals <- function(population_max = 11000000,
                                model_colors = list(
@@ -105,15 +104,15 @@ atc_plot_hospitals <- function(population_max = 11000000,
 #' is population.
 #' @param colors A list of two colors. One set the value of the high number
 #' and the other for the low number.
-#' @examples 
+#' @examples
 #' library(accesstocare)
-#' 
+#'
 #' atc_plot_us_map()
-#' 
+#'
 #' atc_plot_us_map("below")
-#' 
+#'
 #' atc_plot_us_map(
-#'   "hospitals", 
+#'   "hospitals",
 #'   colors = list(high = "orange", low = "blue")
 #' )
 #' @export
@@ -192,25 +191,25 @@ atc_plot_us_map <- function(variable = c("population", "hospitals", "above", "be
 #' at the level of expected hospitals as per the model.
 #' @param top_cities Plots the most populated cities.  The default to plot the
 #' 3 most populated cities.  To avoid displaying any cities, use 0.
-#' @examples 
+#' @examples
 #' library(accesstocare)
-#' 
+#'
 #' atc_plot_state_map()
-#' 
+#'
 #' atc_plot_state_map("New York")
-#' 
+#'
 #' atc_plot_state_map(
-#'   "New York", 
+#'   "New York",
 #'   model_colors = list(above = "blue", below = "orange", ok = "white")
 #' )
-#' 
+#'
 #' atc_plot_state_map(
-#'   "New York", 
+#'   "New York",
 #'   variable = "population"
 #' )
-#' 
+#'
 #' atc_plot_state_map(
-#'   "New York", 
+#'   "New York",
 #'   variable = "population",
 #'   colors = list(low = "orange", high = "blue")
 #' )

@@ -22,13 +22,12 @@ test_that("Format functions return expected results", {
 })
 
 test_that("TOC works", {
-  
-  readme_rmd <- paste0(tempdir(), "readme.Rmd") 
-  
+  readme_rmd <- paste0(tempdir(), "readme.Rmd")
+
   writeLines("---\n output:github_document\n---\n# header1\n## header 2\n### header 3", readme_rmd)
-  
+
   expect_output(
-    toc(readme_rmd), 
+    toc(readme_rmd),
     "- "
   )
 })
