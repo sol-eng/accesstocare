@@ -33,13 +33,19 @@ library(accesstocare)
 
 ### Usage and options
 
+The output `atc_plot_us_map()` function defaults to highlight the difference in the population count per state:
+
 ```{r}
 atc_plot_us_map()
 ```
 
+To display a different metric, pass the `variable` argument.  This example shows how to plot the number of counties from each state that are undeserved:
+
 ```{r}
 atc_plot_us_map("below")
 ```
+
+The colors for the `hospitals` and `population` variables can be customized: 
 
 ```{r}
 atc_plot_us_map("hospitals", 
@@ -49,6 +55,8 @@ atc_plot_us_map("hospitals",
 
 ### Interactive
 
+To try out the interactive version of the map, use `ggiraph::girafe()`. And pass the map's output as the `ggobj` argument of that function:
+
 ```{r, eval = FALSE}
 ggiraph::girafe(ggobj = atc_plot_us_map())
 ```
@@ -57,13 +65,19 @@ ggiraph::girafe(ggobj = atc_plot_us_map())
 
 ### Usage and options
 
+The output of `atc_plot_state_map()` defaults to displaying the shape of every individual county.  The plot will display if the county has the appropriate number of hospitals, or if it has more, or if it has less than expected, based on linear model boundaries.  
+
 ```{r}
 atc_plot_state_map()
 ```
 
+To view a given state's results, pass the name as the `state` argument of the function:
+
 ```{r}
 atc_plot_state_map("New York")
 ```
+
+The status colors can be customized by passing the `model_color` argument:
 
 ```{r}
 atc_plot_state_map("New York", 
@@ -71,11 +85,15 @@ atc_plot_state_map("New York",
                    )
 ```
 
+The `hospitals`, and `population` variables are also available for plotting.  Pass the `variable` argument to see:
+
 ```{r}
 atc_plot_state_map("New York", 
                    variable = "population"
                    )
 ```
+
+The colors of the continuous variables can also be customized using the `color` argument:
 
 ```{r}
 atc_plot_state_map("New York", 
@@ -84,15 +102,21 @@ atc_plot_state_map("New York",
                    )
 ```
 
+The display of more or less of the most populated cities can be controlled using the `top_cities` argument.  
+
 ```{r}
 atc_plot_state_map("New York", top_cities = 6)
 ```
+
+To get a map of every county in the US, pass `All US` to the `state` argument:
 
 ```{r}
 atc_plot_state_map("All US", top_cities = 0)
 ```
 
 ### Interactive
+
+To try out the interactive version of the map, use `ggiraph::girafe()`. And pass the map's output as the `ggobj` argument of that function:
 
 ```{r, eval = FALSE}
 ggiraph::girafe(ggobj = atc_plot_state_map())
@@ -102,13 +126,19 @@ ggiraph::girafe(ggobj = atc_plot_state_map())
 
 ### Usage and options
 
+The `atc_plot_hospitals()` function displays a scatter plot comparing Hospitals to Population for all the counties in the US.  
+
 ```{r}
 atc_plot_hospitals()
 ```
 
+Overlay the upper and lower bound of the linear model using `show_model_results`: 
+
 ```{r}
 atc_plot_hospitals(show_model_results = TRUE)
 ```
+
+The bound colors can be customized by modifying the `model_colors` argument:
 
 ```{r}
 atc_plot_hospitals(show_model_results = TRUE,
@@ -117,6 +147,8 @@ atc_plot_hospitals(show_model_results = TRUE,
 ```
 
 ### Interactive
+
+To try out the interactive version of the map, use `ggiraph::girafe()`. And pass the map's output as the `ggobj` argument of that function:
 
 ```{r, eval = FALSE}
 ggiraph::girafe(ggobj = atc_plot_hospitals())
