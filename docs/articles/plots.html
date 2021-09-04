@@ -103,12 +103,15 @@
 <div id="usage-and-options" class="section level3">
 <h3 class="hasAnchor">
 <a href="#usage-and-options" class="anchor"></a>Usage and options</h3>
+<p>The output <code><a href="../reference/atc_plot_us_map.html">atc_plot_us_map()</a></code> function defaults to highlight the difference in the population count per state:</p>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="../reference/atc_plot_us_map.html">atc_plot_us_map</a></span><span class="op">(</span><span class="op">)</span></code></pre></div>
 <p><img src="plots_files/figure-html/unnamed-chunk-2-1.png" width="576"></p>
+<p>To display a different metric, pass the <code>variable</code> argument. This example shows how to plot the number of counties from each state that are undeserved:</p>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="../reference/atc_plot_us_map.html">atc_plot_us_map</a></span><span class="op">(</span><span class="st">"below"</span><span class="op">)</span></code></pre></div>
 <p><img src="plots_files/figure-html/unnamed-chunk-3-1.png" width="576"></p>
+<p>The colors for the <code>hospitals</code> and <code>population</code> variables can be customized:</p>
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="../reference/atc_plot_us_map.html">atc_plot_us_map</a></span><span class="op">(</span><span class="st">"hospitals"</span>, 
                 colors <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span>high <span class="op">=</span> <span class="st">"orange"</span>, low <span class="op">=</span> <span class="st">"blue"</span><span class="op">)</span>
@@ -118,6 +121,7 @@
 <div id="interactive" class="section level3">
 <h3 class="hasAnchor">
 <a href="#interactive" class="anchor"></a>Interactive</h3>
+<p>To try out the interactive version of the map, use <code><a href="https://davidgohel.github.io/ggiraph/reference/girafe.html">ggiraph::girafe()</a></code>. And pass the map’s output as the <code>ggobj</code> argument of that function:</p>
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu">ggiraph</span><span class="fu">::</span><span class="fu"><a href="https://davidgohel.github.io/ggiraph/reference/girafe.html">girafe</a></span><span class="op">(</span>ggobj <span class="op">=</span> <span class="fu"><a href="../reference/atc_plot_us_map.html">atc_plot_us_map</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span></code></pre></div>
 </div>
@@ -128,31 +132,38 @@
 <div id="usage-and-options-1" class="section level3">
 <h3 class="hasAnchor">
 <a href="#usage-and-options-1" class="anchor"></a>Usage and options</h3>
+<p>The output of <code><a href="../reference/atc_plot_state_map.html">atc_plot_state_map()</a></code> defaults to displaying the shape of every individual county. The plot will display if the county has the appropriate number of hospitals, or if it has more, or if it has less than expected, based on linear model boundaries.</p>
 <div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="../reference/atc_plot_state_map.html">atc_plot_state_map</a></span><span class="op">(</span><span class="op">)</span></code></pre></div>
 <p><img src="plots_files/figure-html/unnamed-chunk-6-1.png" width="576"></p>
+<p>To view a given state’s results, pass the name as the <code>state</code> argument of the function:</p>
 <div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="../reference/atc_plot_state_map.html">atc_plot_state_map</a></span><span class="op">(</span><span class="st">"New York"</span><span class="op">)</span></code></pre></div>
 <p><img src="plots_files/figure-html/unnamed-chunk-7-1.png" width="576"></p>
+<p>The status colors can be customized by passing the <code>model_color</code> argument:</p>
 <div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="../reference/atc_plot_state_map.html">atc_plot_state_map</a></span><span class="op">(</span><span class="st">"New York"</span>, 
                    model_colors <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span>above <span class="op">=</span> <span class="st">"blue"</span>, below <span class="op">=</span> <span class="st">"orange"</span>, ok <span class="op">=</span> <span class="st">"white"</span><span class="op">)</span>
                    <span class="op">)</span></code></pre></div>
 <p><img src="plots_files/figure-html/unnamed-chunk-8-1.png" width="576"></p>
+<p>The <code>hospitals</code>, and <code>population</code> variables are also available for plotting. Pass the <code>variable</code> argument to see:</p>
 <div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="../reference/atc_plot_state_map.html">atc_plot_state_map</a></span><span class="op">(</span><span class="st">"New York"</span>, 
                    variable <span class="op">=</span> <span class="st">"population"</span>
                    <span class="op">)</span></code></pre></div>
 <p><img src="plots_files/figure-html/unnamed-chunk-9-1.png" width="576"></p>
+<p>The colors of the continuous variables can also be customized using the <code>color</code> argument:</p>
 <div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="../reference/atc_plot_state_map.html">atc_plot_state_map</a></span><span class="op">(</span><span class="st">"New York"</span>, 
                    variable <span class="op">=</span> <span class="st">"population"</span>,
                    colors <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span>low <span class="op">=</span> <span class="st">"orange"</span>, high <span class="op">=</span> <span class="st">"blue"</span><span class="op">)</span>
                    <span class="op">)</span></code></pre></div>
 <p><img src="plots_files/figure-html/unnamed-chunk-10-1.png" width="576"></p>
+<p>The display of more or less of the most populated cities can be controlled using the <code>top_cities</code> argument.</p>
 <div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="../reference/atc_plot_state_map.html">atc_plot_state_map</a></span><span class="op">(</span><span class="st">"New York"</span>, top_cities <span class="op">=</span> <span class="fl">6</span><span class="op">)</span></code></pre></div>
 <p><img src="plots_files/figure-html/unnamed-chunk-11-1.png" width="576"></p>
+<p>To get a map of every county in the US, pass <code>All US</code> to the <code>state</code> argument:</p>
 <div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="../reference/atc_plot_state_map.html">atc_plot_state_map</a></span><span class="op">(</span><span class="st">"All US"</span>, top_cities <span class="op">=</span> <span class="fl">0</span><span class="op">)</span></code></pre></div>
 <p><img src="plots_files/figure-html/unnamed-chunk-12-1.png" width="576"></p>
@@ -160,6 +171,7 @@
 <div id="interactive-1" class="section level3">
 <h3 class="hasAnchor">
 <a href="#interactive-1" class="anchor"></a>Interactive</h3>
+<p>To try out the interactive version of the map, use <code><a href="https://davidgohel.github.io/ggiraph/reference/girafe.html">ggiraph::girafe()</a></code>. And pass the map’s output as the <code>ggobj</code> argument of that function:</p>
 <div class="sourceCode" id="cb13"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu">ggiraph</span><span class="fu">::</span><span class="fu"><a href="https://davidgohel.github.io/ggiraph/reference/girafe.html">girafe</a></span><span class="op">(</span>ggobj <span class="op">=</span> <span class="fu"><a href="../reference/atc_plot_state_map.html">atc_plot_state_map</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span></code></pre></div>
 </div>
@@ -170,12 +182,15 @@
 <div id="usage-and-options-2" class="section level3">
 <h3 class="hasAnchor">
 <a href="#usage-and-options-2" class="anchor"></a>Usage and options</h3>
+<p>The <code><a href="../reference/atc_plot_hospitals.html">atc_plot_hospitals()</a></code> function displays a scatter plot comparing Hospitals to Population for all the counties in the US.</p>
 <div class="sourceCode" id="cb14"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="../reference/atc_plot_hospitals.html">atc_plot_hospitals</a></span><span class="op">(</span><span class="op">)</span></code></pre></div>
 <p><img src="plots_files/figure-html/unnamed-chunk-14-1.png" width="576"></p>
+<p>Overlay the upper and lower bound of the linear model using <code>show_model_results</code>:</p>
 <div class="sourceCode" id="cb15"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="../reference/atc_plot_hospitals.html">atc_plot_hospitals</a></span><span class="op">(</span>show_model_results <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></code></pre></div>
 <p><img src="plots_files/figure-html/unnamed-chunk-15-1.png" width="576"></p>
+<p>The bound colors can be customized by modifying the <code>model_colors</code> argument:</p>
 <div class="sourceCode" id="cb16"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="../reference/atc_plot_hospitals.html">atc_plot_hospitals</a></span><span class="op">(</span>show_model_results <span class="op">=</span> <span class="cn">TRUE</span>,
                    model_colors <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span>above <span class="op">=</span> <span class="st">"green"</span>, below <span class="op">=</span> <span class="st">"orange"</span><span class="op">)</span>
@@ -185,6 +200,7 @@
 <div id="interactive-2" class="section level3">
 <h3 class="hasAnchor">
 <a href="#interactive-2" class="anchor"></a>Interactive</h3>
+<p>To try out the interactive version of the map, use <code><a href="https://davidgohel.github.io/ggiraph/reference/girafe.html">ggiraph::girafe()</a></code>. And pass the map’s output as the <code>ggobj</code> argument of that function:</p>
 <div class="sourceCode" id="cb17"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu">ggiraph</span><span class="fu">::</span><span class="fu"><a href="https://davidgohel.github.io/ggiraph/reference/girafe.html">girafe</a></span><span class="op">(</span>ggobj <span class="op">=</span> <span class="fu"><a href="../reference/atc_plot_hospitals.html">atc_plot_hospitals</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span></code></pre></div>
 </div>

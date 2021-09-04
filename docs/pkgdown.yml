@@ -4,7 +4,7 @@ pkgdown_sha: ~
 articles:
   manifests: manifests.html
   plots: plots.html
-last_built: 2021-09-01T23:50Z
+last_built: 2021-09-04T18:09Z
 urls:
   reference: https://sol-eng.github.io/accesstocare/reference
   article: https://sol-eng.github.io/accesstocare/articles
