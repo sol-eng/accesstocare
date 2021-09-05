@@ -18,6 +18,9 @@ library(purrr)
 library(tidyr)
 library(accesstocare)
 library(usethis)
+library(maptools)
+library(rgdal)
+library(pins)
 ```
 
 ```{r}
@@ -37,7 +40,9 @@ library(purrr)
 library(tidyr)
 library(accesstocare)
 library(usethis)
-
+library(maptools)
+library(rgdal)
+library(pins)
 ```
 
 Data provider: CMS
