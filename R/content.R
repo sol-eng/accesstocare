@@ -107,13 +107,14 @@ package_copy_content <- function(content_no = NULL,
   }
 
   fp <- ac[[content_no]]$full_path
+  acn <- ac[[content_no]]$name
   pd <- primary_docs(fp)
 
   if (open_fail && open) {
     if (is.na(pd)) stop("No primary document identified, copy instead")
   }
 
-  np <- path(target_folder, fp)
+  np <- path(target_folder, acn)
 
   full_file_copy(fp, np, silent = silent)
 
