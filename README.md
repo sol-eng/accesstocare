@@ -48,7 +48,7 @@ the console, or RMarkdown, as a table.
 ``` r
 atc_package_content()
 #> No.  Name                      Type 
-#> 1    connectwidgets            Report 
+#> 1    connectwidgets            Application 
 #> 2    dash                      Dashboard 
 #> 3    flexdashboard             Dashboard 
 #> 4    htmlwidgets               Plot 
@@ -63,7 +63,7 @@ atc_package_content()
 #> 13   RMarkdown-html            Report 
 #> 14   RMarkdown-pdf             Report 
 #> 15   RNotebook                 Notebook 
-#> 16   shiny                     Dashboard
+#> 16   shiny                     Application
 ```
 
 There are three ways to use the examples:
@@ -79,7 +79,7 @@ atc_open_content()
 ```
 
     #> No.  Name                      Type 
-    #> 1    connectwidgets            Report 
+    #> 1    connectwidgets            Application 
     #> 2    dash                      Dashboard 
     #> 3    flexdashboard             Dashboard 
     #> 4    htmlwidgets               Plot 
@@ -94,7 +94,7 @@ atc_open_content()
     #> 13   RMarkdown-html            Report 
     #> 14   RMarkdown-pdf             Report 
     #> 15   RNotebook                 Notebook 
-    #> 16   shiny                     Dashboard
+    #> 16   shiny                     Application
     #> 17   Cancel
     #> Enter the content number:
 
@@ -121,7 +121,7 @@ atc_copy_content()
 ```
 
     #> No.  Name                      Type 
-    #> 1    connectwidgets            Report 
+    #> 1    connectwidgets            Application 
     #> 2    dash                      Dashboard 
     #> 3    flexdashboard             Dashboard 
     #> 4    htmlwidgets               Plot 
@@ -136,7 +136,7 @@ atc_copy_content()
     #> 13   RMarkdown-html            Report 
     #> 14   RMarkdown-pdf             Report 
     #> 15   RNotebook                 Notebook 
-    #> 16   shiny                     Dashboard
+    #> 16   shiny                     Application
     #> 17   Cancel
     #> Enter the content number:
 

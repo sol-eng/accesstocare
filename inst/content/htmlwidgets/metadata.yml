@@ -1,3 +1,4 @@
-title: "Leaflet plot"
-description: "Stand alone leaflet plot"
+title: "Interactive map"
+description: "County level plot"
 type: Plot
+url: "htmlwidgets"
