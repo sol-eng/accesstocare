@@ -1,0 +1,132 @@
+---
+title: "Access to Care - Dashboard"
+format: dashboard
+server: shiny
+---
+
+
+```{r}
+#| context: setup
+library(accesstocare)
+library(ggplot2)
+library(ggiraph)
+library(usmap)
+library(dplyr)
+library(shiny)
+library(gt)
+library(bslib)
+library(bsicons)
+
+state_list <- c("All US", us_states$state_name)
+
+us_choices <- c("Above model", "Below model", "No. of Hospitals", "Population")
+state_choices <- c( "Model", "No. of Hospitals", "Population")
+
+```
+
+## Row {height=30%}
+
+```{r}
+selectInput(
+  inputId = "state",
+  label = "Select a State:",
+  choices = state_list,
+  selected = "All US", 
+  selectize = FALSE
+  )
+```
+
+```{r}
+value_box(
+  title = "Population",
+  value = textOutput("population"),
+  showcase = bs_icon("person"),
+  theme = "blue"
+)
+```
+
+```{r}
+value_box(
+  title = "Hospitals",
+  value = textOutput("hospitals"),
+  showcase = bs_icon("hospital"),
+  theme = "teal"
+)
+```
+
+```{r}
+value_box(
+  title = "Counties",
+  value = textOutput("counties"),
+  showcase = bs_icon("geo-alt"),
+  theme = "green"
+)
+```
+
+```{r}
+value_box(
+  title = "Underserved",
+  value = textOutput("underserved"),
+  showcase = bs_icon("clipboard2-pulse"),
+  theme = "pink"
+)
+```
+
+
+
+## Row {height=70%}
+
+
+```{r}
+#| context: server
+#| 
+sel_state <- reactive({
+  if(input$state == "All US") {
+    us_states
+  } else {
+    us_states %>% 
+      filter(state_name == input$state) 
+  }
+})
+
+sel_county <- reactive({
+  if(input$state == "All US") {
+    us_counties
+  } else {
+    us_counties %>% 
+      filter(state_name == input$state) 
+  }
+})
+
+
+output$population <- renderText({
+  sel_state() %>% 
+    summarise(sum(population)) %>% 
+    pull() %>%
+    format_number()
+    })
+
+
+output$hospitals <- renderText({
+  sel_state() %>%
+    summarise(sum(hospitals)) %>%
+    pull() |> 
+    format_number() 
+  })
+
+output$counties <- renderText({
+  sel_county() %>%
+    count() %>% 
+    pull() %>% 
+    format_number() 
+  })
+
+output$underserved <- renderText({
+  sel_county() %>%
+    filter(pred_status == "below") %>% 
+    count() %>% 
+    pull() 
+  })
+
+```
+
