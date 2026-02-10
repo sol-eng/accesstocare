@@ -24,6 +24,8 @@ state_choices <- c( "Model", "No. of Hospitals", "Population")
 
 ```
 
+# State info
+
 ## Row {height=30%}
 
 ```{r}
@@ -72,10 +74,31 @@ value_box(
 )
 ```
 
-
-
 ## Row {height=70%}
 
+### {.sidebar}
+
+```{r}
+actionButton(
+  inputId = "us",
+  label = "All US"
+  )
+
+radioButtons(
+  inputId = "view",
+  label = "Select a view:",
+  choices = us_choices, 
+  inline = TRUE
+  )
+```
+
+### Column
+
+
+```{r}
+
+girafeOutput("usmap")
+```
 
 ```{r}
 #| context: server
@@ -127,6 +150,51 @@ output$underserved <- renderText({
     count() %>% 
     pull() 
   })
+
+output$usmap <- renderGirafe({
+  
+  x_width <- 10
+  
+  vr <- "population"
+  
+  if(input$view == "Population") vr <- "population"
+  if(input$view == "No. of Hospitals") vr <- "hospitals"
+  if(input$view == "Above model") vr <- "above"
+  if(input$view == "Below model") vr <- "below"
+  if(input$view == "Model") vr <- "model"
+    
+  if(input$state == "All US") {
+    gp <- atc_plot_us_map(vr)
+  } else {
+    
+    
+    # x_width <- usmap::us_map("counties") %>% 
+    #   filter(full == input$state) %>% 
+    #   summarise(
+    #     max_x = max(x), min_x = min(x),
+    #     max_y = max(y), min_y = min(y)
+    #   ) %>% 
+    #   mutate(
+    #     x_size = max_x - min_x,
+    #     y_size = max_y - min_y,
+    #     xy = x_size/y_size * 10
+    #   ) %>% 
+    #   pull(xy)
+    
+    gp <- atc_plot_state_map(input$state, vr)
+  }
+  
+  girafe(
+    ggobj = gp,
+    width_svg = x_width, 
+    height_svg = 5, 
+    options = list(
+      opts_selection(type = "single", only_shiny = FALSE),
+      opts_tooltip(opacity = 0.7), 
+      opts_sizing(FALSE)
+      )
+    )  
+})
 
 ```
 

@@ -271,7 +271,7 @@ atc_plot_state_map <- function(state = "Florida",
     geom_polygon_interactive(
       aes(x, y, group = group, fill = fill, data_id = fips, tooltip = tooltip),
       color = "#cccccc",
-      size = 0.3,
+      #size = 0.3,
       alpha = 0.6
     ) +
     labs(fill = fill_lab) +
