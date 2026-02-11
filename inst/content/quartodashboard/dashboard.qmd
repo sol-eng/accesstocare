@@ -174,7 +174,6 @@ sel_county <- reactive({
   }
 })
 
-
 output$population <- renderText({
   sel_state() |>
     summarise(sum(population)) |>
@@ -206,9 +205,7 @@ output$underserved <- renderText({
 
 output$usmap <- renderGirafe({
   y_size <- 5
-
   vr <- "population"
-
   if (input$view == "Population") vr <- "population"
   if (input$view == "No. of Hospitals") vr <- "hospitals"
   if (input$view == "Above model") vr <- "above"
@@ -228,8 +225,8 @@ output$usmap <- renderGirafe({
         x_size = max_x - min_x,
         y_size = max_y - min_y,
         xy = x_size / y_size * 8
-      ) 
-    y_size <-  props$y_size / props$x_size * 10
+      )
+    y_size <- props$y_size / props$x_size * 10
     y_size <- ifelse(y_size > 5, 5, y_size)
     gp <- atc_plot_state_map(input$state, vr)
   }
@@ -245,15 +242,20 @@ output$usmap <- renderGirafe({
   )
 })
 
-observeEvent(input$usmap_selected, {
-  sel_map <- input$usmap_selected
-  if (any(sel_map == state_list)) {
-    updateSelectInput(session, "state", selected = sel_map)
+observeEvent(input$state, {
+  if (input$state != "All US") {
     updateRadioButtons(session, "view",
       choices = state_choices,
       selected = "Model",
       inline = TRUE
     )
+  }
+})
+
+observeEvent(input$usmap_selected, {
+  sel_map <- input$usmap_selected
+  if (any(sel_map == state_list)) {
+    updateSelectInput(session, "state", selected = sel_map)
   } else {
     sel_county <- us_hospitals |>
       filter(fips == sel_map)
@@ -272,7 +274,7 @@ observeEvent(input$usmap_selected, {
             city = md("**City**")
           ) |>
           tab_options(table.font.size = 14),
-        easyClose = TRUE, 
+        easyClose = TRUE,
         fade = TRUE,
         size = "l"
       )
