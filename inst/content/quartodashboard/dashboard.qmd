@@ -205,7 +205,7 @@ output$underserved <- renderText({
 })
 
 output$usmap <- renderGirafe({
-  x_width <- 10
+  y_size <- 5
 
   vr <- "population"
 
@@ -218,8 +218,8 @@ output$usmap <- renderGirafe({
   if (input$state == "All US") {
     gp <- atc_plot_us_map(vr)
   } else {
-    x_width <- us_atc_county_polygons |>
-      filter(full == input$state) |>
+    props <- us_atc_county_polygons |>
+      filter(state_name == input$state) |>
       summarise(
         max_x = max(x), min_x = min(x),
         max_y = max(y), min_y = min(y)
@@ -228,16 +228,15 @@ output$usmap <- renderGirafe({
         x_size = max_x - min_x,
         y_size = max_y - min_y,
         xy = x_size / y_size * 8
-      ) |>
-      pull(xy)
-
+      ) 
+    y_size <-  props$y_size / props$x_size * 10
+    y_size <- ifelse(y_size > 5, 5, y_size)
     gp <- atc_plot_state_map(input$state, vr)
   }
 
   girafe(
     ggobj = gp,
-    width_svg = x_width,
-    height_svg = 5,
+    height_svg = y_size,
     options = list(
       opts_selection(type = "single", only_shiny = FALSE),
       opts_tooltip(opacity = 0.7),
