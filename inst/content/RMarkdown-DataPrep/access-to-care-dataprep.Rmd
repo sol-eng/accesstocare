@@ -379,12 +379,13 @@ st_locations_list <- list(
   list(state = "VT", x = 3.5, y = 7.5),
   list(state = "ME", x = 5, y = 9),
   list(state = "AK", x = -5, y = 9),
-  list(state = "HI", x = -5, y = -1.5)
+  list(state = "HI", x = -5, y = -1.5),
+  list(state = "PR", x = 4.5, y = -1.5)
 )
 
 us_hex_positions <- st_locations_list %>% 
   map_dfr(~.x) %>% 
-  left_join(states, by = "state")
+  left_join(states_tbl, by = "state")
 
 us_hex_polygons <- map_dfr(
   st_locations_list,
