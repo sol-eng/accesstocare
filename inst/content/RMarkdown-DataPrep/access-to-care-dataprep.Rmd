@@ -3,6 +3,8 @@ title: "Access to Care Data Preparation"
 output: html_document
 ---
 
+## Hospital and Census data
+
 
 ```{r setup, include = FALSE}
 library(tidyverse)
@@ -32,7 +34,7 @@ cms <- read_csv(
 
 colnames(cms) <- str_to_snake(names(cms))
 
-cms_raw_data <- cms |> 
+new_cms <- cms |> 
   rename(
     phone_number = telephone_number,
     city = city_town,
@@ -55,129 +57,206 @@ cms_raw_data <- cms |>
       county_name == "SAN GERMAN" ~ "SAN GERMÁN",
       county_name == "BAYAMON" ~ "BAYAMÓN",
       county_name == "MANATI" ~ "MANATÍ", 
+      county_name == "NORTHWEST ARTIC BOROUGH" ~ "NORTHWEST ARCTIC BOROUGH",
       .default = county_name
     )
   ) |> 
-  filter(state != "VI", state != "AS", state != "GU", state != "MP")
+  filter(state != "VI", state != "AS", state != "GU", state != "MP") |> 
+  filter(hospital_type != "Psychiatric")
+  
+
+# Updates to CT county names
+
+#https://libguides.ctstatelibrary.org/regionalplanning/maps
+new_ct <- "Capitol | Andover, Avon, Berlin, Bloomfield, Bolton, Canton, Columbia,
+Coventry, East Granby, East Hartford, East Windsor, Ellington, Enfield, Farmington, 
+Glastonbury, Granby, Hartford, Hebron, Manchester, Mansfield, Marlborough, New Britain, 
+Newington, Plainville, Rocky Hill, Simsbury, Somers, South Windsor, Southington, Stafford, 
+Suffield, Tolland, Vernon, West Hartford, Wethersfield, Willington, Windsor, Windsor Locks
+| Greater Bridgeport |	Bridgeport, Easton, Fairfield, Monroe, Stratford, Trumbull
+| Lower CT River| Valley	Chester, Clinton, Cromwell, Deep River, Durham, East Haddam, 
+East Hampton, Essex, Haddam, Killingworth, Lyme, Middlefield, Middletown, Old Lyme, 
+Old Saybrook, Portland, Westbrook 
+| Naugatuck Valley |	Ansonia, Beacon Falls, Bethlehem, Bristol, Cheshire, Derby, 
+Middlebury, Naugatuck, Oxford, Plymouth, Prospect, Seymour, Shelton, Southbury, 
+Thomaston, Waterbury, Watertown, Wolcott, Woodbury
+| Northeast CT |	Ashford, Brooklyn, Canterbury, Chaplin, Eastford, Hampton, 
+Killingly, Plainfield, Pomfret, Putnam, Scotland, Sterling, Thompson, Union, 
+Voluntown, Woodstock 
+| Northwest Hills	| Barkhamsted, Burlington, Canaan, Colebrook, Cornwall, Goshen, 
+Hartland, Harwinton, Kent, Litchfield, Morris, New Hartford, Norfolk, North Canaan, 
+Roxbury, Salisbury, Sharon, Torrington, Warren, Washington, Winchester
+| South Central |	Bethany, Branford, East Haven, Guilford, Hamden, Madison, 
+Meriden, Milford, New Haven, North Branford, North Haven, Orange, Wallingford, 
+West Haven, Woodbridge
+| Southeastern CT	| Bozrah, Colchester, East Lyme, Franklin, Griswold, Groton, 
+Lebanon, Ledyard, Lisbon, Montville, New London, North Stonington, Norwich, 
+Preston, Salem, Sprague, Stonington, Waterford, Windham
+| Western CT	|Bethel, Bridgewater, Brookfield, Danbury, Darien, Greenwich, 
+New Canaan, New Fairfield, New Milford, Newtown, Norwalk, Redding, Ridgefield, 
+Sherman, Stamford, Weston, Westport, Wilton"
+
+ct_lines <- new_ct |> 
+  str_split("\\|") |> 
+  unlist() |> 
+  str_trim() |> 
+  str_remove_all("\\t")
+sel <-c(1,3,5,7,9,11,13,15,17)
+
+ct_counties <- ct_lines[sel] |> 
+  str_replace("CT", "Connecticut") 
+
+ct_counties[ct_counties == "Lower Connecticut River"] <- "Lower Connecticut River Valley" 
+ct_counties[ct_counties == "Northeast Connecticut"] <- "Northeastern Connecticut"  
+ct_counties[ct_counties == "South Central"] <- "South Central Connecticut"
+
+ct_towns <- ct_lines[sel + 1] |> 
+  str_split(",") |> 
+  set_names(ct_counties)
+
+new_ct <- ct_towns |> 
+  imap(\(x, y) tibble(county = y, city_name = x)) |> 
+  bind_rows() |> 
+  mutate(city_name = str_trim(city_name)) |> 
+  mutate(
+    city = str_to_upper(city_name),
+    ct_county = str_to_upper(county)
+    ) |> 
+  select(city, ct_county) |> 
+  mutate(state = "CT")
+
+cms_raw_data <- new_cms |> 
+  mutate(city = case_when(
+    city == "WILLIMANTIC" & state == "CT" ~  "WINDHAM",
+    city == "STAFFORD SPRINGS" & state == "CT" ~  "STAFFORD",
+    city == "MANSFIELD CENTER" & state == "CT" ~ "MANSFIELD",
+    .default = city
+  )) |> 
+  left_join(new_ct, by = c("state", "city")) |> 
+  mutate(county_name = ifelse(!is.na(ct_county), ct_county, county_name)) |> 
+  select(-ct_county)
 
 usethis::use_data(cms_raw_data, overwrite = TRUE)
 ```
 
-Prepares the CMS data by removing Psychiatric hospitals, and thos from states not included in the FIPS files.
+Quick function to create a consistent match key for the county names
 
 ```{r}
-hospital_tbl <- cms_raw_data %>% 
-  filter(
-    hospital_type != "Psychiatric", 
-    state != "PR", state != "VI", 
-    state != "AS", state != "GU",  
-    state != "MP"
-    ) %>% 
-  select(
-    facility_id, 
-    facility_name, 
-    address, 
-    city, 
-    state, 
-    zip_code,
-    county_name
-    ) %>% 
-  mutate(county_name = str_to_upper(county_name)) %>% 
-  group_by(address, city, state, zip_code, county_name) %>% 
-  summarise(
-    facility_id = first(facility_id),
-    facility_name = first(facility_name)
-    ) %>% 
-  select(contains("facility"), everything()) %>% 
-  arrange(state, city, address, facility_name) %>% 
-  ungroup() %>% 
-  mutate(
-    county_name = str_to_upper(county_name),
-    county_name = str_remove(
-      county_name, 
-      " MUNICIPALITY| CENSUS AREA| COUNTY| PARISH| CITY AND| BOROUGH"
-      ),
-    county_name = str_remove(county_name, "BOROUGH"),
-    county_name = str_replace(county_name, "ST. ", "SAINT "),
-    county_name = str_replace(county_name, "STE. ", "SAINTE "),
-    county_name = str_replace(county_name, "-", " "),
-    county_name = case_when(
-      state == "AL" & county_name == "NEW YORK" ~ "CHAMBERS",
-      state == "AZ" & county_name == "DUPAGE" ~ "MARICOPA",
-      state == "IN" & county_name == "ST JOSEPH" ~ "SAINT JOSEPH",
-      state == "VA" & county_name == "SALEM" ~ "SALEM CITY",
-      TRUE ~ county_name
-    ),
-    county_name = str_trim(county_name),
-    county_name = str_replace_all(county_name, " ", ""),
-    county_name = str_replace_all(county_name, "'", "")
-  )
+create_match_key <- function(x) {
+  x |> 
+    mutate(match_key = county_name) |> 
+    mutate(match_key = str_to_upper(match_key)) |> 
+    mutate(match_key = str_remove(match_key, "BOROUGH")) |> 
+    mutate(match_key = str_remove(match_key, "CENSUS AREA")) |> 
+    mutate(match_key = str_remove(match_key, "MUNICIPALITY")) |> 
+    mutate(match_key = str_remove(match_key, "PARISH")) |> 
+    mutate(match_key = str_remove(match_key, "COUNTY")) |> 
+    mutate(match_key = str_remove(match_key, "MUNICIPIO")) |> 
+    mutate(match_key = str_remove(match_key, "PLANNING REGION")) |> 
+    mutate(match_key = str_remove(match_key, "BOROUH")) |> 
+    mutate(match_key = str_remove(match_key, "CITY AND")) |> 
+    mutate(match_key = str_remove_all(match_key, "'")) |> 
+    mutate(match_key = str_remove_all(match_key, " ")) |> 
+    mutate(match_key = str_remove_all(match_key, "\\.")) |> 
+    mutate(match_key = str_trim(match_key)) |> 
+    mutate(match_key = paste0(state, "-", match_key)) 
+}
 ```
 
-Uses the `usmap` data to retrieve the FIPS code for each county.  Performs close to the same transformations to the county names to produce the matches
+
+Uses the `usmap` data to retrieve the FIPS code for each county.  Performs close 
+to the same transformations to the county names to produce the matches
 
 ```{r}
-states <- usmap::statepop %>% 
-  select(state = abbr, state_name = full)
-
-county_list <- countypop %>% 
+county_fips<- usmap::countypop |> 
   select(
     fips,
     state = abbr,
     county_name = county
-  ) %>% 
+  ) |> 
   mutate(
-    county_name = str_to_upper(county_name),
-    county_name = str_remove(
-      county_name, 
-      " MUNICIPALITY| CENSUS AREA| COUNTY| PARISH| CITY AND| BOROUGH"
-      ),
-    county_name = str_remove(county_name, "BOROUGH"),
-    county_name = str_replace(county_name, "ST. ", "SAINT "),
-    county_name = str_replace(county_name, "STE. ", "SAINTE "),
-    county_name = str_replace(county_name, "-", " "),
-    county_name = str_trim(county_name),
-    county_name = str_replace_all(county_name, " ", ""),
-    county_name = str_replace_all(county_name, "'", ""),
-    county_name = str_replace_all(county_name, "Ð", "N")
-  )
+    county_name = case_when(
+      fips == 35013 ~ "	DOÑA ANA",
+      .default = county_name
+    )
+  ) |> 
+  create_match_key() |> 
+  select(fips, match_key)
+
+county_fips
 ```
 
-Confirms that there are no unmtached counties
+Creates state and state abbreviation table
 
 ```{r}
-hospital_counties <- hospital_tbl %>% 
-  group_by(state, county_name) %>% 
-  summarise() %>% 
-  ungroup() 
+states_tbl <- tibble(
+  state = c(state.abb, "PR", "DC"),
+  state_name = c(state.name, "Puerto Rico", "District of Columbia")
+)
+states_tbl
+```
 
-hospital_counties %>% 
-  left_join(county_list, by = c("state", "county_name")) %>% 
+
+Confirms that there are no un-matched counties
+
+```{r}
+cms_raw_data |> 
+  summarize(.by = c(state, county_name)) |> 
+  create_match_key() |> 
+  left_join(county_fips, by = "match_key") |> 
   filter(is.na(fips))
 ```
 
 Prepares the `us_hospitals` data set.
 
 ```{r}
-county_tbl <- countypop %>% 
+us_hospitals <- cms_raw_data |> 
+  create_match_key() |> 
+  left_join(county_fips, by = "match_key") |> 
+  left_join(states_tbl, by = "state") |> 
   select(
-    fips, 
-    state = abbr, 
-    county_name = county, 
-    population = pop_2015
+    facility_id, facility_name, address, city, 
+    zip_code, fips, state, county_name, state_name
+    ) |> 
+  arrange(state, county_name)
+```
+
+Census data for year 2024
+
+```{r}
+census_us <- read_xlsx(here::here("co-est2024-pop.xlsx"), range = "A5:G3149") |> 
+  select(c(1,7)) |> 
+  rename(county = `United States`, population = `340110988`) |> 
+  separate_wider_delim(county, ",", names = c("county", "state_name")) |> 
+  mutate(
+    state_name = str_trim(state_name), 
+    county = str_remove_all(county, "\\.")
     )
 
-us_hospitals <- hospital_tbl %>% 
-  left_join(county_list, by = c("state", "county_name")) %>% 
-  select(-county_name, -state) %>% 
-  left_join(county_tbl, by = c("fips")) %>% 
+census_pr <- read_xlsx(here::here("prm-est2024-pop.xlsx"), range = "A5:G83") |> 
+  select(c(1,7)) |> 
+  rename(county = `Puerto Rico`, population = `3203295`) |> 
+  separate_wider_delim(county, ",", names = c("county", "state_name")) |> 
   mutate(
-    county_name = str_to_upper(county_name),
-    city = str_to_upper(city)
-    ) %>% 
-  select(-population) %>% 
-  left_join(states, by = "state")
+    state_name = str_trim(state_name), 
+    county = str_remove_all(county, "\\.")
+  )
+
+county_tbl <- census_us |> 
+  bind_rows(census_pr) |> 
+  left_join(select(us_states, state_name, state), by = "state_name") |> 
+  mutate(state = ifelse(state_name == "Puerto Rico", "PR", state)) |> 
+  rename(county_name = county) |> 
+  arrange(state, county_name) |> 
+  create_match_key() |> 
+  left_join(county_fips, by = "match_key") |> 
+  select(-match_key) |> 
+  select(fips, state, state_name, county_name, population) 
+
+county_tbl
 ```
+
+
 
 Prepares data for the model, and produces the `us_model` variable.
 
@@ -223,7 +302,7 @@ us_counties <- cnt_hosp2 %>%
       TRUE ~ "ok"
     )
   ) %>% 
-  left_join(states, by = "state")
+  left_join(states_tbl, by = "state")
 
 ```
 
@@ -239,9 +318,10 @@ us_states <- us_counties %>%
     per_person = round(population / hospitals),
     per_person_quartile = ntile(per_person, 4)
   ) %>% 
-  left_join(states, by = "state")
+  left_join(states_tbl, by = "state")
 ```
 
+## Hex map
 
 ```{r}
 library(hexbin)
