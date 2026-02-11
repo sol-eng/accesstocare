@@ -272,7 +272,7 @@ cnt_hosp2 <- cnt_hosp |>
 
 us_model <- cnt_hosp2 |> 
   sample_frac(0.3) |> 
-  lm(hospitals ~ population, data = .) 
+  lm(hospitals ~ population, data = _) 
 
 preds <- predict(
   us_model, 
@@ -427,8 +427,7 @@ us_atc_state_polygons <- us_states |>
 
 ```{r}
 library(sf)
-county_map <- usmap::us_map("county") |> 
-  filter(abbr == "AK")
+county_map <- usmap::us_map("county") 
 
 coord_map <- NULL
 for(i in seq_len(nrow(county_map))){
@@ -451,16 +450,14 @@ coord_map <- coord_map |>
     y = Y,
     piece = L2
     ) |> 
-  select(x, y, hole, piece, group)
+  select(fips, x, y, hole, piece, group)
 
 
-#us_atc_county_polygons <- us_counties |>   left_join(county_map, by = "fips") 
-
-ggplot(data = coord_map) +
-  geom_polygon(aes(x = x, y = y, group = group))
+us_atc_county_polygons <- us_counties |>   
+  left_join(coord_map, by = "fips") 
 ```
 
-```{r}
+```{r, eval = FALSE}
 us_large_cities <- maps::us.cities |> 
   select(long, lat, everything()) |> 
   usmap::usmap_transform() |> 
@@ -494,7 +491,7 @@ palette_atc <- list(
 us_atc_model <- us_model 
 ```
 
-```{r}
+```{r, eval = FALSE}
 if(Sys.getenv("R_CONFIG_ACTIVE") == "rsconnect") {
   boardname <- "rsconnect"
   board_register_rsconnect(
