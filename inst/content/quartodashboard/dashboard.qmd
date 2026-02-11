@@ -19,7 +19,7 @@ library(bsicons)
 
 state_list <- c("All US", us_states$state_name)
 
-us_choices <- c("Above model", "Below model", "No. of Hospitals", "Population")
+us_choices <- c("Population", "No. of Hospitals", "Below model", "Above model")
 state_choices <- c( "Model", "No. of Hospitals", "Population")
 
 ```
@@ -28,7 +28,7 @@ state_choices <- c( "Model", "No. of Hospitals", "Population")
 
 ## Row {height=20%}
 
-### Column {width=20%}
+### Column
 
 ```{r}
 selectInput(
@@ -45,40 +45,49 @@ selectInput(
 ```{r}
 showcase_vals <- showcase_bottom(height = "50%", max_height = "50%")
 
-vbs <- list(
-  value_box(
-    title = "Population",
-    value = textOutput("population"),
-    showcase = bs_icon("person"), 
-    showcase_layout = showcase_vals,
-    theme = "blue"
-  ),
-  value_box(
-    title = "Hospitals",
-    value = textOutput("hospitals"),
-    showcase = bs_icon("hospital"),
-    showcase_layout = showcase_vals,
-    theme = "teal"
-  ),
-  value_box(
-    title = "Counties",
-    value = textOutput("counties"),
-    showcase = bs_icon("geo-alt"),
-    showcase_layout = showcase_vals,
-    theme = "green"
-  ),
-  value_box(
-    title = "Underserved",
-    value = textOutput("underserved"),
-    showcase = bs_icon("clipboard2-pulse"),
-    showcase_layout = showcase_vals,
-    theme = "pink"
-  )
+value_box(
+  title = "Population",
+  value = textOutput("population"),
+  showcase = bs_icon("person"),
+  showcase_layout = showcase_vals,
+  theme = "blue"
 )
 
-layout_columns(
-  !!!vbs, 
-  fill = TRUE
+```
+
+### Column
+
+```{r}
+value_box(
+  title = "Hospitals",
+  value = textOutput("hospitals"),
+  showcase = bs_icon("hospital"),
+  showcase_layout = showcase_vals,
+  theme = "teal"
+)
+```
+
+### Column
+
+```{r}
+value_box(
+  title = "Counties",
+  value = textOutput("counties"),
+  showcase = bs_icon("geo-alt"),
+  showcase_layout = showcase_vals,
+  theme = "green"
+)
+```
+
+### Column
+
+```{r}
+value_box(
+  title = "Underserved",
+  value = textOutput("underserved"),
+  showcase = bs_icon("clipboard2-pulse"),
+  showcase_layout = showcase_vals,
+  theme = "pink"
 )
 ```
 
@@ -87,16 +96,16 @@ layout_columns(
 ### {.sidebar}
 
 ```{r}
-actionButton(
-  inputId = "us",
-  label = "All US"
-  )
-
 radioButtons(
   inputId = "view",
   label = "Select a view:",
   choices = us_choices, 
   inline = TRUE
+  )
+
+actionButton(
+  inputId = "us",
+  label = "Reset"
   )
 ```
 
@@ -148,69 +157,67 @@ Fitted a model to estimate how many hospitals should be in a county
 #| context: server
 #| 
 sel_state <- reactive({
-  if(input$state == "All US") {
+  if (input$state == "All US") {
     us_states
   } else {
-    us_states |> 
-      filter(state_name == input$state) 
+    us_states |>
+      filter(state_name == input$state)
   }
 })
 
 sel_county <- reactive({
-  if(input$state == "All US") {
+  if (input$state == "All US") {
     us_counties
   } else {
-    us_counties |> 
-      filter(state_name == input$state) 
+    us_counties |>
+      filter(state_name == input$state)
   }
 })
 
 
 output$population <- renderText({
-  sel_state() |> 
-    summarise(sum(population)) |> 
+  sel_state() |>
+    summarise(sum(population)) |>
     pull() |>
     format_number()
-    })
+})
 
 
 output$hospitals <- renderText({
   sel_state() |>
     summarise(sum(hospitals)) |>
-    pull() |> 
-    format_number() 
-  })
+    pull() |>
+    format_number()
+})
 
 output$counties <- renderText({
   sel_county() |>
-    count() |> 
-    pull() |> 
-    format_number() 
-  })
+    count() |>
+    pull() |>
+    format_number()
+})
 
 output$underserved <- renderText({
   sel_county() |>
-    filter(pred_status == "below") |> 
-    count() |> 
-    pull() 
-  })
+    filter(pred_status == "below") |>
+    count() |>
+    pull()
+})
 
 output$usmap <- renderGirafe({
-  
   x_width <- 10
-  
+
   vr <- "population"
-  
-  if(input$view == "Population") vr <- "population"
-  if(input$view == "No. of Hospitals") vr <- "hospitals"
-  if(input$view == "Above model") vr <- "above"
-  if(input$view == "Below model") vr <- "below"
-  if(input$view == "Model") vr <- "model"
-    
-  if(input$state == "All US") {
+
+  if (input$view == "Population") vr <- "population"
+  if (input$view == "No. of Hospitals") vr <- "hospitals"
+  if (input$view == "Above model") vr <- "above"
+  if (input$view == "Below model") vr <- "below"
+  if (input$view == "Model") vr <- "model"
+
+  if (input$state == "All US") {
     gp <- atc_plot_us_map(vr)
   } else {
-    
     x_width <- us_atc_county_polygons |>
       filter(full == input$state) |>
       summarise(
@@ -220,53 +227,57 @@ output$usmap <- renderGirafe({
       mutate(
         x_size = max_x - min_x,
         y_size = max_y - min_y,
-        xy = x_size/y_size * 8
+        xy = x_size / y_size * 8
       ) |>
       pull(xy)
-    
+
     gp <- atc_plot_state_map(input$state, vr)
   }
-  
+
   girafe(
     ggobj = gp,
-    width_svg = x_width, 
-    height_svg = 5, 
+    width_svg = x_width,
+    height_svg = 5,
     options = list(
       opts_selection(type = "single", only_shiny = FALSE),
-      opts_tooltip(opacity = 0.7), 
+      opts_tooltip(opacity = 0.7),
       opts_sizing(FALSE)
-      )
-    )  
+    )
+  )
 })
 
 observeEvent(input$usmap_selected, {
   sel_map <- input$usmap_selected
-  if(any(sel_map == state_list)) {
+  if (any(sel_map == state_list)) {
     updateSelectInput(session, "state", selected = sel_map)
-    updateRadioButtons(session, "view", 
-                       choices = state_choices, 
-                       selected = "Model", 
-                       inline = TRUE
-                       )
+    updateRadioButtons(session, "view",
+      choices = state_choices,
+      selected = "Model",
+      inline = TRUE
+    )
   } else {
-    sel_county <- us_hospitals |> 
-      filter(fips == sel_map) 
-    
-    showModal(modalDialog(
-      title = sel_county$county_name[1],
-      sel_county |> 
-        arrange(city, facility_name) |>
-        mutate(nbr = row_number()) |> 
-        select(nbr, facility_name, city) |> 
-        gt() |> 
-        cols_label(
-          nbr = "",
-          facility_name = "Hospital Name",
-          city = "City"
-        ) |> 
-        tab_options(table.font.size = 8),
-      easyClose = TRUE, fade = TRUE
-    ))
+    sel_county <- us_hospitals |>
+      filter(fips == sel_map)
+
+    showModal(
+      modalDialog(
+        title = sel_county$county_name[1],
+        sel_county |>
+          arrange(city, facility_name) |>
+          mutate(nbr = row_number()) |>
+          select(nbr, facility_name, city) |>
+          gt() |>
+          cols_label(
+            nbr = "",
+            facility_name = md("**Hospital Name**"),
+            city = md("**City**")
+          ) |>
+          tab_options(table.font.size = 14),
+        easyClose = TRUE, 
+        fade = TRUE,
+        size = "l"
+      )
+    )
   }
 })
 
@@ -275,13 +286,13 @@ output$pop_plot <- renderGirafe({
   girafe(
     ggobj = gp,
     options = list(
-      #width_svg = 10,
-      #height_svg = 5,
+      # width_svg = 10,
+      # height_svg = 5,
       opts_selection(type = "single", only_shiny = FALSE),
-      opts_tooltip(opacity = 0.7), 
+      opts_tooltip(opacity = 0.7),
       opts_sizing(FALSE)
-      )
-    )  
+    )
+  )
 })
 
 output$pop_plot_model <- renderGirafe({
@@ -290,13 +301,21 @@ output$pop_plot_model <- renderGirafe({
     ggobj = gp,
     options = list(
       width_svg = 10,
-      #height_svg = 5,
+      # height_svg = 5,
       opts_selection(type = "single", only_shiny = FALSE),
-      opts_tooltip(opacity = 0.7), 
+      opts_tooltip(opacity = 0.7),
       opts_sizing(FALSE)
-      )
-    )  
+    )
+  )
 })
+
+observeEvent(
+  input$us,
+  {
+    updateSelectInput(session, "state", selected = "All US")
+    updateRadioButtons(session, "view", choices = us_choices, inline = TRUE)
+  }
+)
 
 ```
 
