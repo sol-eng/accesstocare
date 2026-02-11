@@ -26,7 +26,9 @@ state_choices <- c( "Model", "No. of Hospitals", "Population")
 
 # State info
 
-## Row {height=30%}
+## Row {height=20%}
+
+### Column {width=20%}
 
 ```{r}
 selectInput(
@@ -38,43 +40,49 @@ selectInput(
   )
 ```
 
+### Column
+
 ```{r}
-value_box(
-  title = "Population",
-  value = textOutput("population"),
-  showcase = bs_icon("person"),
-  theme = "blue"
+showcase_vals <- showcase_bottom(height = "50%", max_height = "50%")
+
+vbs <- list(
+  value_box(
+    title = "Population",
+    value = textOutput("population"),
+    showcase = bs_icon("person"), 
+    showcase_layout = showcase_vals,
+    theme = "blue"
+  ),
+  value_box(
+    title = "Hospitals",
+    value = textOutput("hospitals"),
+    showcase = bs_icon("hospital"),
+    showcase_layout = showcase_vals,
+    theme = "teal"
+  ),
+  value_box(
+    title = "Counties",
+    value = textOutput("counties"),
+    showcase = bs_icon("geo-alt"),
+    showcase_layout = showcase_vals,
+    theme = "green"
+  ),
+  value_box(
+    title = "Underserved",
+    value = textOutput("underserved"),
+    showcase = bs_icon("clipboard2-pulse"),
+    showcase_layout = showcase_vals,
+    theme = "pink"
+  )
+)
+
+layout_columns(
+  !!!vbs, 
+  fill = TRUE
 )
 ```
 
-```{r}
-value_box(
-  title = "Hospitals",
-  value = textOutput("hospitals"),
-  showcase = bs_icon("hospital"),
-  theme = "teal"
-)
-```
-
-```{r}
-value_box(
-  title = "Counties",
-  value = textOutput("counties"),
-  showcase = bs_icon("geo-alt"),
-  theme = "green"
-)
-```
-
-```{r}
-value_box(
-  title = "Underserved",
-  value = textOutput("underserved"),
-  showcase = bs_icon("clipboard2-pulse"),
-  theme = "pink"
-)
-```
-
-## Row {height=70%}
+## Row {height=80%}
 
 ### {.sidebar}
 
@@ -143,7 +151,7 @@ sel_state <- reactive({
   if(input$state == "All US") {
     us_states
   } else {
-    us_states %>% 
+    us_states |> 
       filter(state_name == input$state) 
   }
 })
@@ -152,38 +160,38 @@ sel_county <- reactive({
   if(input$state == "All US") {
     us_counties
   } else {
-    us_counties %>% 
+    us_counties |> 
       filter(state_name == input$state) 
   }
 })
 
 
 output$population <- renderText({
-  sel_state() %>% 
-    summarise(sum(population)) %>% 
-    pull() %>%
+  sel_state() |> 
+    summarise(sum(population)) |> 
+    pull() |>
     format_number()
     })
 
 
 output$hospitals <- renderText({
-  sel_state() %>%
-    summarise(sum(hospitals)) %>%
+  sel_state() |>
+    summarise(sum(hospitals)) |>
     pull() |> 
     format_number() 
   })
 
 output$counties <- renderText({
-  sel_county() %>%
-    count() %>% 
-    pull() %>% 
+  sel_county() |>
+    count() |> 
+    pull() |> 
     format_number() 
   })
 
 output$underserved <- renderText({
-  sel_county() %>%
-    filter(pred_status == "below") %>% 
-    count() %>% 
+  sel_county() |>
+    filter(pred_status == "below") |> 
+    count() |> 
     pull() 
   })
 
@@ -203,17 +211,17 @@ output$usmap <- renderGirafe({
     gp <- atc_plot_us_map(vr)
   } else {
     
-    x_width <- us_atc_county_polygons %>%
-      filter(full == input$state) %>%
+    x_width <- us_atc_county_polygons |>
+      filter(full == input$state) |>
       summarise(
         max_x = max(x), min_x = min(x),
         max_y = max(y), min_y = min(y)
-      ) %>%
+      ) |>
       mutate(
         x_size = max_x - min_x,
         y_size = max_y - min_y,
         xy = x_size/y_size * 8
-      ) %>%
+      ) |>
       pull(xy)
     
     gp <- atc_plot_state_map(input$state, vr)
@@ -241,21 +249,21 @@ observeEvent(input$usmap_selected, {
                        inline = TRUE
                        )
   } else {
-    sel_county <- us_hospitals %>% 
+    sel_county <- us_hospitals |> 
       filter(fips == sel_map) 
     
     showModal(modalDialog(
       title = sel_county$county_name[1],
-      sel_county %>% 
-        arrange(city, facility_name) %>%
-        mutate(nbr = row_number()) %>% 
-        select(nbr, facility_name, city) %>% 
-        gt() %>% 
+      sel_county |> 
+        arrange(city, facility_name) |>
+        mutate(nbr = row_number()) |> 
+        select(nbr, facility_name, city) |> 
+        gt() |> 
         cols_label(
           nbr = "",
           facility_name = "Hospital Name",
           city = "City"
-        ) %>% 
+        ) |> 
         tab_options(table.font.size = 8),
       easyClose = TRUE, fade = TRUE
     ))
