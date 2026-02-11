@@ -5,60 +5,62 @@ output: html_document
 
 
 ```{r setup, include = FALSE}
-library(dplyr)
-library(haven)
-library(usmap)
-library(janitor)
-library(stringr)
-library(readr)
-library(httr)
-library(maps)
-library(ggplot2)
-library(purrr)
-library(tidyr)
-library(accesstocare)
-library(usethis)
-library(maptools)
-library(rgdal)
-library(pins)
+library(tidyverse)
+library(readxl)
 ```
 
 ```{r}
 set.seed(100)
 options(scipen=999)
 
-library(dplyr)
-library(haven)
-library(usmap)
-library(janitor)
-library(stringr)
-library(readr)
-library(httr)
-library(maps)
-library(ggplot2)
-library(purrr)
-library(tidyr)
-library(accesstocare)
-library(usethis)
-library(maptools)
-library(rgdal)
-library(pins)
+library(tidyverse)
+library(readxl)
 ```
 
 Data provider: CMS
 Data website: https://data.cms.gov/
 Data URL: https://data.cms.gov/provider-data/dataset/xubh-q36u
 
-It pulls the data from the package instead of the site.  By default, the following code chunk does not run, unless an update is needed.
+It pulls the data from the package instead of the site.  By default, the
+following code chunk does not run, unless an update is needed.
 
 ```{r, eval = FALSE}
-data_url <- "https://data.cms.gov/provider-data/sites/default/files/resources/092256becd267d9eeccf73bf7d16c46b_1623902717/Hospital_General_Information.csv"
+cms <- read_csv(
+  file = here::here("Hospital_General_Information.csv"), 
+  name_repair = "universal"
+  )
 
-cms_data <- read_csv(data_url)
+colnames(cms) <- str_to_snake(names(cms))
 
-cms_raw_data <- clean_names(cms_data[, 1:9])
+cms_raw_data <- cms |> 
+  rename(
+    phone_number = telephone_number,
+    city = city_town,
+    county_name = county_parish 
+    ) |> 
+  select(colnames(accesstocare::cms_raw_data)) |> 
+  mutate(
+    county_name = case_when(
+      city == "CORDOVA" & state == "AK" ~ "CHUGACH",
+      city == "VALDEZ" & state == "AK" ~ "CHUGACH",
+      county_name == "THE DISTRICT" ~ "DISTRICT OF COLUMBIA",
+      county_name == "E. BATON ROUGE" ~ "EAST BATON ROUGE",
+      county_name == "JEFFRSON DAVIS" ~ "JEFFERSON DAVIS",
+      county_name == "ST. JOHN BAPTIST" ~ "ST. JOHN THE BAPTIST ",
+      county_name == "LAKE OF  WOODS" & state == "MN" ~ "LAKE OF THE WOODS",
+      county_name == "YELLOW MEDCINE" ~ "YELLOW MEDICINE",
+      county_name == "SCOTT BLUFF" ~ "SCOTTS BLUFF",
+      county_name == "DONA ANA" ~ "DOÑA ANA",
+      county_name == "MAYAGUEZ" ~ "MAYAGÜEZ",
+      county_name == "SAN GERMAN" ~ "SAN GERMÁN",
+      county_name == "BAYAMON" ~ "BAYAMÓN",
+      county_name == "MANATI" ~ "MANATÍ", 
+      .default = county_name
+    )
+  ) |> 
+  filter(state != "VI", state != "AS", state != "GU", state != "MP")
 
-use_data(cms_raw_data)
+usethis::use_data(cms_raw_data, overwrite = TRUE)
 ```
 
 Prepares the CMS data by removing Psychiatric hospitals, and thos from states not included in the FIPS files.
