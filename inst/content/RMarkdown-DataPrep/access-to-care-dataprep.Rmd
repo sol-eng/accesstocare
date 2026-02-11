@@ -261,17 +261,17 @@ county_tbl
 Prepares data for the model, and produces the `us_model` variable.
 
 ```{r}
-cnt_hosp <- us_hospitals %>% 
-  count(fips, name = "hospitals") %>% 
+cnt_hosp <- us_hospitals |> 
+  count(fips, name = "hospitals") |> 
   right_join(county_tbl, by = "fips")
 
-cnt_hosp2 <- cnt_hosp %>% 
-  replace_na(list(hospitals = 0)) %>% 
-  select(fips, state, county_name, hospitals, population) %>% 
+cnt_hosp2 <- cnt_hosp |> 
+  replace_na(list(hospitals = 0)) |> 
+  select(fips, state, county_name, hospitals, population) |> 
   arrange(state, county_name)
 
-us_model <- cnt_hosp2 %>% 
-  sample_frac(0.3) %>% 
+us_model <- cnt_hosp2 |> 
+  sample_frac(0.3) |> 
   lm(hospitals ~ population, data = .) 
 
 preds <- predict(
@@ -279,16 +279,16 @@ preds <- predict(
   newdata = cnt_hosp2, 
   interval = "prediction",
   level = 0.99
-  ) %>% 
-  as_tibble() %>% 
+  ) |> 
+  as_tibble() |> 
   rename_all(function(x) paste0("pred_", x))
 ```
 
 Matches the county data with the predictions to create the `us_counties` data set
 
 ```{r}
-us_counties <- cnt_hosp2 %>% 
-  bind_cols(preds) %>% 
+us_counties <- cnt_hosp2 |> 
+  bind_cols(preds) |> 
   mutate(
     pred_lwr = round(pred_lwr),
     pred_fit = round(pred_fit),
@@ -301,23 +301,23 @@ us_counties <- cnt_hosp2 %>%
       hospitals > pred_upr ~ "above",
       TRUE ~ "ok"
     )
-  ) %>% 
+  ) |> 
   left_join(states_tbl, by = "state")
 
 ```
 
 ```{r}
-us_states <- us_counties %>% 
-  group_by(state) %>% 
+us_states <- us_counties |> 
+  group_by(state) |> 
   summarise(
     hospitals = sum(hospitals),
     population = sum(population)
-  ) %>% 
-  ungroup() %>% 
+  ) |> 
+  ungroup() |> 
   mutate(
     per_person = round(population / hospitals),
     per_person_quartile = ntile(per_person, 4)
-  ) %>% 
+  ) |> 
   left_join(states_tbl, by = "state")
 ```
 
@@ -383,8 +383,8 @@ st_locations_list <- list(
   list(state = "PR", x = 4.5, y = -1.5)
 )
 
-us_hex_positions <- st_locations_list %>% 
-  map_dfr(~.x) %>% 
+us_hex_positions <- st_locations_list |> 
+  map_dfr(~.x) |> 
   left_join(states_tbl, by = "state")
 
 us_hex_polygons <- map_dfr(
@@ -398,7 +398,7 @@ us_hex_polygons <- map_dfr(
   }
 )
 
-us_hex_polygons %>% 
+us_hex_polygons |> 
   ggplot() +
   geom_polygon(aes(x, y, group = state), fill = "lightgray", color = "white") +
   geom_text(aes(x, y, label = state), data = us_hex_positions) +
@@ -407,9 +407,10 @@ us_hex_polygons %>%
 ```
 
 
+
 ```{r}
-pred_count <- us_counties %>% 
-  count(state, pred_status) %>% 
+pred_count <- us_counties |> 
+  count(state, pred_status) |> 
   pivot_wider(
     names_from = pred_status, 
     values_from = n, 
@@ -417,35 +418,63 @@ pred_count <- us_counties %>%
     names_prefix = "pred_"
     )
 
-us_atc_state_polygons <- us_states %>% 
-  inner_join(us_hex_polygons, by = "state") %>% 
+us_atc_state_polygons <- us_states |> 
+  inner_join(us_hex_polygons, by = "state") |> 
   inner_join(pred_count, by = "state")
 ```
 
+## County  polygons
 
 ```{r}
-county_map <- usmap::us_map("county")
+library(sf)
+county_map <- usmap::us_map("county") |> 
+  filter(abbr == "AK")
 
-us_atc_county_polygons <- us_counties %>% 
-  left_join(county_map, by = "fips") 
+coord_map <- NULL
+for(i in seq_len(nrow(county_map))){
+  row_map <- county_map[i, ]
+  row_tbl <- row_map |> 
+    st_coordinates() |> 
+    as_tibble() |> 
+    mutate(fips = row_map$fips)
+  coord_map <- coord_map |> 
+    bind_rows(row_tbl)
+} 
 
+coord_map <- coord_map |> 
+  mutate(
+    hole = L2 != 1,
+    group = paste0(fips, ".", L2)
+    ) |> 
+  rename(
+    x = X,
+    y = Y,
+    piece = L2
+    ) |> 
+  select(x, y, hole, piece, group)
+
+
+#us_atc_county_polygons <- us_counties |>   left_join(county_map, by = "fips") 
+
+ggplot(data = coord_map) +
+  geom_polygon(aes(x = x, y = y, group = group))
 ```
 
 ```{r}
-us_large_cities <- maps::us.cities %>% 
-  select(long, lat, everything()) %>% 
-  usmap::usmap_transform() %>% 
-  select(-lat, -long) %>% 
+us_large_cities <- maps::us.cities |> 
+  select(long, lat, everything()) |> 
+  usmap::usmap_transform() |> 
+  select(-lat, -long) |> 
   rename(x = long.1, 
          y = lat.1, 
          city_name = name, 
          state = country.etc,
          population = pop
-         ) %>% 
-  mutate(city_name = str_sub(city_name, 1, nchar(city_name) - 3)) %>% 
-  arrange(state, -population) %>% 
-  group_by(state) %>% 
-  mutate(position = row_number()) %>% 
+         ) |> 
+  mutate(city_name = str_sub(city_name, 1, nchar(city_name) - 3)) |> 
+  arrange(state, -population) |> 
+  group_by(state) |> 
+  mutate(position = row_number()) |> 
   ungroup()
 ```
 
