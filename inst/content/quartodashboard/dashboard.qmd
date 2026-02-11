@@ -1,6 +1,8 @@
 ---
 title: "Access to Care - Dashboard"
-format: dashboard
+format: 
+  dashboard:
+    theme: lumen
 server: shiny
 ---
 
@@ -98,10 +100,12 @@ value_box(
 ```{r}
 radioButtons(
   inputId = "view",
-  label = "Select a view:",
+  label = p(strong("Select a view:")),
   choices = us_choices, 
   inline = TRUE
   )
+
+br()
 
 actionButton(
   inputId = "us",
