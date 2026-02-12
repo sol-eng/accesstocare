@@ -22,7 +22,8 @@ test_that("Format functions return expected results", {
 })
 
 test_that("TOC works", {
-  readme_rmd <- paste0(tempdir(), "readme.Rmd")
+  temp_folder <- tempdir()
+  readme_rmd <- paste0(temp_folder, "/readme.Rmd")
 
   writeLines("---\n output:github_document\n---\n# header1\n## header 2\n### header 3", readme_rmd)
 
@@ -30,4 +31,5 @@ test_that("TOC works", {
     toc(readme_rmd),
     "- "
   )
+  unlink(temp_folder, recursive = TRUE, force = TRUE)
 })
