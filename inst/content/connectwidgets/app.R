@@ -33,8 +33,8 @@ choice_types <- c(
 atc_content <- all_content %>%
   by_tags("Access to Care")
 
-if(nrow(atc_content) == 0) {
-  atc_content <- all_content |> 
+if (nrow(atc_content) == 0) {
+  atc_content <- all_content |>
     filter(grepl("access to care", tolower(title)))
 }
 
@@ -94,43 +94,49 @@ ui <- material_page(
       left = 20,
       width = "80%"
     )
-  ),  
+  ),
   fluidRow(
     absolutePanel(
       material_radio_button("view", "View:", c("Cards", "Grid")),
       right = 300,
       top = 420
     )
-  ),  
+  )
 )
 
 server <- function(input, output, session) {
+  filter_content <- reactive({
+    f_content <- atc_content
+    if (input$type != "All") {
+      f_content <- filter(f_content, type == input$type)
+    }
+    if (input$language != "All") {
+      f_content <- filter(f_content, language == input$language)
+    }
+    f_content
+  })
   output$cards <- renderRsccard({
-    if(input$view == "Grid") {
+    if (input$view == "Grid") {
       return(NULL)
     }
-    fa <- atc_content
-    if (input$type != "All") fa <- filter(fa, type == input$type)
-    if (input$language != "All") fa <- filter(fa, language == input$language)
-    if (nrow(fa) > 0) {
-      rsc_card(fa)
+    f_content <- filter_content()
+    if (nrow(f_content) > 0) {
+      rsc_card(f_content)
     } else {
       NULL
     }
   })
   output$grid <- renderRscgrid({
-    if(input$view == "Cards") {
+    if (input$view == "Cards") {
       return(NULL)
     }
-    fa <- atc_content
-    if (input$type != "All") fa <- filter(fa, type == input$type)
-    if (input$language != "All") fa <- filter(fa, language == input$language)
-    if (nrow(fa) > 0) {
-      rsc_grid(fa)
+    f_content <- filter_content()
+    if (nrow(f_content) > 0) {
+      rsc_grid(f_content)
     } else {
       NULL
     }
-  })  
+  })
 }
 
 shinyApp(ui = ui, server = server)
