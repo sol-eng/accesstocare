@@ -6,13 +6,13 @@ coverage](https://codecov.io/gh/sol-eng/accesstocare/branch/main/graph/badge.svg
 [![R-CMD-check](https://github.com/sol-eng/accesstocare/workflows/R-CMD-check/badge.svg)](https://github.com/sol-eng/accesstocare/actions)
 <!-- badges: end -->
 
--   [Access to Care](#access-to-care)
--   [Analysis Background](#analysis-background)
--   [Installation](#installation)
--   [Usage](#usage)
-    -   [Run an example](#run-an-example)
-    -   [Copy example](#copy-example)
-    -   [Copy all examples](#copy-all-examples)
+- [Access to Care](#access-to-care)
+- [Analysis Background](#analysis-background)
+- [Installation](#installation)
+- [Usage](#usage)
+  - [Run an example](#run-an-example)
+  - [Copy example](#copy-example)
+  - [Copy all examples](#copy-all-examples)
 
 ## Access to Care
 
@@ -32,7 +32,7 @@ over, or under served based on the size of the population.
 Install `accesstocare` from GitHub using:
 
 ``` r
-devtools::install_github("sol-eng/accesstocare")
+pak::pak("sol-eng/accesstocare")
 ```
 
 ## Usage
@@ -59,18 +59,19 @@ atc_package_content()
 #> 9    powerpoint                PowerPoint 
 #> 10   powerpoint-state          PowerPoint 
 #> 11   presentation              Presentation 
-#> 12   RMarkdown-DataPrep        Scheduled R Script 
-#> 13   RMarkdown-html            Report 
-#> 14   RMarkdown-pdf             Report 
-#> 15   RNotebook                 Notebook 
-#> 16   shiny                     Application
+#> 12   quarto-dashboard-r        Dashboard 
+#> 13   RMarkdown-DataPrep        Scheduled R Script 
+#> 14   RMarkdown-html            Report 
+#> 15   RMarkdown-pdf             Report 
+#> 16   RNotebook                 Notebook 
+#> 17   shiny                     Application
 ```
 
 There are three ways to use the examples:
 
--   Open an example in your RStudio session - `atc_open_content()`
--   Copy a single example to disk - `atc_copy_content()`
--   Copy all examples to disk - `atc_copy_all_content()`
+- Open an example in your RStudio session - `atc_open_content()`
+- Copy a single example to disk - `atc_copy_content()`
+- Copy all examples to disk - `atc_copy_all_content()`
 
 ### Run an example
 
@@ -90,12 +91,13 @@ atc_open_content()
     #> 9    powerpoint                PowerPoint 
     #> 10   powerpoint-state          PowerPoint 
     #> 11   presentation              Presentation 
-    #> 12   RMarkdown-DataPrep        Scheduled R Script 
-    #> 13   RMarkdown-html            Report 
-    #> 14   RMarkdown-pdf             Report 
-    #> 15   RNotebook                 Notebook 
-    #> 16   shiny                     Application
-    #> 17   Cancel
+    #> 12   quarto-dashboard-r        Dashboard 
+    #> 13   RMarkdown-DataPrep        Scheduled R Script 
+    #> 14   RMarkdown-html            Report 
+    #> 15   RMarkdown-pdf             Report 
+    #> 16   RNotebook                 Notebook 
+    #> 17   shiny                     Application
+    #> 18   Cancel
     #> Enter the content number:
 
 Enter the number to the left of the example in order to run it. For
@@ -132,19 +134,20 @@ atc_copy_content()
     #> 9    powerpoint                PowerPoint 
     #> 10   powerpoint-state          PowerPoint 
     #> 11   presentation              Presentation 
-    #> 12   RMarkdown-DataPrep        Scheduled R Script 
-    #> 13   RMarkdown-html            Report 
-    #> 14   RMarkdown-pdf             Report 
-    #> 15   RNotebook                 Notebook 
-    #> 16   shiny                     Application
-    #> 17   Cancel
+    #> 12   quarto-dashboard-r        Dashboard 
+    #> 13   RMarkdown-DataPrep        Scheduled R Script 
+    #> 14   RMarkdown-html            Report 
+    #> 15   RMarkdown-pdf             Report 
+    #> 16   RNotebook                 Notebook 
+    #> 17   shiny                     Application
+    #> 18   Cancel
     #> Enter the content number:
 
 To avoid the interactive menu, pass the number to the left of the
 example, as an argument of the function:
 
 ``` r
-atc_copy_content(3)  # Copies the `flexdashboard` folder
+atc_copy_content(3) # Copies the `flexdashboard` folder
 ```
 
 ### Copy all examples

@@ -1,11 +1,11 @@
 Package: accesstocare
 Title: Example content of Access to Care project
-Version: 0.0.1.9009
+Version: 0.0.1.9010
 Authors@R: 
     person(given = "Edgar",
            family = "Ruiz",
            role = c("aut", "cre"),
-           email = "edgar@rstudio.com"
+           email = "edgar@posit.com"
            )
 Description: Contains the example documents, applications and 'API's that are
     part of the Access To Care analysis.  The package also contains the data and
@@ -14,9 +14,9 @@ License: MIT + file LICENSE
 Encoding: UTF-8
 LazyData: true
 Roxygen: list(markdown = TRUE)
-RoxygenNote: 7.1.1
+RoxygenNote: 7.3.3
 Depends: 
-    R (>= 2.10)
+    R (>= 3.5)
 Imports:
     crayon,
     fs,

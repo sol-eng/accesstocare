@@ -134,7 +134,3 @@ t
 16 shiny                YES   
 ```
 
-```{r, include = FALSE}
-unlink(temp_folder, recursive = TRUE, force = TRUE)
-```
-

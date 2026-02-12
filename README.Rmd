@@ -13,6 +13,8 @@ knitr::opts_chunk$set(
 <!-- badges: start -->
 [![Codecov test coverage](https://codecov.io/gh/sol-eng/accesstocare/branch/main/graph/badge.svg)](https://codecov.io/gh/sol-eng/accesstocare?branch=main)
 [![R-CMD-check](https://github.com/sol-eng/accesstocare/workflows/R-CMD-check/badge.svg)](https://github.com/sol-eng/accesstocare/actions)
+[![R-CMD-check](https://github.com/sol-eng/accesstocare/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/sol-eng/accesstocare/actions/workflows/R-CMD-check.yaml)
+[![Codecov test coverage](https://codecov.io/gh/sol-eng/accesstocare/graph/badge.svg)](https://app.codecov.io/gh/sol-eng/accesstocare)
 <!-- badges: end -->
 
   - [Access to Care](#access-to-care)
@@ -36,7 +38,7 @@ This project combines US CENSUS population data with hospital data provided by M
 Install `accesstocare` from GitHub using: 
 
 ```{r, eval = FALSE}
-devtools::install_github("sol-eng/accesstocare")
+pak::pak("sol-eng/accesstocare")
 ```
 
 ## Usage
@@ -65,7 +67,7 @@ atc_open_content()
 
 ```{r, echo = FALSE}
 atc_package_content()
-cat("17   Cancel  ")
+cat("18   Cancel  ")
 cat("Enter the content number: ")
 ```
 
@@ -89,14 +91,14 @@ atc_copy_content()
 
 ```{r, echo = FALSE}
 atc_package_content()
-cat("17   Cancel  ")
+cat("18   Cancel  ")
 cat("Enter the content number: ")
 ```
 
 To avoid the interactive menu, pass the number to the left of the example, as an argument of the function:
 
 ```{r, eval = FALSE}
-atc_copy_content(3)  # Copies the `flexdashboard` folder
+atc_copy_content(3) # Copies the `flexdashboard` folder
 ```
 
 ### Copy all examples

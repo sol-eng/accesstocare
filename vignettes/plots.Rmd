@@ -48,9 +48,9 @@ atc_plot_us_map("below")
 The colors for the `hospitals` and `population` variables can be customized: 
 
 ```{r}
-atc_plot_us_map("hospitals", 
-                colors = list(high = "orange", low = "blue")
-                )
+atc_plot_us_map("hospitals",
+  colors = list(high = "orange", low = "blue")
+)
 ```
 
 ### Interactive
@@ -80,26 +80,26 @@ atc_plot_state_map("New York")
 The status colors can be customized by passing the `model_color` argument:
 
 ```{r}
-atc_plot_state_map("New York", 
-                   model_colors = list(above = "blue", below = "orange", ok = "white")
-                   )
+atc_plot_state_map("New York",
+  model_colors = list(above = "blue", below = "orange", ok = "white")
+)
 ```
 
 The `hospitals`, and `population` variables are also available for plotting.  Pass the `variable` argument to see:
 
 ```{r}
-atc_plot_state_map("New York", 
-                   variable = "population"
-                   )
+atc_plot_state_map("New York",
+  variable = "population"
+)
 ```
 
 The colors of the continuous variables can also be customized using the `color` argument:
 
 ```{r}
-atc_plot_state_map("New York", 
-                   variable = "population",
-                   colors = list(low = "orange", high = "blue")
-                   )
+atc_plot_state_map("New York",
+  variable = "population",
+  colors = list(low = "orange", high = "blue")
+)
 ```
 
 The display of more or less of the most populated cities can be controlled using the `top_cities` argument.  
@@ -141,9 +141,10 @@ atc_plot_hospitals(show_model_results = TRUE)
 The bound colors can be customized by modifying the `model_colors` argument:
 
 ```{r}
-atc_plot_hospitals(show_model_results = TRUE,
-                   model_colors = list(above = "green", below = "orange")
-                   )
+atc_plot_hospitals(
+  show_model_results = TRUE,
+  model_colors = list(above = "green", below = "orange")
+)
 ```
 
 ### Interactive
