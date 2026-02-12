@@ -87,23 +87,50 @@ ui <- material_page(
       left = 200,
       width = "80%"
     )
-  )
+  ),
+  fluidRow(
+    absolutePanel(
+      rscgridOutput("grid", width = "90%"),
+      left = 20,
+      width = "80%"
+    )
+  ),  
+  fluidRow(
+    absolutePanel(
+      material_radio_button("view", "View:", c("Cards", "Grid")),
+      right = 300,
+      top = 420
+    )
+  ),  
 )
 
 server <- function(input, output, session) {
   output$cards <- renderRsccard({
+    if(input$view == "Grid") {
+      return(NULL)
+    }
     fa <- atc_content
-
     if (input$type != "All") fa <- filter(fa, type == input$type)
-
     if (input$language != "All") fa <- filter(fa, language == input$language)
-
     if (nrow(fa) > 0) {
       rsc_card(fa)
     } else {
       NULL
     }
   })
+  output$grid <- renderRscgrid({
+    if(input$view == "Cards") {
+      return(NULL)
+    }
+    fa <- atc_content
+    if (input$type != "All") fa <- filter(fa, type == input$type)
+    if (input$language != "All") fa <- filter(fa, language == input$language)
+    if (nrow(fa) > 0) {
+      rsc_grid(fa)
+    } else {
+      NULL
+    }
+  })  
 }
 
 shinyApp(ui = ui, server = server)
