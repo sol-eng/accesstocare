@@ -110,6 +110,8 @@ actionButton(
   inputId = "us",
   label = "Reset"
 )
+hr()
+p(em("Sources: Centers of Medicine & Medicaid services (2025), and US Census Bureau (2024)."))
 ```
 
 ### Column
@@ -118,6 +120,8 @@ actionButton(
 ```{r}
 girafeOutput("usmap")
 ```
+
+
 
 # Model  {orientation="columns" scrolling="true"}
 
