@@ -1,0 +1,129 @@
+# RStudio Connect Git Manifests
+
+## Background
+
+Most of the examples in the `accesstocare` package can be deployed to
+RStudio Connect by using the RStudio IDE’s button push deployment. All
+of the examples are designed to be deployed using RStudio Connect’s [Git
+Backed Deployment](https://docs.rstudio.com/connect/user/git-backed/).
+This means that we tell RStudio Connect where the code repository
+exists, and then have RStudio Connect download the latest code everytime
+the repository is updated.
+
+A major step to accomplish this, is to have a “manifest” file. It
+contains the metadata of the example, such as package versions, R
+version, primary file, etc. It is produced using the `rsconnect`
+package. In `accesstocare`, there are two utility functions to make it
+easier to create the manifest files.
+
+## Functions
+
+There are two functions included in `accesstocare` to help with creating
+the manifests:
+
+- [`atc_write_manifest()`](https://sol-eng.github.io/accesstocare/reference/atc_write_manifest.md)
+  creates the manifest for a single example
+- [`atc_write_all_manifests()`](https://sol-eng.github.io/accesstocare/reference/atc_write_all_manifests.md)
+  batch creates all of the manifests
+
+## Usage
+
+We will the `fs` package to make it easy to see the changes in the
+directories.
+
+``` r
+library(accesstocare)
+library(fs)
+```
+
+For the usage examples, we will copy all of the `accesstocare` examples
+into a temporary folder.
+
+``` r
+temp_folder <- path(tempdir(), "temp")
+
+atc_copy_all_content(temp_folder, silent = TRUE)
+```
+
+### Single example
+
+To show how to create the manifest of a single example, we will point to
+the “flexdashboard” sub-folder. The
+[`atc_copy_all_content()`](https://sol-eng.github.io/accesstocare/reference/atc_copy_content.md)
+command created that sub-folder.
+
+``` r
+dashboard_path <- path(temp_folder, "flexdashboard")
+
+dir_tree(dashboard_path)
+```
+
+    /var/folders/l8/v1ym1mc10_b0dftql5wrrm8w0000gn/T/RtmpBkacCE/temp/flexdashboard
+    ├── access-to-care.Rmd
+    └── metadata.yml
+
+The folder contains the example, a `metadata.yml`, and a `.gitignore`
+file.
+
+Now, we run create the manifest using
+[`atc_write_manifest()`](https://sol-eng.github.io/accesstocare/reference/atc_write_manifest.md).
+The function will automatically identify the primary document, and
+process the files listed in`.gitignore` file.
+
+``` r
+atc_write_manifest(dashboard_path)
+```
+
+    Full path:  /var/folders/l8/v1ym1mc10_b0dftql5wrrm8w0000gn/T/RtmpBkacCE/temp/flexdashboard 
+    Application files
+    ---  access-to-care.Rmd 
+    ---  metadata.yml 
+    Primary file: access-to-care.Rmd 
+    Compiling manifest...
+    Manifest complete
+
+    /var/folders/l8/v1ym1mc10_b0dftql5wrrm8w0000gn/T/RtmpBkacCE/temp/flexdashboard/manifest.json
+
+The `manifest.json` file is now available in the sub-folder.
+
+``` r
+dir_tree(dashboard_path)
+```
+
+    /var/folders/l8/v1ym1mc10_b0dftql5wrrm8w0000gn/T/RtmpBkacCE/temp/flexdashboard
+    ├── access-to-care.Rmd
+    ├── manifest.json
+    └── metadata.yml
+
+### Batch create all manifests
+
+To create the manifests for all of the sub-folders, use
+[`atc_write_all_manifests()`](https://sol-eng.github.io/accesstocare/reference/atc_write_all_manifests.md).
+This function will silently run the manifest writer for each sub-folder.
+For those that it fails for, it skips the creation. The function returns
+a `list` object with all of the results. Printing the object on the R
+Console shows which were skipped, and which were created.
+
+``` r
+atc_write_all_manifests(temp_folder)
+```
+
+    # A tibble: 16 × 2
+       content              created
+       <chr>                <chr>  
+     1 RMarkdown-DataPrep   YES    
+     2 RMarkdown-html       YES    
+     3 RMarkdown-pdf        YES    
+     4 RNotebook            YES    
+     5 connectwidgets       YES    
+     6 dash                 YES    
+     7 flexdashboard        YES    
+     8 htmlwidgets          SKIPPED
+     9 jupyter              YES    
+    10 launcher-programatic YES    
+    11 plot                 SKIPPED
+    12 plumber-api          YES    
+    13 powerpoint           YES    
+    14 powerpoint-state     YES    
+    15 presentation         YES    
+    16 shiny                YES   
