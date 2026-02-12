@@ -23,8 +23,7 @@ library(bsicons)
 state_list <- c("All US", us_states$state_name)
 
 us_choices <- c("Population", "No. of Hospitals", "Below model", "Above model")
-state_choices <- c( "Model", "No. of Hospitals", "Population")
-
+state_choices <- c("Model", "No. of Hospitals", "Population")
 ```
 
 # State info
@@ -38,9 +37,9 @@ selectInput(
   inputId = "state",
   label = "Select a State:",
   choices = state_list,
-  selected = "All US", 
+  selected = "All US",
   selectize = FALSE
-  )
+)
 ```
 
 ### Column
@@ -55,7 +54,6 @@ value_box(
   showcase_layout = showcase_vals,
   theme = "blue"
 )
-
 ```
 
 ### Column
@@ -102,23 +100,22 @@ value_box(
 radioButtons(
   inputId = "view",
   label = p(strong("Select a view:")),
-  choices = us_choices, 
+  choices = us_choices,
   inline = TRUE
-  )
+)
 
 br()
 
 actionButton(
   inputId = "us",
   label = "Reset"
-  )
+)
 ```
 
 ### Column
 
 
 ```{r}
-
 girafeOutput("usmap")
 ```
 
@@ -132,13 +129,13 @@ girafeOutput("usmap")
 girafeOutput("pop_plot")
 
 sliderInput(
-  inputId = "pop", 
-  label = "Population", 
+  inputId = "pop",
+  label = "Population",
   min = 0, max = 11000000,
   value = 11000000,
-  step = 1000000, 
+  step = 1000000,
   width = "700px"
-  )
+)
 ```
 
 There was a high degree of correlation between the county's population and the number of hospitals
@@ -160,7 +157,7 @@ Fitted a model to estimate how many hospitals should be in a county
 
 ```{r}
 #| context: server
-#| 
+#|
 sel_state <- reactive({
   if (input$state == "All US") {
     us_states
@@ -322,6 +319,5 @@ observeEvent(
     updateRadioButtons(session, "view", choices = us_choices, inline = TRUE)
   }
 )
-
 ```
 

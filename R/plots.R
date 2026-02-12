@@ -265,15 +265,15 @@ atc_plot_state_map <- function(state = "Florida",
     geom_polygon_interactive(
       aes(x, y, group = group, fill = fill, data_id = fips, tooltip = tooltip),
       color = "#cccccc",
-      #size = 0.3,
+      # size = 0.3,
       alpha = 0.6
     ) +
     geom_text(aes(x, y, label = city_name),
-              data = prep_cities,
-              hjust = 1.1,
-              family = font
+      data = prep_cities,
+      hjust = 1.1,
+      family = font
     ) +
-    geom_point(aes(x, y), data = prep_cities) +    
+    geom_point(aes(x, y), data = prep_cities) +
     labs(fill = fill_lab) +
     theme_void() +
     theme(

@@ -147,7 +147,7 @@ To avoid the interactive menu, pass the number to the left of the
 example, as an argument of the function:
 
 ``` r
-atc_copy_content(3)  # Copies the `flexdashboard` folder
+atc_copy_content(3) # Copies the `flexdashboard` folder
 ```
 
 ### Copy all examples
