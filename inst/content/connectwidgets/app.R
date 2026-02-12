@@ -31,7 +31,14 @@ choice_types <- c(
 )
 
 atc_content <- all_content %>%
-  by_tags("Access to Care") %>%
+  by_tags("Access to Care")
+
+if(nrow(atc_content) == 0) {
+  atc_content <- all_content |> 
+    filter(grepl("access to care", tolower(title)))
+}
+
+atc_content <- atc_content %>%
   mutate(
     title = str_remove(title, "Access to Care - "),
     type = case_when(
@@ -41,7 +48,7 @@ atc_content <- all_content %>%
       str_detect(title, " Prep") ~ "Script",
       str_detect(title, "Presentation|PowerPoint") ~ "Presentation",
       app_mode == "rmd-static" ~ "Report",
-      app_mode %in% c("rmd-shiny", "python-dash") ~ "Dashboard",
+      app_mode %in% c("rmd-shiny", "python-dash", "quarto-shiny") ~ "Dashboard",
       app_mode == "static" ~ "Plot",
       app_mode == "shiny" ~ "Application",
       app_mode == "api" ~ "API",
