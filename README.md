@@ -1,9 +1,9 @@
 
 <!-- badges: start -->
 
+[![R-CMD-check](https://github.com/sol-eng/accesstocare/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/sol-eng/accesstocare/actions/workflows/R-CMD-check.yaml)
 [![Codecov test
-coverage](https://codecov.io/gh/sol-eng/accesstocare/branch/main/graph/badge.svg)](https://codecov.io/gh/sol-eng/accesstocare?branch=main)
-[![R-CMD-check](https://github.com/sol-eng/accesstocare/workflows/R-CMD-check/badge.svg)](https://github.com/sol-eng/accesstocare/actions)
+coverage](https://codecov.io/gh/sol-eng/accesstocare/graph/badge.svg)](https://app.codecov.io/gh/sol-eng/accesstocare)
 <!-- badges: end -->
 
 - [Access to Care](#access-to-care)
