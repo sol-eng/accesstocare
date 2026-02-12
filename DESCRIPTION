@@ -35,5 +35,6 @@ Suggests:
     testthat (>= 3.0.0),
     rmarkdown
 Config/testthat/edition: 3
-URL: https://sol-eng.github.io/accesstocare
+URL: https://sol-eng.github.io/accesstocare, https://github.com/sol-eng/accesstocare/
+BugReports: https://github.com/sol-eng/accesstocare/issues
 VignetteBuilder: knitr
