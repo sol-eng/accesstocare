@@ -134,7 +134,12 @@ cms_raw_data <- new_cms |>
   )) |> 
   left_join(new_ct, by = c("state", "city")) |> 
   mutate(county_name = ifelse(!is.na(ct_county), ct_county, county_name)) |> 
-  select(-ct_county)
+  select(-ct_county) |> 
+  mutate(
+    facility_name = str_to_upper(facility_name), 
+    address = str_to_upper(address), 
+    city = str_to_upper(city)
+    )
 
 usethis::use_data(cms_raw_data, overwrite = TRUE)
 ```
