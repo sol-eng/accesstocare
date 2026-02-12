@@ -36,7 +36,7 @@ This project combines US CENSUS population data with hospital data provided by M
 Install `accesstocare` from GitHub using: 
 
 ```{r, eval = FALSE}
-devtools::install_github("sol-eng/accesstocare")
+pak::pak("sol-eng/accesstocare")
 ```
 
 ## Usage
@@ -65,7 +65,7 @@ atc_open_content()
 
 ```{r, echo = FALSE}
 atc_package_content()
-cat("17   Cancel  ")
+cat("18   Cancel  ")
 cat("Enter the content number: ")
 ```
 
@@ -89,7 +89,7 @@ atc_copy_content()
 
 ```{r, echo = FALSE}
 atc_package_content()
-cat("17   Cancel  ")
+cat("18   Cancel  ")
 cat("Enter the content number: ")
 ```
 
