@@ -25,11 +25,17 @@ knitr::opts_chunk$set(
 
 ## Access to Care
 
-An R package to make it easy to view, copy, interact and publish the data products resulting from the Access to Care analysis.  It also contains handly utlity functions, and the data needed to create a consistent set of examples across the multiple data product types.
+An R package to make it easy to view, copy, interact and publish the data 
+products resulting from the Access to Care analysis.  It also contains handy
+utility functions, and the data needed to create a consistent set of examples 
+across the multiple data product types.
 
 ## Analysis Background 
 
-This project combines US CENSUS population data with hospital data provided by Medicare. A linear model is used to determine if a county is over, or under served based on the size of the population.
+This project combines US Census population data with hospital data provided by 
+Medicare. The Census data is as of 2024, and the hospital Medicare date is as of
+2025. The analysis uses individual counties as the unit of measurement. A county
+is considered undeserved based on a linear model.  
 
 ## Installation
 

@@ -1,7 +1,10 @@
 url: https://sol-eng.github.io/accesstocare
+template:
+  bootstrap: 5
 reference:
-- title: Open an example
+- title: View examples
   contents:
+  - atc_package_content
   - starts_with("atc_open_")
 - title: Copy one or all examples
   contents:
@@ -16,4 +19,8 @@ reference:
   contents:
   - starts_with("us_")
   - starts_with("cms")
-  
+- title: Utilities
+  contents:
+  - format_number
+  - palette_atc
+  - folder_content_metadata
