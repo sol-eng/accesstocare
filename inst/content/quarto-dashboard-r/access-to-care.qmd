@@ -3,6 +3,7 @@ title: "Access to Care - Dashboard"
 format: 
   dashboard:
     theme: lumen
+    expandable: false
 server: shiny
 ---
 
