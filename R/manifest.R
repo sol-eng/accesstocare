@@ -55,10 +55,16 @@ atc_write_manifest <- function(folder_location,
     cat(magenta("Compiling manifest...\n"))
   }
 
+  app_mode <- NULL
+  if(primary_doc == "plumber.R") {
+    app_mode <- "api"
+  }
+  
   rsconnect::writeManifest(
     appDir = full_path,
     appFiles = app_file_names,
-    appPrimaryDoc = primary_doc
+    appPrimaryDoc = primary_doc,
+    appMode = app_mode
   )
   if (!silent) cat(magenta("Manifest complete\n\n"))
   mf <- path(full_path, "manifest.json")
