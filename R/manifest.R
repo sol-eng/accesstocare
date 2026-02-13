@@ -11,14 +11,18 @@
 #' @param silent To run with or without console updates
 #'
 #' @export
-atc_write_manifest <- function(folder_location,
-                               primary_document = NULL,
-                               ignore_files = list(
-                                 "config.yml", ".gitignore",
-                                 "manifest.json", ".DS_Store",
-                                 ".gitignore"
-                               ),
-                               silent = FALSE) {
+atc_write_manifest <- function(
+  folder_location,
+  primary_document = NULL,
+  ignore_files = list(
+    "config.yml",
+    ".gitignore",
+    "manifest.json",
+    ".DS_Store",
+    ".gitignore"
+  ),
+  silent = FALSE
+) {
   full_path <- path_abs(folder_location)
   app_files <- dir_ls(full_path, all = TRUE)
 
@@ -56,17 +60,19 @@ atc_write_manifest <- function(folder_location,
   }
 
   app_mode <- NULL
-  if(primary_doc == "plumber.R") {
+  if (primary_doc == "plumber.R") {
     app_mode <- "api"
   }
-  
+
   rsconnect::writeManifest(
     appDir = full_path,
     appFiles = app_file_names,
     appPrimaryDoc = primary_doc,
     appMode = app_mode
   )
-  if (!silent) cat(magenta("Manifest complete\n\n"))
+  if (!silent) {
+    cat(magenta("Manifest complete\n\n"))
+  }
   mf <- path(full_path, "manifest.json")
   if (file_exists(mf)) {
     mf
@@ -114,7 +120,11 @@ primary_docs <- function(full_path) {
     return(NA)
   }
   pd <- pd[[1]]
-  if (length(pd) > 1) res <- NA
-  if (length(pd) == 1) res <- pd
+  if (length(pd) > 1) {
+    res <- NA
+  }
+  if (length(pd) == 1) {
+    res <- pd
+  }
   res
 }

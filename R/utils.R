@@ -10,7 +10,8 @@ format_number <- function(x, round_digits = 0) {
   sf <- c("K", "M", "B")
   for (i in 1:3) {
     res[x >= nf[i]] <- paste0(
-      round(x[x >= nf[i]] / nf[i], digits = round_digits), sf[i]
+      round(x[x >= nf[i]] / nf[i], digits = round_digits),
+      sf[i]
     )
   }
   res

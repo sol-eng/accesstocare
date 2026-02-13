@@ -49,8 +49,7 @@ print.metadata_list <- function(x, ...) {
 #' @param content_no Select which content folder to copy
 #' @param silent Send updates to the console
 #' @export
-atc_open_content <- function(content_no = NULL,
-                             silent = TRUE) {
+atc_open_content <- function(content_no = NULL, silent = TRUE) {
   package_copy_content(
     content_no = content_no,
     target_folder = tempdir(),
@@ -65,9 +64,11 @@ atc_open_content <- function(content_no = NULL,
 #' @param content_no Select which content folder to copy
 #' @param silent Send updates to the console
 #' @export
-atc_copy_content <- function(content_no = NULL,
-                             target_folder = here::here(),
-                             silent = FALSE) {
+atc_copy_content <- function(
+  content_no = NULL,
+  target_folder = here::here(),
+  silent = FALSE
+) {
   package_copy_content(
     content_no = content_no,
     target_folder = target_folder,
@@ -77,8 +78,7 @@ atc_copy_content <- function(content_no = NULL,
 
 #' @rdname atc_copy_content
 #' @export
-atc_copy_all_content <- function(target_folder = here::here(),
-                                 silent = FALSE) {
+atc_copy_all_content <- function(target_folder = here::here(), silent = FALSE) {
   full_file_copy(
     system.file(package = "accesstocare", "content"),
     target_folder,
@@ -86,11 +86,13 @@ atc_copy_all_content <- function(target_folder = here::here(),
   )
 }
 
-package_copy_content <- function(content_no = NULL,
-                                 target_folder = here::here(),
-                                 silent = FALSE,
-                                 open = FALSE,
-                                 open_fail = FALSE) {
+package_copy_content <- function(
+  content_no = NULL,
+  target_folder = here::here(),
+  silent = FALSE,
+  open = FALSE,
+  open_fail = FALSE
+) {
   ac <- atc_package_content()
   copt <- length(ac) + 1
   if (is.null(content_no)) {

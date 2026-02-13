@@ -1,5 +1,12 @@
-full_file_copy <- function(folder, new_folder, exclude_exts = NULL, silent = FALSE) {
-  if (!dir_exists(new_folder)) dir_create(new_folder)
+full_file_copy <- function(
+  folder,
+  new_folder,
+  exclude_exts = NULL,
+  silent = FALSE
+) {
+  if (!dir_exists(new_folder)) {
+    dir_create(new_folder)
+  }
   fls <- sanitized_file_list(
     folder = folder,
     exclude_exts = exclude_exts
