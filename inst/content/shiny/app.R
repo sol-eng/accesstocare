@@ -31,35 +31,39 @@ ui <- fillPage(
     height = "auto",
     div(
       style = "background: white; padding: 10px; border-radius: 5px; box-shadow: 0 0 15px rgba(0,0,0,0.2);",
-      p(em("Sources: Centers of Medicine & Medicaid services (2025), and US Census Bureau (2024)."), style = "margin: 0; font-size: 0.85em;")
+      p(
+        em(
+          "Sources: Centers of Medicine & Medicaid services (2025), and US Census Bureau (2024)."
+        ),
+        style = "margin: 0; font-size: 0.85em;"
+      )
     )
   )
 )
 
 server <- function(input, output, session) {
-
   # Prepare county data once
   county_data <- reactive({
     # Get unique county information
-    us_atc_county_polygons %>%
-      group_by(fips) %>%
-      slice(1) %>%
-      ungroup() %>%
+    us_atc_county_polygons |>
+      group_by(fips) |>
+      slice(1) |>
+      ungroup() |>
       select(fips, state, county_name, hospitals, population, pred_status)
   })
 
   # Prepare polygon coordinates grouped by county
   county_polygons <- reactive({
-    us_atc_county_polygons %>%
-      filter(!is.na(long), !is.na(lat)) %>%
-      arrange(fips, group, piece) %>%
-      group_by(fips, group) %>%
+    us_atc_county_polygons |>
+      filter(!is.na(long), !is.na(lat)) |>
+      arrange(fips, group, piece) |>
+      group_by(fips, group) |>
       summarise(
         longs = list(long),
         lats = list(lat),
         .groups = "drop"
-      ) %>%
-      group_by(fips) %>%
+      ) |>
+      group_by(fips) |>
       summarise(
         longs = list(longs),
         lats = list(lats),
@@ -68,10 +72,10 @@ server <- function(input, output, session) {
   })
 
   output$map <- renderLeaflet({
-    # Base map
-    leaflet() %>%
-      addProviderTiles(providers$CartoDB.Positron) %>%
-      setView(lng = -98.5, lat = 39.5, zoom = 4)
+    # Base map - adjusted to show all US including Alaska and Hawaii
+    leaflet() |>
+      addProviderTiles(providers$CartoDB.Positron) |>
+      fitBounds(lng1 = -180, lat1 = 15, lng2 = -65, lat2 = 72)
   })
 
   observe({
@@ -81,16 +85,16 @@ server <- function(input, output, session) {
     polys <- county_polygons()
 
     # Join data with polygons
-    counties <- counties %>%
+    counties <- counties |>
       left_join(polys, by = "fips")
 
     # Determine variable and colors
-    if(input$view == "Population") {
+    if (input$view == "Population") {
       fill_var <- counties$population
       pal <- colorNumeric("YlOrRd", domain = fill_var, na.color = "#808080")
       legend_title <- "Population"
       legend_values <- fill_var
-    } else if(input$view == "No. of Hospitals") {
+    } else if (input$view == "No. of Hospitals") {
       fill_var <- counties$hospitals
       pal <- colorNumeric("YlGnBu", domain = fill_var, na.color = "#808080")
       legend_title <- "Hospitals"
@@ -108,37 +112,39 @@ server <- function(input, output, session) {
     }
 
     # Start with clearing existing shapes
-    map_proxy <- leafletProxy("map") %>%
-      clearShapes() %>%
+    map_proxy <- leafletProxy("map") |>
+      clearShapes() |>
       clearControls()
 
     # Add polygons for each county
-    for(i in seq_len(nrow(counties))) {
+    for (i in seq_len(nrow(counties))) {
       county <- counties[i, ]
 
-      if(!is.null(county$longs[[1]]) && length(county$longs[[1]]) > 0) {
+      if (!is.null(county$longs[[1]]) && length(county$longs[[1]]) > 0) {
         # Create label
         label <- sprintf(
           "<strong>%s, %s</strong><br/>Population: %s<br/>Hospitals: %s",
-          county$county_name, county$state,
+          county$county_name,
+          county$state,
           format(county$population, big.mark = ","),
           county$hospitals
-        ) %>% htmltools::HTML()
+        ) |>
+          htmltools::HTML()
 
         # Get color for this county
-        if(input$view == "Model") {
+        if (input$view == "Model") {
           color <- pal(county$pred_status)
         } else {
           color <- pal(fill_var[i])
         }
 
         # Add each polygon piece for this county
-        for(j in seq_along(county$longs[[1]])) {
+        for (j in seq_along(county$longs[[1]])) {
           lng_vec <- unlist(county$longs[[1]][[j]])
           lat_vec <- unlist(county$lats[[1]][[j]])
 
-          if(length(lng_vec) > 0 && length(lat_vec) > 0) {
-            map_proxy <- map_proxy %>%
+          if (length(lng_vec) > 0 && length(lat_vec) > 0) {
+            map_proxy <- map_proxy |>
               addPolygons(
                 lng = lng_vec,
                 lat = lat_vec,
@@ -154,7 +160,7 @@ server <- function(input, output, session) {
                   bringToFront = TRUE
                 ),
                 label = label,
-                layerId = county$fips,
+                layerId = paste0(county$fips, "_", j),
                 group = county$fips
               )
           }
@@ -163,7 +169,7 @@ server <- function(input, output, session) {
     }
 
     # Add legend
-    map_proxy %>%
+    map_proxy |>
       addLegend(
         position = "bottomright",
         pal = pal,
@@ -176,23 +182,26 @@ server <- function(input, output, session) {
   observeEvent(input$map_shape_click, {
     click <- input$map_shape_click
 
-    if(!is.null(click$id)) {
-      sel_county <- us_hospitals %>%
-        filter(fips == click$id)
+    if (!is.null(click$id)) {
+      # Extract FIPS code from layerId (which may have "_1", "_2" suffix)
+      fips_code <- sub("_\\d+$", "", click$id)
 
-      if(nrow(sel_county) > 0) {
+      sel_county <- us_hospitals |>
+        filter(fips == fips_code)
+
+      if (nrow(sel_county) > 0) {
         showModal(modalDialog(
           title = paste0(sel_county$county_name[1], ", ", sel_county$state[1]),
-          sel_county %>%
-            arrange(city, facility_name) %>%
-            mutate(nbr = row_number()) %>%
-            select(nbr, facility_name, city) %>%
-            gt() %>%
+          sel_county |>
+            arrange(city, facility_name) |>
+            mutate(nbr = row_number()) |>
+            select(nbr, facility_name, city) |>
+            gt() |>
             cols_label(
               nbr = "",
               facility_name = "Hospital Name",
               city = "City"
-            ) %>%
+            ) |>
             tab_options(table.font.size = 8),
           easyClose = TRUE,
           fade = TRUE
