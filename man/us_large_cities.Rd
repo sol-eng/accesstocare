@@ -7,12 +7,12 @@
 \format{
 A tibble with 7 variables and 1,005 rows:
 \describe{
-\item{state_name}{Name of the state}
+\item{city_name}{Name of the city}
 \item{state}{Two letter state abbreviation}
 \item{population}{Population count estimate for 2015}
 \item{capital}{2 for capital of the state, 0 for not}
-\item{x}{Map location used a converted number from the citie's longitude}
-\item{y}{Map location used a converted number from the citie's latitude}
+\item{x}{Map location used a converted number from the city's longitude}
+\item{y}{Map location used a converted number from the city's latitude}
 \item{position}{Rank within the state based on the population number}
 }
 }

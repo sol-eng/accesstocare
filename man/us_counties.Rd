@@ -5,17 +5,18 @@
 \alias{us_counties}
 \title{List of US Counties}
 \format{
-A tibble with 9 variables and 3,142 rows:
+A tibble with 10 variables and 3,142 rows:
 \describe{
 \item{fips}{County FIPS}
-\item{state}{Two letter state abbriviation}
+\item{state}{Two letter state abbreviation}
 \item{county_name}{Name of the county}
 \item{hospitals}{Number of hospitals inside the county}
 \item{population}{Population count estimate for 2015}
 \item{pred_fit}{Fit result from model}
 \item{pred_lwr}{Lower end of prediction from model}
 \item{pred_upr}{Top end of prediction from model}
-\item{pred_status}{ok = If above lower end, and below upper end, above = Above upper end, bellow = Bellow lower end}
+\item{pred_status}{ok = If above lower end, and below upper end, above = Above upper end, below = Below lower end}
+\item{state_name}{Name of the state}
 }
 }
 \usage{

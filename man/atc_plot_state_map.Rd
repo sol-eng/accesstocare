@@ -20,17 +20,17 @@ plotted.}
 \item{variable}{The variable to use for the plot. Possible values are: model,
 population or hospitals.}
 
-\item{colors}{A list of two colors. One set the value of the high number
+\item{colors}{A list of two colors. One for the value of the high number
 and the other for the low number.}
 
 \item{model_colors}{A list of 3 colors to use for counties below, above or
 at the level of expected hospitals as per the model.}
 
-\item{top_cities}{Plots the most populated cities.  The default to plot the
+\item{top_cities}{Plots the most populated cities.  The default is to plot the
 3 most populated cities.  To avoid displaying any cities, use 0.}
 }
 \description{
-Returns a plot with actual shape of the state, and highlights
+Returns a plot with the actual shape of the state, and highlights
 each county with a color.  The color will depend on which variable is being
 used to plot.
 }

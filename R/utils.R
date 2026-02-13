@@ -1,4 +1,4 @@
-#' Returns a abbreviated version of a large number
+#' Returns an abbreviated version of a large number
 #' @description It will return 1K if passed 1000.
 #' @param x A number
 #' @param round_digits Number of digits to round. Defaults to 0.

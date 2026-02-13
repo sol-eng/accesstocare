@@ -45,7 +45,7 @@ print.metadata_list <- function(x, ...) {
   invisible(x)
 }
 
-#' Opens an examples in RSTudio
+#' Opens an example in RStudio
 #' @param content_no Select which content folder to copy
 #' @param silent Send updates to the console
 #' @export

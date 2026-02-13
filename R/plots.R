@@ -1,7 +1,7 @@
-#' Plot of all counties hospital and population
+#' Plot of county hospitals and population
 #'
 #' @description Returns a scatter plot comparing Hospital vs Population counts
-#' in a given county
+#' for all counties
 #'
 #' @param population_max Top end limit for population count to display in the
 #' plot. Defaults to 11 million.
@@ -99,10 +99,10 @@ atc_plot_hospitals <- function(population_max = 11000000,
 #' @param variable The variable to use as the driver for the color or level of
 #' transparency that will be displayed.  There are four options: population of
 #' the state, the number of hospitals in that state, highlight states with
-#' counties with counties above or below the model's predictions.  The values
-#' that can be used are: population, hospitals, abover or below.  The default
+#' counties above or below the model's predictions.  The values
+#' that can be used are: population, hospitals, above or below.  The default
 #' is population.
-#' @param colors A list of two colors. One set the value of the high number
+#' @param colors A list of two colors. One for the value of the high number
 #' and the other for the low number.
 #' @examples
 #' library(accesstocare)
@@ -178,18 +178,18 @@ atc_plot_us_map <- function(variable = c("population", "hospitals", "above", "be
 }
 
 #' Plot of county level data
-#' @description Returns a plot with actual shape of the state, and highlights
+#' @description Returns a plot with the actual shape of the state, and highlights
 #' each county with a color.  The color will depend on which variable is being
 #' used to plot.
 #' @param state The state's name. Use "All US" if a map of all states is to be
 #' plotted.
 #' @param variable The variable to use for the plot. Possible values are: model,
 #' population or hospitals.
-#' @param colors A list of two colors. One set the value of the high number
+#' @param colors A list of two colors. One for the value of the high number
 #' and the other for the low number.
 #' @param model_colors A list of 3 colors to use for counties below, above or
 #' at the level of expected hospitals as per the model.
-#' @param top_cities Plots the most populated cities.  The default to plot the
+#' @param top_cities Plots the most populated cities.  The default is to plot the
 #' 3 most populated cities.  To avoid displaying any cities, use 0.
 #' @examples
 #' library(accesstocare)

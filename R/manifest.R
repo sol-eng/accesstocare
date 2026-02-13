@@ -1,5 +1,5 @@
 #' Prepares manifest file
-#' @description A convinience function that simplifies the creation of the
+#' @description A convenience function that simplifies the creation of the
 #' manifest file needed for publication.
 #'
 #' @param folder_location The folder containing the files of a single asset to
@@ -41,7 +41,7 @@ atc_write_manifest <- function(folder_location,
     primary_doc <- primary_docs(full_path)
     if (is.na(primary_doc)) {
       return(NULL)
-      if (!silent) cat(red("No identifies primary doc"))
+      if (!silent) cat(red("No identified primary doc"))
     }
   }
   if (!silent) {

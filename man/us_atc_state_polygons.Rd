@@ -8,13 +8,16 @@
 A tibble with 11 variables and 306 rows:
 \describe{
 \item{state}{Two letter state abbreviation}
-\item{hospitals}{Number of hospitals inside the county}
+\item{hospitals}{Number of hospitals in the state}
 \item{population}{Population count estimate for 2015}
 \item{per_person}{Population divided by the number of hospitals in the state}
 \item{per_person_quartile}{Quartile for per_person variable}
 \item{state_name}{Name of the state}
 \item{x}{Sets the 'x' position}
-\item{x}{Sets the 'y' position}
+\item{y}{Sets the 'y' position}
+\item{pred_above}{Number of counties above the model prediction}
+\item{pred_below}{Number of counties below the model prediction}
+\item{pred_ok}{Number of counties at the expected level}
 }
 }
 \usage{

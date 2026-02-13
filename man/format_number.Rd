@@ -3,7 +3,7 @@
 \name{format_number}
 \alias{format_number}
 \alias{format_currency}
-\title{Returns a abbreviated version of a large number}
+\title{Returns an abbreviated version of a large number}
 \usage{
 format_number(x, round_digits = 0)
 
