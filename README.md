@@ -55,18 +55,14 @@ atc_package_content()
 #> 3    flexdashboard             Dashboard 
 #> 4    htmlwidgets               Plot 
 #> 5    jupyter                   Jupyter 
-#> 6    launcher-programatic      Launcher 
-#> 7    plot                      Plot 
-#> 8    plumber-api               REST API 
-#> 9    powerpoint                PowerPoint 
-#> 10   powerpoint-state          PowerPoint 
-#> 11   presentation              Presentation 
-#> 12   quarto-dashboard-r        Dashboard 
-#> 13   RMarkdown-DataPrep        Scheduled R Script 
-#> 14   RMarkdown-html            Report 
-#> 15   RMarkdown-pdf             Report 
-#> 16   RNotebook                 Notebook 
-#> 17   shiny                     Application
+#> 6    plot                      Plot 
+#> 7    plumber-api               REST API 
+#> 8    presentation              Presentation 
+#> 9    quarto-dashboard-r        Dashboard 
+#> 10   RMarkdown-DataPrep        Scheduled R Script 
+#> 11   RMarkdown-html            Report 
+#> 12   RMarkdown-pdf             Report 
+#> 13   shiny                     Application
 ```
 
 There are three ways to use the examples:
@@ -87,18 +83,14 @@ atc_open_content()
     #> 3    flexdashboard             Dashboard 
     #> 4    htmlwidgets               Plot 
     #> 5    jupyter                   Jupyter 
-    #> 6    launcher-programatic      Launcher 
-    #> 7    plot                      Plot 
-    #> 8    plumber-api               REST API 
-    #> 9    powerpoint                PowerPoint 
-    #> 10   powerpoint-state          PowerPoint 
-    #> 11   presentation              Presentation 
-    #> 12   quarto-dashboard-r        Dashboard 
-    #> 13   RMarkdown-DataPrep        Scheduled R Script 
-    #> 14   RMarkdown-html            Report 
-    #> 15   RMarkdown-pdf             Report 
-    #> 16   RNotebook                 Notebook 
-    #> 17   shiny                     Application
+    #> 6    plot                      Plot 
+    #> 7    plumber-api               REST API 
+    #> 8    presentation              Presentation 
+    #> 9    quarto-dashboard-r        Dashboard 
+    #> 10   RMarkdown-DataPrep        Scheduled R Script 
+    #> 11   RMarkdown-html            Report 
+    #> 12   RMarkdown-pdf             Report 
+    #> 13   shiny                     Application
     #> 18   Cancel
     #> Enter the content number:
 
@@ -130,18 +122,14 @@ atc_copy_content()
     #> 3    flexdashboard             Dashboard 
     #> 4    htmlwidgets               Plot 
     #> 5    jupyter                   Jupyter 
-    #> 6    launcher-programatic      Launcher 
-    #> 7    plot                      Plot 
-    #> 8    plumber-api               REST API 
-    #> 9    powerpoint                PowerPoint 
-    #> 10   powerpoint-state          PowerPoint 
-    #> 11   presentation              Presentation 
-    #> 12   quarto-dashboard-r        Dashboard 
-    #> 13   RMarkdown-DataPrep        Scheduled R Script 
-    #> 14   RMarkdown-html            Report 
-    #> 15   RMarkdown-pdf             Report 
-    #> 16   RNotebook                 Notebook 
-    #> 17   shiny                     Application
+    #> 6    plot                      Plot 
+    #> 7    plumber-api               REST API 
+    #> 8    presentation              Presentation 
+    #> 9    quarto-dashboard-r        Dashboard 
+    #> 10   RMarkdown-DataPrep        Scheduled R Script 
+    #> 11   RMarkdown-html            Report 
+    #> 12   RMarkdown-pdf             Report 
+    #> 13   shiny                     Application
     #> 18   Cancel
     #> Enter the content number:
 

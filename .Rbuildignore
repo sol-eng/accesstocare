@@ -7,6 +7,8 @@
 ^_pkgdown\.yml$
 ^docs$
 ^pkgdown$
-^inst/content/quarto-dashboard-r/access-to-care_files$
 ^.*\.csv$
 ^.*\.xlsx$
+rsconnect$
+.*_files$
+.claude$
