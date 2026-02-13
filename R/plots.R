@@ -1,7 +1,7 @@
-#' Plot of all counties hospital and population
+#' Plot of county hospitals and population
 #'
 #' @description Returns a scatter plot comparing Hospital vs Population counts
-#' in a given county
+#' for all counties
 #'
 #' @param population_max Top end limit for population count to display in the
 #' plot. Defaults to 11 million.
@@ -21,21 +21,27 @@
 #'   model_colors = list(above = "green", below = "orange")
 #' )
 #' @export
-atc_plot_hospitals <- function(population_max = 11000000,
-                               model_colors = list(
-                                 above = palette_atc$above,
-                                 below = palette_atc$below,
-                                 ok = palette_atc$ok
-                               ),
-                               show_model_results = FALSE) {
+atc_plot_hospitals <- function(
+  population_max = 11000000,
+  model_colors = list(
+    above = palette_atc$above,
+    below = palette_atc$below,
+    ok = palette_atc$ok
+  ),
+  show_model_results = FALSE
+) {
   font <- "Helvetica"
 
   prep_counties <- us_counties[us_counties$population <= population_max, ]
 
   prep_counties$tooltip <- paste0(
-    prep_counties$county_name, ", ", prep_counties$state,
-    "\nPopulation: ", format_number(prep_counties$population),
-    "\nHospitals: ", format_number(prep_counties$hospitals)
+    prep_counties$county_name,
+    ", ",
+    prep_counties$state,
+    "\nPopulation: ",
+    format_number(prep_counties$population),
+    "\nHospitals: ",
+    format_number(prep_counties$hospitals)
   )
 
   p_seg <- (max(prep_counties$population) - min(prep_counties$population)) / 4
@@ -81,11 +87,15 @@ atc_plot_hospitals <- function(population_max = 11000000,
     gp <- gp +
       geom_polygon(
         aes(x, y),
-        data = lwr_tbl, alpha = 0.4, fill = model_colors$below
+        data = lwr_tbl,
+        alpha = 0.4,
+        fill = model_colors$below
       ) +
       geom_polygon(
         aes(x, y),
-        data = upr_tbl, alpha = 0.4, fill = model_colors$above
+        data = upr_tbl,
+        alpha = 0.4,
+        fill = model_colors$above
       )
   }
   gp
@@ -99,10 +109,10 @@ atc_plot_hospitals <- function(population_max = 11000000,
 #' @param variable The variable to use as the driver for the color or level of
 #' transparency that will be displayed.  There are four options: population of
 #' the state, the number of hospitals in that state, highlight states with
-#' counties with counties above or below the model's predictions.  The values
-#' that can be used are: population, hospitals, abover or below.  The default
+#' counties above or below the model's predictions.  The values
+#' that can be used are: population, hospitals, above or below.  The default
 #' is population.
-#' @param colors A list of two colors. One set the value of the high number
+#' @param colors A list of two colors. One for the value of the high number
 #' and the other for the low number.
 #' @examples
 #' library(accesstocare)
@@ -116,8 +126,10 @@ atc_plot_hospitals <- function(population_max = 11000000,
 #'   colors = list(high = "orange", low = "blue")
 #' )
 #' @export
-atc_plot_us_map <- function(variable = c("population", "hospitals", "above", "below"),
-                            colors = list(high = palette_atc$high, low = palette_atc$low)) {
+atc_plot_us_map <- function(
+  variable = c("population", "hospitals", "above", "below"),
+  colors = list(high = palette_atc$high, low = palette_atc$low)
+) {
   low_color <- colors$low
   high_color <- colors$high
   x_width <- 20
@@ -144,8 +156,10 @@ atc_plot_us_map <- function(variable = c("population", "hospitals", "above", "be
   prep_us <- us_atc_state_polygons
   prep_us$tooltip <- paste0(
     prep_us$state_name,
-    "\nPopulation: ", format_number(prep_us$population),
-    "\nHospitals: ", format_number(prep_us$hospitals)
+    "\nPopulation: ",
+    format_number(prep_us$population),
+    "\nHospitals: ",
+    format_number(prep_us$hospitals)
   )
   prep_us$fill <- prep_us[, vr][[1]]
 
@@ -160,7 +174,8 @@ atc_plot_us_map <- function(variable = c("population", "hospitals", "above", "be
     geom_text_interactive(
       aes(x, y, label = state, data_id = state_name),
       size = 4,
-      data = us_hex_positions, family = font
+      data = us_hex_positions,
+      family = font
     ) +
     scale_fill_gradient(
       low = low_color,
@@ -178,18 +193,18 @@ atc_plot_us_map <- function(variable = c("population", "hospitals", "above", "be
 }
 
 #' Plot of county level data
-#' @description Returns a plot with actual shape of the state, and highlights
+#' @description Returns a plot with the actual shape of the state, and highlights
 #' each county with a color.  The color will depend on which variable is being
 #' used to plot.
 #' @param state The state's name. Use "All US" if a map of all states is to be
 #' plotted.
 #' @param variable The variable to use for the plot. Possible values are: model,
 #' population or hospitals.
-#' @param colors A list of two colors. One set the value of the high number
+#' @param colors A list of two colors. One for the value of the high number
 #' and the other for the low number.
 #' @param model_colors A list of 3 colors to use for counties below, above or
 #' at the level of expected hospitals as per the model.
-#' @param top_cities Plots the most populated cities.  The default to plot the
+#' @param top_cities Plots the most populated cities.  The default is to plot the
 #' 3 most populated cities.  To avoid displaying any cities, use 0.
 #' @examples
 #' library(accesstocare)
@@ -215,18 +230,20 @@ atc_plot_us_map <- function(variable = c("population", "hospitals", "above", "be
 #' )
 #' atc_plot_state_map("New York", top_cities = 6)
 #' @export
-atc_plot_state_map <- function(state = "Florida",
-                               variable = c("model", "population", "hospitals"),
-                               colors = list(
-                                 high = palette_atc$high,
-                                 low = palette_atc$low
-                               ),
-                               model_colors = list(
-                                 above = palette_atc$above,
-                                 below = palette_atc$below,
-                                 ok = palette_atc$ok
-                               ),
-                               top_cities = 3) {
+atc_plot_state_map <- function(
+  state = "Florida",
+  variable = c("model", "population", "hospitals"),
+  colors = list(
+    high = palette_atc$high,
+    low = palette_atc$low
+  ),
+  model_colors = list(
+    above = palette_atc$above,
+    below = palette_atc$below,
+    ok = palette_atc$ok
+  ),
+  top_cities = 3
+) {
   low_color <- colors$low
   high_color <- colors$high
   x_width <- 20
@@ -248,16 +265,22 @@ atc_plot_state_map <- function(state = "Florida",
     prep_us <- us_atc_county_polygons
     prep_cities <- us_large_cities
   } else {
-    prep_us <- us_atc_county_polygons[us_atc_county_polygons$state_name == state, ]
-    prep_cities <- us_large_cities[us_large_cities$state == prep_us$state[[1]], ]
+    prep_us <- us_atc_county_polygons[
+      us_atc_county_polygons$state_name == state,
+    ]
+    prep_cities <- us_large_cities[
+      us_large_cities$state == prep_us$state[[1]],
+    ]
   }
 
   prep_cities <- prep_cities[prep_cities$position <= top_cities, ]
 
   prep_us$tooltip <- paste0(
     prep_us$county_name,
-    "\nPopulation: ", format_number(prep_us$population),
-    "\nHospitals: ", format_number(prep_us$hospitals)
+    "\nPopulation: ",
+    format_number(prep_us$population),
+    "\nHospitals: ",
+    format_number(prep_us$hospitals)
   )
   prep_us$fill <- prep_us[, vr][[1]]
 
@@ -268,7 +291,8 @@ atc_plot_state_map <- function(state = "Florida",
       # size = 0.3,
       alpha = 0.6
     ) +
-    geom_text(aes(x, y, label = city_name),
+    geom_text(
+      aes(x, y, label = city_name),
       data = prep_cities,
       hjust = 1.1,
       family = font
@@ -303,8 +327,22 @@ atc_plot_state_map <- function(state = "Florida",
 }
 
 globalVariables(c(
-  "x", "y", "city_name", "group", "fill", "fips", "tooltip", "palette_atc",
-  "hospitals", "population", "us_atc_model", "state", "state_name",
-  "us_atc_county_polygons", "us_atc_state_polygons", "us_counties",
-  "us_large_cities", "us_hex_positions"
+  "x",
+  "y",
+  "city_name",
+  "group",
+  "fill",
+  "fips",
+  "tooltip",
+  "palette_atc",
+  "hospitals",
+  "population",
+  "us_atc_model",
+  "state",
+  "state_name",
+  "us_atc_county_polygons",
+  "us_atc_state_polygons",
+  "us_counties",
+  "us_large_cities",
+  "us_hex_positions"
 ))

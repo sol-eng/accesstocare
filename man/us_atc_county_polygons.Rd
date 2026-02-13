@@ -5,28 +5,33 @@
 \alias{us_atc_county_polygons}
 \title{Coordinates to draw counties}
 \format{
-A tibble with 19 variables and 54,187 rows:
+A tibble with 18 variables and 54,187 rows:
 \describe{
 \item{fips}{County FIPS}
-\item{state}{Two letter state abbriviation}
+\item{state}{Two letter state abbreviation}
 \item{county_name}{Name of the county}
 \item{hospitals}{Number of hospitals inside the county}
 \item{population}{Population count estimate for 2015}
 \item{pred_fit}{Fit result from model}
 \item{pred_lwr}{Lower end of prediction from model}
 \item{pred_upr}{Top end of prediction from model}
-\item{pred_status}{ok = If above lower end, and below upper end, above = Above upper end, bellow = Bellow lower end}
+\item{pred_status}{ok = If above lower end, and below upper end, above = Above upper end, below = Below lower end}
 \item{state_name}{Name of the state}
-\item{x}{Map location used a converted number from longitude}
-\item{y}{Map location used a converted number from latitude}
-\item{order}{The order or the position}
+\item{x}{Map location in projected coordinates (for ggplot)}
+\item{y}{Map location in projected coordinates (for ggplot)}
+\item{long}{Longitude in decimal degrees (for leaflet)}
+\item{lat}{Latitude in decimal degrees (for leaflet)}
 \item{hole}{Is a hole}
+\item{piece}{Polygon piece number}
+\item{group}{Grouping variable for polygons}
+\item{order}{Row number within each group for proper coordinate matching}
 }
 }
 \usage{
 us_atc_county_polygons
 }
 \description{
-Coordinates to draw counties
+Contains county polygon coordinates in both projected (x/y for ggplot)
+and geographic (long/lat for leaflet) coordinate systems.
 }
 \keyword{datasets}

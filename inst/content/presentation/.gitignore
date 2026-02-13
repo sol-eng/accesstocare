@@ -1,3 +1,5 @@
 config.yml
 access-to-care_files
 access-to-care.html
+*_cache/
+*_files/

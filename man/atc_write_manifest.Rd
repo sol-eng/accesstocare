@@ -25,6 +25,6 @@ manifest file.}
 \item{silent}{To run with or without console updates}
 }
 \description{
-A convinience function that simplifies the creation of the
+A convenience function that simplifies the creation of the
 manifest file needed for publication.
 }

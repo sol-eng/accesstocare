@@ -2,17 +2,18 @@
 #' @description It contains the number of hospitals, population and the prediction
 #' results.  It also contains the county's 'FIPS' number which is used as the
 #' primary identifier.
-#' @format A tibble with 9 variables and 3,142 rows:
+#' @format A tibble with 10 variables and 3,142 rows:
 #' \describe{
 #' \item{fips}{County FIPS}
-#' \item{state}{Two letter state abbriviation}
+#' \item{state}{Two letter state abbreviation}
 #' \item{county_name}{Name of the county}
 #' \item{hospitals}{Number of hospitals inside the county}
 #' \item{population}{Population count estimate for 2015}
 #' \item{pred_fit}{Fit result from model}
 #' \item{pred_lwr}{Lower end of prediction from model}
 #' \item{pred_upr}{Top end of prediction from model}
-#' \item{pred_status}{ok = If above lower end, and below upper end, above = Above upper end, bellow = Bellow lower end}
+#' \item{pred_status}{ok = If above lower end, and below upper end, above = Above upper end, below = Below lower end}
+#' \item{state_name}{Name of the state}
 #' }
 "us_counties"
 
@@ -49,12 +50,12 @@
 #' @description List of the largest cities in a given state.
 #' @format A tibble with 7 variables and 1,005 rows:
 #' \describe{
-#' \item{state_name}{Name of the state}
+#' \item{city_name}{Name of the city}
 #' \item{state}{Two letter state abbreviation}
 #' \item{population}{Population count estimate for 2015}
 #' \item{capital}{2 for capital of the state, 0 for not}
-#' \item{x}{Map location used a converted number from the citie's longitude}
-#' \item{y}{Map location used a converted number from the citie's latitude}
+#' \item{x}{Map location used a converted number from the city's longitude}
+#' \item{y}{Map location used a converted number from the city's latitude}
 #' \item{position}{Rank within the state based on the population number}
 #' }
 "us_large_cities"
@@ -67,7 +68,7 @@
 #' \describe{
 #' \item{state}{Two letter state abbreviation}
 #' \item{x}{Sets the 'x' position}
-#' \item{x}{Sets the 'y' position}
+#' \item{y}{Sets the 'y' position}
 #' \item{state_name}{Name of the state}
 #' }
 "us_hex_positions"
@@ -76,7 +77,7 @@
 #' @format A tibble with 3 variables and 306 rows:
 #' \describe{
 #' \item{x}{Sets the 'x' position}
-#' \item{x}{Sets the 'y' position}
+#' \item{y}{Sets the 'y' position}
 #' \item{state}{Two letter state abbreviation}
 #' }
 "us_hex_polygons"
@@ -97,33 +98,42 @@
 #' @format A tibble with 11 variables and 306 rows:
 #' \describe{
 #' \item{state}{Two letter state abbreviation}
-#' \item{hospitals}{Number of hospitals inside the county}
+#' \item{hospitals}{Number of hospitals in the state}
 #' \item{population}{Population count estimate for 2015}
 #' \item{per_person}{Population divided by the number of hospitals in the state}
 #' \item{per_person_quartile}{Quartile for per_person variable}
 #' \item{state_name}{Name of the state}
 #' \item{x}{Sets the 'x' position}
-#' \item{x}{Sets the 'y' position}
+#' \item{y}{Sets the 'y' position}
+#' \item{pred_above}{Number of counties above the model prediction}
+#' \item{pred_below}{Number of counties below the model prediction}
+#' \item{pred_ok}{Number of counties at the expected level}
 #' }
 "us_atc_state_polygons"
 
 #' Coordinates to draw counties
-#' @format A tibble with 19 variables and 54,187 rows:
+#' @description Contains county polygon coordinates in both projected (x/y for ggplot)
+#' and geographic (long/lat for leaflet) coordinate systems.
+#' @format A tibble with 18 variables and 54,187 rows:
 #' \describe{
 #' \item{fips}{County FIPS}
-#' \item{state}{Two letter state abbriviation}
+#' \item{state}{Two letter state abbreviation}
 #' \item{county_name}{Name of the county}
 #' \item{hospitals}{Number of hospitals inside the county}
 #' \item{population}{Population count estimate for 2015}
 #' \item{pred_fit}{Fit result from model}
 #' \item{pred_lwr}{Lower end of prediction from model}
 #' \item{pred_upr}{Top end of prediction from model}
-#' \item{pred_status}{ok = If above lower end, and below upper end, above = Above upper end, bellow = Bellow lower end}
+#' \item{pred_status}{ok = If above lower end, and below upper end, above = Above upper end, below = Below lower end}
 #' \item{state_name}{Name of the state}
-#' \item{x}{Map location used a converted number from longitude}
-#' \item{y}{Map location used a converted number from latitude}
-#' \item{order}{The order or the position}
+#' \item{x}{Map location in projected coordinates (for ggplot)}
+#' \item{y}{Map location in projected coordinates (for ggplot)}
+#' \item{long}{Longitude in decimal degrees (for leaflet)}
+#' \item{lat}{Latitude in decimal degrees (for leaflet)}
 #' \item{hole}{Is a hole}
+#' \item{piece}{Polygon piece number}
+#' \item{group}{Grouping variable for polygons}
+#' \item{order}{Row number within each group for proper coordinate matching}
 #' }
 "us_atc_county_polygons"
 

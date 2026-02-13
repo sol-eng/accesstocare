@@ -2,7 +2,7 @@ test_that("Content metadata works", {
   apc <- atc_package_content()
   expect_length(
     capture.output(apc),
-    18
+    14
   )
 })
 
@@ -31,7 +31,7 @@ test_that("All content folder is copied", {
     silent = TRUE
   )
 
-  expect_length(dir(temp_dir), 17)
+  expect_length(dir(temp_dir), 13)
 
   unlink(temp_dir, recursive = TRUE, force = TRUE)
 

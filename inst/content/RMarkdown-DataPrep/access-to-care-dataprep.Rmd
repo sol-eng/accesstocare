@@ -432,34 +432,77 @@ us_atc_state_polygons <- us_states |>
 
 ```{r}
 library(sf)
-county_map <- usmap::us_map("county") 
+library(tigris)
+
+options(tigris_use_cache = TRUE)
+
+# Get actual county boundaries from tigris
+counties_geo <- counties(cb = TRUE, resolution = "20m", class = "sf")
+counties_geo$fips <- paste0(counties_geo$STATEFP, counties_geo$COUNTYFP)
+
+# Extract longitude and latitude from the geometries
+coord_map_longlat <- NULL
+for(i in seq_len(nrow(counties_geo))){
+  row_map <- counties_geo[i, ]
+  row_coords <- row_map |>
+    st_coordinates() |>
+    as_tibble() |>
+    mutate(fips = row_map$fips)
+  coord_map_longlat <- coord_map_longlat |>
+    bind_rows(row_coords)
+}
+
+coord_map_longlat <- coord_map_longlat |>
+  mutate(
+    hole = L2 != 1,
+    group = paste0(fips, ".", L2)
+  ) |>
+  rename(
+    long = X,
+    lat = Y,
+    piece = L2
+  ) |>
+  group_by(fips, group) |>
+  mutate(order = row_number()) |>
+  ungroup() |>
+  select(fips, long, lat, hole, piece, group, order)
+
+# Also keep the old usmap coordinates for backward compatibility
+county_map <- usmap::us_map("county")
 
 coord_map <- NULL
 for(i in seq_len(nrow(county_map))){
   row_map <- county_map[i, ]
-  row_tbl <- row_map |> 
-    st_coordinates() |> 
-    as_tibble() |> 
+  row_tbl <- row_map |>
+    st_coordinates() |>
+    as_tibble() |>
     mutate(fips = row_map$fips)
-  coord_map <- coord_map |> 
+  coord_map <- coord_map |>
     bind_rows(row_tbl)
-} 
+}
 
-coord_map <- coord_map |> 
+coord_map <- coord_map |>
   mutate(
     hole = L2 != 1,
     group = paste0(fips, ".", L2)
-    ) |> 
+    ) |>
   rename(
     x = X,
     y = Y,
     piece = L2
-    ) |> 
-  select(fips, x, y, hole, piece, group)
+    ) |>
+  group_by(fips, group) |>
+  mutate(order = row_number()) |>
+  ungroup() |>
+  select(fips, x, y, hole, piece, group, order)
 
-
-us_atc_county_polygons <- us_counties |>   
-  left_join(coord_map, by = "fips") 
+# Combine both coordinate systems
+us_atc_county_polygons <- us_counties |>
+  left_join(coord_map, by = "fips") |>
+  left_join(
+    coord_map_longlat |> select(fips, long, lat, group, order),
+    by = c("fips", "group", "order")
+  )
 ```
 
 ```{r, eval = FALSE}

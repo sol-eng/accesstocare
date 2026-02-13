@@ -2,7 +2,7 @@
 % Please edit documentation in R/content.R
 \name{atc_open_content}
 \alias{atc_open_content}
-\title{Opens an examples in RSTudio}
+\title{Opens an example in RStudio}
 \usage{
 atc_open_content(content_no = NULL, silent = TRUE)
 }
@@ -12,5 +12,5 @@ atc_open_content(content_no = NULL, silent = TRUE)
 \item{silent}{Send updates to the console}
 }
 \description{
-Opens an examples in RSTudio
+Opens an example in RStudio
 }

@@ -2,7 +2,7 @@
 % Please edit documentation in R/plots.R
 \name{atc_plot_hospitals}
 \alias{atc_plot_hospitals}
-\title{Plot of all counties hospital and population}
+\title{Plot of county hospitals and population}
 \usage{
 atc_plot_hospitals(
   population_max = 1.1e+07,
@@ -23,7 +23,7 @@ expected number of hospitals}
 }
 \description{
 Returns a scatter plot comparing Hospital vs Population counts
-in a given county
+for all counties
 }
 \examples{
 library(accesstocare)
