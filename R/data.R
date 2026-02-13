@@ -108,34 +108,12 @@
 "us_atc_state_polygons"
 
 #' Coordinates to draw counties
-#' @format A tibble with 19 variables and 54,187 rows:
-#' \describe{
-#' \item{fips}{County FIPS}
-#' \item{state}{Two letter state abbriviation}
-#' \item{county_name}{Name of the county}
-#' \item{hospitals}{Number of hospitals inside the county}
-#' \item{population}{Population count estimate for 2015}
-#' \item{pred_fit}{Fit result from model}
-#' \item{pred_lwr}{Lower end of prediction from model}
-#' \item{pred_upr}{Top end of prediction from model}
-#' \item{pred_status}{ok = If above lower end, and below upper end, above = Above upper end, bellow = Bellow lower end}
-#' \item{state_name}{Name of the state}
-#' \item{x}{Map location used a converted number from longitude}
-#' \item{y}{Map location used a converted number from latitude}
-#' \item{order}{The order or the position}
-#' \item{hole}{Is a hole}
-#' }
-"us_atc_county_polygons"
-
-#' County boundaries with actual geographic coordinates for leaflet
-#' @description An sf object containing US county boundaries with actual longitude/latitude
-#' coordinates from the tigris package, joined with the us_counties data. This dataset
-#' is suitable for use with leaflet and other geographic mapping libraries.
-#' @format An sf tibble with 11 variables and 3,142 rows:
+#' @description Contains county polygon coordinates in both projected (x/y for ggplot)
+#' and geographic (long/lat for leaflet) coordinate systems.
+#' @format A tibble with 22 variables and 54,187 rows:
 #' \describe{
 #' \item{fips}{County FIPS}
 #' \item{state}{Two letter state abbreviation}
-#' \item{state_name}{Name of the state}
 #' \item{county_name}{Name of the county}
 #' \item{hospitals}{Number of hospitals inside the county}
 #' \item{population}{Population count estimate for 2015}
@@ -143,9 +121,17 @@
 #' \item{pred_lwr}{Lower end of prediction from model}
 #' \item{pred_upr}{Top end of prediction from model}
 #' \item{pred_status}{ok = If above lower end, and below upper end, above = Above upper end, below = Below lower end}
-#' \item{geometry}{sf geometry column containing polygon coordinates}
+#' \item{state_name}{Name of the state}
+#' \item{x}{Map location in projected coordinates (for ggplot)}
+#' \item{y}{Map location in projected coordinates (for ggplot)}
+#' \item{long}{Longitude in decimal degrees (for leaflet)}
+#' \item{lat}{Latitude in decimal degrees (for leaflet)}
+#' \item{hole}{Is a hole}
+#' \item{piece}{Polygon piece number}
+#' \item{group}{Grouping variable for polygons}
+#' \item{order}{Row number within each group for proper coordinate matching}
 #' }
-"us_counties_longlat"
+"us_atc_county_polygons"
 
 
 #' Medicare list of hospitals
