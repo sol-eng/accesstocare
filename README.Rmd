@@ -99,12 +99,6 @@ cat("18   Cancel  ")
 cat("Enter the content number: ")
 ```
 
-To avoid the interactive menu, pass the number to the left of the example, as an argument of the function:
-
-```{r, eval = FALSE}
-atc_copy_content(3) # Copies the `flexdashboard` folder
-```
-
 ### Copy all examples
 
 `atc_copy_all_content()` will copy all of the examples.  It will as many sub-folders as there are examples available.

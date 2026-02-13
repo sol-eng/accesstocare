@@ -52,17 +52,16 @@ atc_package_content()
 #> No.  Name                      Type 
 #> 1    connectwidgets            Application 
 #> 2    dash                      Dashboard 
-#> 3    flexdashboard             Dashboard 
-#> 4    htmlwidgets               Plot 
-#> 5    jupyter                   Jupyter 
-#> 6    plot                      Plot 
-#> 7    plumber-api               REST API 
-#> 8    presentation              Presentation 
-#> 9    quarto-dashboard-r        Dashboard 
-#> 10   RMarkdown-DataPrep        Scheduled R Script 
-#> 11   RMarkdown-html            Report 
-#> 12   RMarkdown-pdf             Report 
-#> 13   shiny                     Application
+#> 3    htmlwidgets               Plot 
+#> 4    jupyter                   Jupyter 
+#> 5    plot                      Plot 
+#> 6    plumber-api               REST API 
+#> 7    presentation              Presentation 
+#> 8    quarto-dashboard-r        Dashboard 
+#> 9    RMarkdown-DataPrep        Scheduled R Script 
+#> 10   RMarkdown-html            Report 
+#> 11   RMarkdown-pdf             Report 
+#> 12   shiny                     Application
 ```
 
 There are three ways to use the examples:
@@ -80,17 +79,16 @@ atc_open_content()
     #> No.  Name                      Type 
     #> 1    connectwidgets            Application 
     #> 2    dash                      Dashboard 
-    #> 3    flexdashboard             Dashboard 
-    #> 4    htmlwidgets               Plot 
-    #> 5    jupyter                   Jupyter 
-    #> 6    plot                      Plot 
-    #> 7    plumber-api               REST API 
-    #> 8    presentation              Presentation 
-    #> 9    quarto-dashboard-r        Dashboard 
-    #> 10   RMarkdown-DataPrep        Scheduled R Script 
-    #> 11   RMarkdown-html            Report 
-    #> 12   RMarkdown-pdf             Report 
-    #> 13   shiny                     Application
+    #> 3    htmlwidgets               Plot 
+    #> 4    jupyter                   Jupyter 
+    #> 5    plot                      Plot 
+    #> 6    plumber-api               REST API 
+    #> 7    presentation              Presentation 
+    #> 8    quarto-dashboard-r        Dashboard 
+    #> 9    RMarkdown-DataPrep        Scheduled R Script 
+    #> 10   RMarkdown-html            Report 
+    #> 11   RMarkdown-pdf             Report 
+    #> 12   shiny                     Application
     #> 18   Cancel
     #> Enter the content number:
 
@@ -119,26 +117,18 @@ atc_copy_content()
     #> No.  Name                      Type 
     #> 1    connectwidgets            Application 
     #> 2    dash                      Dashboard 
-    #> 3    flexdashboard             Dashboard 
-    #> 4    htmlwidgets               Plot 
-    #> 5    jupyter                   Jupyter 
-    #> 6    plot                      Plot 
-    #> 7    plumber-api               REST API 
-    #> 8    presentation              Presentation 
-    #> 9    quarto-dashboard-r        Dashboard 
-    #> 10   RMarkdown-DataPrep        Scheduled R Script 
-    #> 11   RMarkdown-html            Report 
-    #> 12   RMarkdown-pdf             Report 
-    #> 13   shiny                     Application
+    #> 3    htmlwidgets               Plot 
+    #> 4    jupyter                   Jupyter 
+    #> 5    plot                      Plot 
+    #> 6    plumber-api               REST API 
+    #> 7    presentation              Presentation 
+    #> 8    quarto-dashboard-r        Dashboard 
+    #> 9    RMarkdown-DataPrep        Scheduled R Script 
+    #> 10   RMarkdown-html            Report 
+    #> 11   RMarkdown-pdf             Report 
+    #> 12   shiny                     Application
     #> 18   Cancel
     #> Enter the content number:
-
-To avoid the interactive menu, pass the number to the left of the
-example, as an argument of the function:
-
-``` r
-atc_copy_content(3) # Copies the `flexdashboard` folder
-```
 
 ### Copy all examples
 
