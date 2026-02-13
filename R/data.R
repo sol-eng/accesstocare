@@ -127,6 +127,26 @@
 #' }
 "us_atc_county_polygons"
 
+#' County boundaries with actual geographic coordinates for leaflet
+#' @description An sf object containing US county boundaries with actual longitude/latitude
+#' coordinates from the tigris package, joined with the us_counties data. This dataset
+#' is suitable for use with leaflet and other geographic mapping libraries.
+#' @format An sf tibble with 11 variables and 3,142 rows:
+#' \describe{
+#' \item{fips}{County FIPS}
+#' \item{state}{Two letter state abbreviation}
+#' \item{state_name}{Name of the state}
+#' \item{county_name}{Name of the county}
+#' \item{hospitals}{Number of hospitals inside the county}
+#' \item{population}{Population count estimate for 2015}
+#' \item{pred_fit}{Fit result from model}
+#' \item{pred_lwr}{Lower end of prediction from model}
+#' \item{pred_upr}{Top end of prediction from model}
+#' \item{pred_status}{ok = If above lower end, and below upper end, above = Above upper end, below = Below lower end}
+#' \item{geometry}{sf geometry column containing polygon coordinates}
+#' }
+"us_counties_longlat"
+
 
 #' Medicare list of hospitals
 #' @description A list of hospitals in the USA provided by Medicare.

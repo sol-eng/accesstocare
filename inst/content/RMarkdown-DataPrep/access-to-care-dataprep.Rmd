@@ -458,8 +458,37 @@ coord_map <- coord_map |>
   select(fips, x, y, hole, piece, group)
 
 
-us_atc_county_polygons <- us_counties |>   
-  left_join(coord_map, by = "fips") 
+us_atc_county_polygons <- us_counties |>
+  left_join(coord_map, by = "fips")
+```
+
+## County geographic data for leaflet
+
+This section creates a dataset with actual longitude/latitude coordinates suitable
+for leaflet mapping. It uses the `tigris` package to download US county boundaries
+and joins them with the `us_counties` data.
+
+```{r, eval = FALSE}
+library(tigris)
+library(sf)
+
+options(tigris_use_cache = TRUE)
+
+# Download county boundaries with simplified geometries
+counties_geo <- counties(cb = TRUE, resolution = "20m", class = "sf")
+
+# Create FIPS code by combining state and county FIPS
+counties_geo$fips <- paste0(counties_geo$STATEFP, counties_geo$COUNTYFP)
+
+# Join with us_counties data and keep only necessary columns
+us_counties_longlat <- counties_geo |>
+  select(fips, geometry) |>
+  left_join(us_counties, by = "fips") |>
+  select(fips, state, state_name, county_name, hospitals, population,
+         pred_fit, pred_lwr, pred_upr, pred_status, geometry)
+
+# Verify the result
+us_counties_longlat
 ```
 
 ```{r, eval = FALSE}
@@ -543,6 +572,7 @@ use_data(us_states, overwrite = TRUE)
 
 use_data(us_atc_county_polygons, overwrite = TRUE)
 use_data(us_atc_state_polygons, overwrite = TRUE)
+use_data(us_counties_longlat, overwrite = TRUE)
 
 use_data(us_large_cities, overwrite = TRUE)
 
