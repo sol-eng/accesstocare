@@ -12,3 +12,4 @@
 rsconnect$
 .*_files$
 .claude$
+.build$
