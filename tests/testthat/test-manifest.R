@@ -9,9 +9,9 @@ test_that("Manifests are being written to content folder", {
   writeLines("<p>", con = paste0(temp_html, "/test.html"))
   writeLines("config.yml", con = paste0(temp_html, "/.gitignore"))
 
-  res <- atc_write_all_manifests(temp_folder)
+  res <- write_all_manifests(temp_folder)
 
-  atc_write_manifest(
+  write_manifest(
     temp_html,
     primary_document = "test.html",
     silent = FALSE

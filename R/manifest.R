@@ -11,7 +11,7 @@
 #' @param silent To run with or without console updates
 #'
 #' @export
-atc_write_manifest <- function(
+write_manifest <- function(
   folder_location,
   primary_document = NULL,
   ignore_files = list(
@@ -86,11 +86,11 @@ atc_write_manifest <- function(
 #' content folder.
 #' @param content_folder The root folder location.
 #' @export
-atc_write_all_manifests <- function(content_folder = ".") {
+write_all_manifests <- function(content_folder = ".") {
   t <- map(
     dir_ls(content_folder, type = "directory"),
     ~ {
-      res <- atc_write_manifest(.x, silent = TRUE)
+      res <- write_manifest(.x, silent = TRUE)
       created <- ifelse(!is.null(res), "YES", "SKIPPED")
       tibble(
         content = path_file(.x),
