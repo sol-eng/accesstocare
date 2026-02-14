@@ -106,7 +106,7 @@ write_all_manifests <- function(content_folder = ".") {
 
 primary_docs <- function(full_path) {
   pf <- map(
-    c("*.Rmd", "*.py", "*app.R", "*.ipynb", "*plumber.R"),
+    c("*.Rmd", "*.py", "*app.R", "*.ipynb", "*plumber.R", "*map.html"),
     ~ {
       dl <- dir_ls(full_path, glob = .x)
       path_file(dl)
