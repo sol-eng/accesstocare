@@ -33,7 +33,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="index.html">accesstocare</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.0.1.9012</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.0.1.9013</span>
       </span>
     </div>
 
@@ -86,9 +86,9 @@
 <li>
 <a href="#usage">Usage</a>
 <ul>
-<li><a href="#run-an-example">Run an example</a></li>
-<li><a href="#copy-example">Copy example</a></li>
+<li><a href="#copy-a-specific-example">Copy a specific example</a></li>
 <li><a href="#copy-all-examples">Copy all examples</a></li>
+<li><a href="#force-overwrite">Force overwrite</a></li>
 </ul>
 </li>
 </ul>
@@ -114,89 +114,56 @@
 </h2>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://sol-eng.github.io/accesstocare">accesstocare</a></span><span class="op">)</span></span></code></pre></div>
-<p>To view the available examples, use <code>atc_packate_content()</code>. It returns a <code>list</code> object with all of the available content. It is presented in the console, or RMarkdown, as a table.</p>
+<p>The package includes multiple example data products demonstrating different ways to visualize and present the Access to Care analysis. Use <code><a href="reference/create_content.html">create_content()</a></code> to copy these examples to your working directory.</p>
+<div class="section level3">
+<h3 id="copy-a-specific-example">Copy a specific example<a class="anchor" aria-label="anchor" href="#copy-a-specific-example"></a>
+</h3>
+<p>Copy a single example by specifying its name:</p>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu"><a href="reference/atc_package_content.html">atc_package_content</a></span><span class="op">(</span><span class="op">)</span></span>
-<span><span class="co">#&gt; No.  Name                      Type </span></span>
-<span><span class="co">#&gt; 1    connectwidgets            Application </span></span>
-<span><span class="co">#&gt; 2    dash                      Dashboard </span></span>
-<span><span class="co">#&gt; 3    flexdashboard             Dashboard </span></span>
-<span><span class="co">#&gt; 4    htmlwidgets               Plot </span></span>
-<span><span class="co">#&gt; 5    jupyter                   Jupyter </span></span>
-<span><span class="co">#&gt; 6    plot                      Plot </span></span>
-<span><span class="co">#&gt; 7    plumber-api               REST API </span></span>
-<span><span class="co">#&gt; 8    presentation              Presentation </span></span>
-<span><span class="co">#&gt; 9    quarto-dashboard-r        Dashboard </span></span>
-<span><span class="co">#&gt; 10   RMarkdown-DataPrep        Scheduled R Script </span></span>
-<span><span class="co">#&gt; 11   RMarkdown-html            Report </span></span>
-<span><span class="co">#&gt; 12   RMarkdown-pdf             Report </span></span>
-<span><span class="co">#&gt; 13   shiny                     Application</span></span></code></pre></div>
-<p>There are three ways to use the examples:</p>
+<code class="sourceCode R"><span><span class="fu"><a href="reference/create_content.html">create_content</a></span><span class="op">(</span>content <span class="op">=</span> <span class="st">"shiny"</span><span class="op">)</span></span></code></pre></div>
+<p>Available content options include:</p>
 <ul>
-<li>Open an example in your RStudio session - <code><a href="reference/atc_open_content.html">atc_open_content()</a></code>
-</li>
-<li>Copy a single example to disk - <code><a href="reference/atc_copy_content.html">atc_copy_content()</a></code>
-</li>
-<li>Copy all examples to disk - <code><a href="reference/atc_copy_content.html">atc_copy_all_content()</a></code>
-</li>
+<li>
+<code>"connectwidgets"</code> - Overview application listing all related content</li>
+<li>
+<code>"dash"</code> - Python Dash dashboard</li>
+<li>
+<code>"htmlwidgets"</code> - Interactive county-level plot</li>
+<li>
+<code>"jupyter"</code> - Jupyter Notebook</li>
+<li>
+<code>"plot"</code> - Static ggplot2 map of entire country</li>
+<li>
+<code>"plumber-api"</code> - REST API with multiple endpoints</li>
+<li>
+<code>"presentation"</code> - Quarto presentation</li>
+<li>
+<code>"quarto-dashboard-r"</code> - Quarto dashboard by state</li>
+<li>
+<code>"RMarkdown-html"</code> - HTML report with email template</li>
+<li>
+<code>"RMarkdown-pdf"</code> - PDF report</li>
+<li>
+<code>"shiny"</code> - Shiny application</li>
 </ul>
-<div class="section level3">
-<h3 id="run-an-example">Run an example<a class="anchor" aria-label="anchor" href="#run-an-example"></a>
-</h3>
+<p>You can also specify a target directory:</p>
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu"><a href="reference/atc_open_content.html">atc_open_content</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
-<div class="sourceCode" id="cb5"><pre class="sourceCode R"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" tabindex="-1"></a><span class="co">#&gt; No.  Name                      Type </span></span>
-<span id="cb5-2"><a href="#cb5-2" tabindex="-1"></a><span class="co">#&gt; 1    connectwidgets            Application </span></span>
-<span id="cb5-3"><a href="#cb5-3" tabindex="-1"></a><span class="co">#&gt; 2    dash                      Dashboard </span></span>
-<span id="cb5-4"><a href="#cb5-4" tabindex="-1"></a><span class="co">#&gt; 3    flexdashboard             Dashboard </span></span>
-<span id="cb5-5"><a href="#cb5-5" tabindex="-1"></a><span class="co">#&gt; 4    htmlwidgets               Plot </span></span>
-<span id="cb5-6"><a href="#cb5-6" tabindex="-1"></a><span class="co">#&gt; 5    jupyter                   Jupyter </span></span>
-<span id="cb5-7"><a href="#cb5-7" tabindex="-1"></a><span class="co">#&gt; 6    plot                      Plot </span></span>
-<span id="cb5-8"><a href="#cb5-8" tabindex="-1"></a><span class="co">#&gt; 7    plumber-api               REST API </span></span>
-<span id="cb5-9"><a href="#cb5-9" tabindex="-1"></a><span class="co">#&gt; 8    presentation              Presentation </span></span>
-<span id="cb5-10"><a href="#cb5-10" tabindex="-1"></a><span class="co">#&gt; 9    quarto-dashboard-r        Dashboard </span></span>
-<span id="cb5-11"><a href="#cb5-11" tabindex="-1"></a><span class="co">#&gt; 10   RMarkdown-DataPrep        Scheduled R Script </span></span>
-<span id="cb5-12"><a href="#cb5-12" tabindex="-1"></a><span class="co">#&gt; 11   RMarkdown-html            Report </span></span>
-<span id="cb5-13"><a href="#cb5-13" tabindex="-1"></a><span class="co">#&gt; 12   RMarkdown-pdf             Report </span></span>
-<span id="cb5-14"><a href="#cb5-14" tabindex="-1"></a><span class="co">#&gt; 13   shiny                     Application</span></span>
-<span id="cb5-15"><a href="#cb5-15" tabindex="-1"></a><span class="co">#&gt; 18   Cancel</span></span>
-<span id="cb5-16"><a href="#cb5-16" tabindex="-1"></a><span class="co">#&gt; Enter the content number:</span></span></code></pre></div>
-<p>Enter the number to the left of the example in order to run it. For example, to open the <code>flexdashboard</code> example, type 3 and press enter.</p>
-<p>To run an example without the prompt, pass the <code>content_no</code> argument with the number. Again, to open the <code>flexdashboard</code> use:</p>
-<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu"><a href="reference/atc_open_content.html">atc_open_content</a></span><span class="op">(</span><span class="fl">3</span><span class="op">)</span></span></code></pre></div>
-</div>
-<div class="section level3">
-<h3 id="copy-example">Copy example<a class="anchor" aria-label="anchor" href="#copy-example"></a>
-</h3>
-<p>An example can be copied to your working directory by using <code><a href="reference/atc_copy_content.html">atc_copy_content()</a></code>. It will create a new sub-folder and load the files for that particular example.</p>
-<p>It has the same interactive mechanism as the open example function.</p>
-<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu"><a href="reference/atc_copy_content.html">atc_copy_content</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
-<div class="sourceCode" id="cb8"><pre class="sourceCode R"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" tabindex="-1"></a><span class="co">#&gt; No.  Name                      Type </span></span>
-<span id="cb8-2"><a href="#cb8-2" tabindex="-1"></a><span class="co">#&gt; 1    connectwidgets            Application </span></span>
-<span id="cb8-3"><a href="#cb8-3" tabindex="-1"></a><span class="co">#&gt; 2    dash                      Dashboard </span></span>
-<span id="cb8-4"><a href="#cb8-4" tabindex="-1"></a><span class="co">#&gt; 3    flexdashboard             Dashboard </span></span>
-<span id="cb8-5"><a href="#cb8-5" tabindex="-1"></a><span class="co">#&gt; 4    htmlwidgets               Plot </span></span>
-<span id="cb8-6"><a href="#cb8-6" tabindex="-1"></a><span class="co">#&gt; 5    jupyter                   Jupyter </span></span>
-<span id="cb8-7"><a href="#cb8-7" tabindex="-1"></a><span class="co">#&gt; 6    plot                      Plot </span></span>
-<span id="cb8-8"><a href="#cb8-8" tabindex="-1"></a><span class="co">#&gt; 7    plumber-api               REST API </span></span>
-<span id="cb8-9"><a href="#cb8-9" tabindex="-1"></a><span class="co">#&gt; 8    presentation              Presentation </span></span>
-<span id="cb8-10"><a href="#cb8-10" tabindex="-1"></a><span class="co">#&gt; 9    quarto-dashboard-r        Dashboard </span></span>
-<span id="cb8-11"><a href="#cb8-11" tabindex="-1"></a><span class="co">#&gt; 10   RMarkdown-DataPrep        Scheduled R Script </span></span>
-<span id="cb8-12"><a href="#cb8-12" tabindex="-1"></a><span class="co">#&gt; 11   RMarkdown-html            Report </span></span>
-<span id="cb8-13"><a href="#cb8-13" tabindex="-1"></a><span class="co">#&gt; 12   RMarkdown-pdf             Report </span></span>
-<span id="cb8-14"><a href="#cb8-14" tabindex="-1"></a><span class="co">#&gt; 13   shiny                     Application</span></span>
-<span id="cb8-15"><a href="#cb8-15" tabindex="-1"></a><span class="co">#&gt; 18   Cancel</span></span>
-<span id="cb8-16"><a href="#cb8-16" tabindex="-1"></a><span class="co">#&gt; Enter the content number:</span></span></code></pre></div>
-<p>To avoid the interactive menu, pass the number to the left of the example, as an argument of the function:</p>
-<div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu"><a href="reference/atc_copy_content.html">atc_copy_content</a></span><span class="op">(</span><span class="fl">3</span><span class="op">)</span> <span class="co"># Copies the `flexdashboard` folder</span></span></code></pre></div>
+<code class="sourceCode R"><span><span class="fu"><a href="reference/create_content.html">create_content</a></span><span class="op">(</span>target <span class="op">=</span> <span class="st">"my-examples"</span>, content <span class="op">=</span> <span class="st">"shiny"</span><span class="op">)</span></span></code></pre></div>
 </div>
 <div class="section level3">
 <h3 id="copy-all-examples">Copy all examples<a class="anchor" aria-label="anchor" href="#copy-all-examples"></a>
 </h3>
-<p><code><a href="reference/atc_copy_content.html">atc_copy_all_content()</a></code> will copy all of the examples. It will as many sub-folders as there are examples available.</p>
+<p>Copy all available examples at once:</p>
+<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="reference/create_content.html">create_content</a></span><span class="op">(</span>content <span class="op">=</span> <span class="st">"all"</span><span class="op">)</span></span></code></pre></div>
+<p>This will create a separate subfolder for each example in your target directory.</p>
+</div>
+<div class="section level3">
+<h3 id="force-overwrite">Force overwrite<a class="anchor" aria-label="anchor" href="#force-overwrite"></a>
+</h3>
+<p>By default, <code><a href="reference/create_content.html">create_content()</a></code> skips folders that already exist. Use <code>force = TRUE</code> to overwrite:</p>
+<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="reference/create_content.html">create_content</a></span><span class="op">(</span>content <span class="op">=</span> <span class="st">"shiny"</span>, force <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></code></pre></div>
 </div>
 </div>
 
