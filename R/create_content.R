@@ -1,3 +1,14 @@
+#' Create Access To Care example content
+#' @description Copies example content from the package to a target directory.
+#' @param target The destination directory where content will be copied.
+#' Defaults to current directory.
+#' @param content Which content to copy. Can be "all" to copy everything, or
+#' a specific content name. Available options include: "connectwidgets", "dash",
+#' "htmlwidgets", "jupyter", "plot", "plumber-api", "presentation",
+#' "quarto-dashboard-r", "RMarkdown-html", "RMarkdown-pdf", "shiny".
+#' @param force If TRUE, overwrites existing folders. If FALSE (default), skips
+#' existing folders.
+#' @param silent If TRUE, suppresses console messages. Defaults to FALSE.
 #' @export
 create_content <- function(
   target = ".",
