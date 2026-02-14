@@ -45,18 +45,18 @@ write_manifest <- function(
     primary_doc <- primary_docs(full_path)
     if (is.na(primary_doc)) {
       return(NULL)
-      if (!silent) cat(red("No identified primary doc"))
+      if (!silent) cli_alert_danger("No identified primary doc")
     }
   }
   if (!silent) {
-    cat(green("Full path: ", full_path, "\n"))
-    cat(red("Application files\n"))
+    cli_alert_success("Full path: {full_path}")
+    cli_alert_info("Application files")
     walk(
       app_file_names,
-      ~ cat(cyan("--- ", .x, "\n"))
+      ~ cli_text("  {col_cyan('---')} {.x}")
     )
-    cat(paste0(red("Primary file: "), cyan(primary_doc, "\n")))
-    cat(magenta("Compiling manifest...\n"))
+    cli_text("{col_red('Primary file:')} {col_cyan(primary_doc)}")
+    cli_alert("Compiling manifest...")
   }
 
   app_mode <- NULL
@@ -71,7 +71,7 @@ write_manifest <- function(
     appMode = app_mode
   )
   if (!silent) {
-    cat(magenta("Manifest complete\n\n"))
+    cli_alert_success("Manifest complete")
   }
   mf <- path(full_path, "manifest.json")
   if (file_exists(mf)) {

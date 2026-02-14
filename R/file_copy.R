@@ -19,9 +19,9 @@ full_file_copy <- function(
       new_file <- path(new_folder, .x)
       if (!file_exists(new_file)) {
         file_copy(path(folder, .x), new_file)
-        if (!silent) cat(green(paste0(new_file, " - copied\n")))
+        if (!silent) cli_alert_success("{new_file} - copied")
       } else {
-        if (!silent) cat(red(paste0(new_file, " - already exists\n")))
+        if (!silent) cli_alert_danger("{new_file} - already exists")
       }
     }
   )
