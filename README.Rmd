@@ -19,9 +19,9 @@ knitr::opts_chunk$set(
   - [Analysis Background](#analysis-background)
   - [Installation](#installation)
   - [Usage](#usage)
-    - [Run an example](#run-an-example)
-    - [Copy example](#copy-example)
+    - [Copy a specific example](#copy-a-specific-example)
     - [Copy all examples](#copy-all-examples)
+    - [Force overwrite](#force-overwrite)
 
 ## Access to Care
 
@@ -51,56 +51,52 @@ pak::pak("sol-eng/accesstocare")
 library(accesstocare)
 ```
 
-To view the available examples, use `atc_packate_content()`. It returns a `list` object with all of the available content.  It is presented in the console, or RMarkdown, as a table. 
+The package includes multiple example data products demonstrating different ways to visualize and present the Access to Care analysis. Use `create_content()` to copy these examples to your working directory.
 
-```{r}
-atc_package_content()
-```
+### Copy a specific example
 
-There are three ways to use the examples:
-
-- Open an example in your RStudio session - `atc_open_content()`
-- Copy a single example to disk - `atc_copy_content()`
-- Copy all examples to disk - `atc_copy_all_content()`
-
-### Run an example
+Copy a single example by specifying its name:
 
 ```{r, eval = FALSE}
-atc_open_content()
+create_content(content = "shiny")
 ```
 
-```{r, echo = FALSE}
-atc_package_content()
-cat("18   Cancel  ")
-cat("Enter the content number: ")
-```
+Available content options include:
 
-Enter the number to the left of the example in order to run it. For example, to open the `flexdashboard` example, type 3 and press enter. 
+- `"connectwidgets"` - Overview application listing all related content
+- `"dash"` - Python Dash dashboard
+- `"htmlwidgets"` - Interactive county-level plot
+- `"jupyter"` - Jupyter Notebook
+- `"plot"` - Static ggplot2 map of entire country
+- `"plumber-api"` - REST API with multiple endpoints
+- `"presentation"` - Quarto presentation
+- `"quarto-dashboard-r"` - Quarto dashboard by state
+- `"RMarkdown-html"` - HTML report with email template
+- `"RMarkdown-pdf"` - PDF report
+- `"shiny"` - Shiny application
 
-To run an example without the prompt, pass the `content_no` argument with the number.  Again, to open the `flexdashboard` use: 
+You can also specify a target directory:
 
 ```{r, eval = FALSE}
-atc_open_content(3)
-```
-
-### Copy example
-
-An example can be copied to your working directory by using `atc_copy_content()`.  It will create a new sub-folder and load the files for that particular example.
-
-It has the same interactive mechanism as the open example function.  
-
-```{r, eval = FALSE}
-atc_copy_content()
-```
-
-```{r, echo = FALSE}
-atc_package_content()
-cat("18   Cancel  ")
-cat("Enter the content number: ")
+create_content(target = "my-examples", content = "shiny")
 ```
 
 ### Copy all examples
 
-`atc_copy_all_content()` will copy all of the examples.  It will as many sub-folders as there are examples available.
+Copy all available examples at once:
+
+```{r, eval = FALSE}
+create_content(content = "all")
+```
+
+This will create a separate subfolder for each example in your target directory.
+
+### Force overwrite
+
+By default, `create_content()` skips folders that already exist. Use `force = TRUE` to overwrite:
+
+```{r, eval = FALSE}
+create_content(content = "shiny", force = TRUE)
+```
 
 

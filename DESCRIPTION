@@ -1,6 +1,6 @@
 Package: accesstocare
 Title: Example content of Access to Care project
-Version: 0.0.1.9012
+Version: 0.0.1.9013
 Authors@R: 
     person(given = "Edgar",
            family = "Ruiz",
@@ -20,6 +20,7 @@ Depends:
 Imports:
     crayon,
     fs,
+    cli,
     here,
     purrr,
     rsconnect,
