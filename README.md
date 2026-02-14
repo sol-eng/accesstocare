@@ -10,9 +10,9 @@ coverage](https://codecov.io/gh/sol-eng/accesstocare/graph/badge.svg)](https://a
 - [Analysis Background](#analysis-background)
 - [Installation](#installation)
 - [Usage](#usage)
-  - [Run an example](#run-an-example)
-  - [Copy example](#copy-example)
+  - [Copy a specific example](#copy-a-specific-example)
   - [Copy all examples](#copy-all-examples)
+  - [Force overwrite](#force-overwrite)
 
 ## Access to Care
 
@@ -43,104 +43,54 @@ pak::pak("sol-eng/accesstocare")
 library(accesstocare)
 ```
 
-To view the available examples, use `atc_packate_content()`. It returns
-a `list` object with all of the available content. It is presented in
-the console, or RMarkdown, as a table.
+The package includes multiple example data products demonstrating
+different ways to visualize and present the Access to Care analysis. Use
+`create_content()` to copy these examples to your working directory.
+
+### Copy a specific example
+
+Copy a single example by specifying its name:
 
 ``` r
-atc_package_content()
-#> No.  Name                      Type 
-#> 1    connectwidgets            Application 
-#> 2    dash                      Dashboard 
-#> 3    flexdashboard             Dashboard 
-#> 4    htmlwidgets               Plot 
-#> 5    jupyter                   Jupyter 
-#> 6    plot                      Plot 
-#> 7    plumber-api               REST API 
-#> 8    presentation              Presentation 
-#> 9    quarto-dashboard-r        Dashboard 
-#> 10   RMarkdown-DataPrep        Scheduled R Script 
-#> 11   RMarkdown-html            Report 
-#> 12   RMarkdown-pdf             Report 
-#> 13   shiny                     Application
+create_content(content = "shiny")
 ```
 
-There are three ways to use the examples:
+Available content options include:
 
-- Open an example in your RStudio session - `atc_open_content()`
-- Copy a single example to disk - `atc_copy_content()`
-- Copy all examples to disk - `atc_copy_all_content()`
+- `"connectwidgets"` - Overview application listing all related content
+- `"dash"` - Python Dash dashboard
+- `"htmlwidgets"` - Interactive county-level plot
+- `"jupyter"` - Jupyter Notebook
+- `"plot"` - Static ggplot2 map of entire country
+- `"plumber-api"` - REST API with multiple endpoints
+- `"presentation"` - Quarto presentation
+- `"quarto-dashboard-r"` - Quarto dashboard by state
+- `"RMarkdown-html"` - HTML report with email template
+- `"RMarkdown-pdf"` - PDF report
+- `"shiny"` - Shiny application
 
-### Run an example
-
-``` r
-atc_open_content()
-```
-
-    #> No.  Name                      Type 
-    #> 1    connectwidgets            Application 
-    #> 2    dash                      Dashboard 
-    #> 3    flexdashboard             Dashboard 
-    #> 4    htmlwidgets               Plot 
-    #> 5    jupyter                   Jupyter 
-    #> 6    plot                      Plot 
-    #> 7    plumber-api               REST API 
-    #> 8    presentation              Presentation 
-    #> 9    quarto-dashboard-r        Dashboard 
-    #> 10   RMarkdown-DataPrep        Scheduled R Script 
-    #> 11   RMarkdown-html            Report 
-    #> 12   RMarkdown-pdf             Report 
-    #> 13   shiny                     Application
-    #> 18   Cancel
-    #> Enter the content number:
-
-Enter the number to the left of the example in order to run it. For
-example, to open the `flexdashboard` example, type 3 and press enter.
-
-To run an example without the prompt, pass the `content_no` argument
-with the number. Again, to open the `flexdashboard` use:
+You can also specify a target directory:
 
 ``` r
-atc_open_content(3)
-```
-
-### Copy example
-
-An example can be copied to your working directory by using
-`atc_copy_content()`. It will create a new sub-folder and load the files
-for that particular example.
-
-It has the same interactive mechanism as the open example function.
-
-``` r
-atc_copy_content()
-```
-
-    #> No.  Name                      Type 
-    #> 1    connectwidgets            Application 
-    #> 2    dash                      Dashboard 
-    #> 3    flexdashboard             Dashboard 
-    #> 4    htmlwidgets               Plot 
-    #> 5    jupyter                   Jupyter 
-    #> 6    plot                      Plot 
-    #> 7    plumber-api               REST API 
-    #> 8    presentation              Presentation 
-    #> 9    quarto-dashboard-r        Dashboard 
-    #> 10   RMarkdown-DataPrep        Scheduled R Script 
-    #> 11   RMarkdown-html            Report 
-    #> 12   RMarkdown-pdf             Report 
-    #> 13   shiny                     Application
-    #> 18   Cancel
-    #> Enter the content number:
-
-To avoid the interactive menu, pass the number to the left of the
-example, as an argument of the function:
-
-``` r
-atc_copy_content(3) # Copies the `flexdashboard` folder
+create_content(target = "my-examples", content = "shiny")
 ```
 
 ### Copy all examples
 
-`atc_copy_all_content()` will copy all of the examples. It will as many
-sub-folders as there are examples available.
+Copy all available examples at once:
+
+``` r
+create_content(content = "all")
+```
+
+This will create a separate subfolder for each example in your target
+directory.
+
+### Force overwrite
+
+By default, `create_content()` skips folders that already exist. Use
+`force = TRUE` to overwrite:
+
+``` r
+create_content(content = "shiny", force = TRUE)
+```

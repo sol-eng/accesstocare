@@ -1,15 +1,12 @@
 url: https://sol-eng.github.io/accesstocare
 reference:
-- title: View examples
+- title: Content Management
   contents:
-  - atc_package_content
-  - starts_with("atc_open_")
-- title: Copy one or all examples
+  - create_content
+- title: Manifest Creation
   contents:
-  - starts_with("atc_copy_")
-- title: Write manifests
-  contents:
-  - starts_with("atc_write")
+  - write_manifest
+  - write_all_manifests
 - title: Plots
   contents:
   - starts_with("atc_plot")
@@ -20,5 +17,5 @@ reference:
 - title: Utilities
   contents:
   - format_number
+  - format_currency
   - palette_atc
-  - folder_content_metadata
