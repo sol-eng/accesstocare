@@ -10,6 +10,7 @@
 #' @import ggplot2
 #' @import ggiraph
 #' @import rlang
+#' @import cli
 #' @import fs
 
 NULL
