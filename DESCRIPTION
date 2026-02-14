@@ -28,7 +28,8 @@ Imports:
     rlang,
     tibble,
     yaml,
-    rstudioapi
+    rstudioapi,
+    htmlwidgets
 Suggests: 
     knitr,
     covr,

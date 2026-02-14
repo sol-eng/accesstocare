@@ -1,6 +1,7 @@
 #' @importFrom crayon cyan black blue red green magenta bold
 #' @importFrom purrr map keep walk set_names iwalk map_chr
 #' @importFrom rstudioapi navigateToFile
+#' @importFrom htmlwidgets saveWidget
 #' @importFrom tibble as_tibble tibble
 #' @importFrom rsconnect writeManifest
 #' @importFrom yaml read_yaml
