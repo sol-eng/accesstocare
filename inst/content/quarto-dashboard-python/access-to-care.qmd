@@ -19,6 +19,7 @@ warnings.filterwarnings('ignore')
 # Read data
 us_counties = pl.read_parquet("data/us_counties.parquet")
 us_states = pl.read_parquet("data/us_states.parquet")
+us_hex_positions = pl.read_parquet("data/us_hex_positions.parquet")
 
 # Prepare state list
 state_list = ["All US"] + sorted(us_states["state_name"].to_list())
@@ -33,6 +34,27 @@ def format_number(x):
         return f"{x/1_000:.1f}K"
     else:
         return str(int(x))
+
+def create_hex_polygons(centers_df, size=0.5):
+    """Create hexagon polygon coordinates from center points"""
+    import numpy as np
+
+    hexagons = []
+    for row in centers_df.iter_rows(named=True):
+        angles = np.linspace(np.pi/6, 2*np.pi + np.pi/6, 7)
+        hex_x = row['x'] + size * np.cos(angles)
+        hex_y = row['y'] + size * np.sin(angles)
+
+        for i in range(len(angles)):
+            hexagons.append({
+                'state': row['state'],
+                'state_name': row['state_name'],
+                'x': hex_x[i],
+                'y': hex_y[i],
+                'order': i
+            })
+
+    return pl.DataFrame(hexagons)
 ```
 
 # State info
@@ -66,7 +88,8 @@ def population_box():
         title="Population",
         value=format_number(total),
         showcase=ui.HTML('<i class="bi bi-person"></i>'),
-        theme="blue"
+        theme="blue",
+        showcase_layout="bottom"
     )
 ```
 
@@ -86,7 +109,8 @@ def hospitals_box():
         title="Hospitals",
         value=format_number(total),
         showcase=ui.HTML('<i class="bi bi-hospital"></i>'),
-        theme="teal"
+        theme="teal",
+        showcase_layout="bottom"
     )
 ```
 
@@ -105,7 +129,8 @@ def counties_box():
         title="Counties",
         value=str(len(data)),
         showcase=ui.HTML('<i class="bi bi-geo-alt"></i>'),
-        theme="green"
+        theme="green",
+        showcase_layout="bottom"
     )
 ```
 
@@ -125,7 +150,8 @@ def underserved_box():
         title="Underserved",
         value=str(len(below)),
         showcase=ui.HTML('<i class="bi bi-clipboard2-pulse"></i>'),
-        theme="pink"
+        theme="pink",
+        showcase_layout="bottom"
     )
 ```
 
@@ -165,53 +191,92 @@ def state_map():
     # Get selected state data
     selected = input.state()
 
-    if selected == "All US":
-        plot_data = us_states
-        title = "United States"
-    else:
-        plot_data = us_counties.filter(pl.col("state_name") == selected)
-        title = selected
-
     # Determine variable to plot
     view = input.view()
-    if view == "Population":
-        var = "population"
-        fill_label = "Population"
-    elif view == "No. of Hospitals":
-        var = "hospitals"
-        fill_label = "Hospitals"
-    elif view == "Below model":
-        plot_data = plot_data.filter(pl.col("pred_status") == "below")
-        var = "hospitals"
-        fill_label = "Underserved"
-    elif view == "Above model":
-        plot_data = plot_data.filter(pl.col("pred_status") == "above")
-        var = "hospitals"
-        fill_label = "Overserved"
-    else:
-        var = "hospitals"
-        fill_label = "Hospitals"
 
-    # Create simple bar plot (placeholder for map)
     if selected == "All US":
-        # State-level view
+        # Create hex map for US states
+        plot_data = us_states
+
+        if view == "Population":
+            var = "population"
+            fill_label = "Population"
+        elif view == "No. of Hospitals":
+            var = "hospitals"
+            fill_label = "Hospitals"
+        elif view == "Below model":
+            var = "below"
+            fill_label = "Underserved"
+        elif view == "Above model":
+            var = "above"
+            fill_label = "Overserved"
+        else:
+            var = "hospitals"
+            fill_label = "Hospitals"
+
+        # Join state data with hex positions
+        hex_data = us_hex_positions.join(
+            plot_data.select(["state", var]),
+            on="state",
+            how="left"
+        )
+
+        # Create hexagon polygons
+        hex_polygons = create_hex_polygons(hex_data)
+
+        # Join polygons with fill values
+        hex_plot_data = hex_polygons.join(
+            hex_data.select(["state", var]),
+            on="state",
+            how="left"
+        )
+
         p = (
-            ggplot(plot_data.to_pandas(), aes(x="state", y=var, fill=var)) +
-            geom_col() +
-            coord_flip() +
+            ggplot(hex_plot_data.to_pandas(), aes(x="x", y="y", group="state", fill=var)) +
+            geom_polygon(color="#cccccc", size=0.5) +
+            geom_text(
+                data=hex_data.to_pandas(),
+                mapping=aes(x="x", y="y", label="state"),
+                size=8,
+                color="black"
+            ) +
             scale_fill_gradient(low="#deebf7", high="#08519c") +
-            labs(title=f"{title} - {fill_label}", x="State", y=fill_label) +
-            theme_minimal() +
-            theme(figure_size=(10, 8))
+            coord_fixed() +
+            labs(title=f"United States - {fill_label}", fill=fill_label) +
+            theme_void() +
+            theme(
+                legend_position="bottom",
+                figure_size=(10, 6)
+            )
         )
     else:
-        # County-level view
+        # County-level bar plot
+        plot_data = us_counties.filter(pl.col("state_name") == selected)
+
+        if view == "Population":
+            var = "population"
+            fill_label = "Population"
+        elif view == "No. of Hospitals":
+            var = "hospitals"
+            fill_label = "Hospitals"
+        elif view == "Below model":
+            plot_data = plot_data.filter(pl.col("pred_status") == "below")
+            var = "hospitals"
+            fill_label = "Underserved"
+        elif view == "Above model":
+            plot_data = plot_data.filter(pl.col("pred_status") == "above")
+            var = "hospitals"
+            fill_label = "Overserved"
+        else:
+            var = "hospitals"
+            fill_label = "Hospitals"
+
         p = (
             ggplot(plot_data.to_pandas(), aes(x="county_name", y=var, fill=var)) +
             geom_col() +
             coord_flip() +
             scale_fill_gradient(low="#deebf7", high="#08519c") +
-            labs(title=f"{title} Counties - {fill_label}", x="County", y=fill_label) +
+            labs(title=f"{selected} Counties - {fill_label}", x="County", y=fill_label) +
             theme_minimal() +
             theme(figure_size=(10, 8))
         )

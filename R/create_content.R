@@ -53,6 +53,7 @@ create_content <- function(
       if (content_name == "quarto-dashboard-python" && (folder_created || dir_exists(dest))) {
         export_data_parquet("us_counties", dest, silent = silent)
         export_data_parquet("us_states", dest, silent = silent)
+        export_data_parquet("us_hex_positions", dest, silent = silent)
       }
     }
   }

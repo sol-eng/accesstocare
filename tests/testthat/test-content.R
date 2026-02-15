@@ -22,8 +22,8 @@ test_that("create_content copies all content", {
     silent = TRUE
   )
 
-  # Should have 12 inst/content folders + plot + htmlwidgets
-  expect_gte(length(dir(temp_dir)), 11)
+  # Should have 13 inst/content folders + plot + htmlwidgets (dynamically generated)
+  expect_gte(length(dir(temp_dir)), 12)
 
   unlink(temp_dir, recursive = TRUE, force = TRUE)
 })
@@ -121,6 +121,27 @@ test_that("create_content exports parquet for dash", {
   expect_true(dir.exists(file.path(temp_dir, "dash")))
   expect_true(dir.exists(file.path(temp_dir, "dash", "data")))
   expect_true(file.exists(file.path(temp_dir, "dash", "data", "us_counties.parquet")))
+
+  unlink(temp_dir, recursive = TRUE, force = TRUE)
+})
+
+test_that("create_content exports parquet for quarto-dashboard-python", {
+  skip_if_not_installed("arrow")
+
+  temp_dir <- paste0(tempdir(), "/create-quarto-python")
+
+  create_content(
+    target = temp_dir,
+    content = "quarto-dashboard-python",
+    silent = TRUE
+  )
+
+  expect_true(dir.exists(file.path(temp_dir, "quarto-dashboard-python")))
+  expect_true(dir.exists(file.path(temp_dir, "quarto-dashboard-python", "data")))
+  expect_true(file.exists(file.path(temp_dir, "quarto-dashboard-python", "data", "us_counties.parquet")))
+  expect_true(file.exists(file.path(temp_dir, "quarto-dashboard-python", "data", "us_states.parquet")))
+  expect_true(file.exists(file.path(temp_dir, "quarto-dashboard-python", "data", "us_hex_positions.parquet")))
+  expect_true(file.exists(file.path(temp_dir, "quarto-dashboard-python", "access-to-care.qmd")))
 
   unlink(temp_dir, recursive = TRUE, force = TRUE)
 })
