@@ -11,7 +11,6 @@ server: shiny
 #| context: setup
 import polars as pl
 import plotly.graph_objects as go
-import plotly.express as px
 from shiny import render, reactive, ui as core_ui
 from shiny.express import input, ui
 from shinywidgets import render_plotly
@@ -25,7 +24,6 @@ us_states = pl.read_parquet("data/us_states.parquet")
 us_hex_positions = pl.read_parquet("data/us_hex_positions.parquet")
 us_atc_county_polygons = pl.read_parquet("data/us_atc_county_polygons.parquet")
 us_large_cities = pl.read_parquet("data/us_large_cities.parquet")
-us_hospitals = pl.read_parquet("data/us_hospitals.parquet")
 
 # Add below/above counts to us_states
 below_counts = (
@@ -218,38 +216,23 @@ ui.tags.p(
 # Add JavaScript to capture Plotly click events
 ui.tags.script(ui.HTML("""
 $(document).on('shiny:connected', function() {
-    console.log('Shiny connected, setting up plotly click handlers');
-
     function attachClickHandler() {
         var plotlyDivs = document.querySelectorAll('.js-plotly-plot');
-        console.log('Found plotly divs:', plotlyDivs.length);
 
-        plotlyDivs.forEach(function(plot, index) {
-            console.log('Attaching handler to plot', index, plot.id);
+        plotlyDivs.forEach(function(plot) {
             plot.on('plotly_click', function(data) {
-                console.log('Plot clicked! Full data:', data);
                 if (data.points && data.points.length > 0) {
                     var point = data.points[0];
-                    console.log('Point object keys:', Object.keys(point));
-                    console.log('Full point:', point);
-                    console.log('customdata:', point.customdata);
-                    console.log('data:', point.data);
-                    console.log('fullData:', point.fullData);
 
                     var customdata = point.customdata ||
                                    (point.data && point.data.customdata) ||
                                    (point.fullData && point.fullData.customdata);
 
-                    console.log('Resolved customdata:', customdata);
-
-                    // If customdata is an array of arrays, take the first element
                     if (customdata && Array.isArray(customdata) && customdata.length > 0) {
                         customdata = customdata[0];
-                        console.log('Using first customdata element:', customdata);
                     }
 
                     var traceName = point.data ? point.data.name : null;
-                    console.log('Trace name:', traceName);
 
                     Shiny.setInputValue('map_clicked', {
                         customdata: customdata,
@@ -261,16 +244,12 @@ $(document).on('shiny:connected', function() {
         });
     }
 
-    // Initial attachment
     attachClickHandler();
     setTimeout(attachClickHandler, 500);
     setTimeout(attachClickHandler, 1500);
 
-    // Re-attach after any Shiny output update
     $(document).on('shiny:value', function(event) {
         if (event.name === 'state_map') {
-            console.log('Map updated, re-attaching click handlers');
-            // Reset the flag for all plots
             document.querySelectorAll('.js-plotly-plot').forEach(function(plot) {
                 plot._clickHandlerAttached = false;
             });
@@ -325,8 +304,8 @@ def state_map():
         for _, state_row in hex_data.iterrows():
             # Create hexagon coordinates
             angles = np.linspace(np.pi/6, 2*np.pi + np.pi/6, 7)
-            hex_x = state_row['x'] + 0.5 * np.cos(angles)
-            hex_y = state_row['y'] + 0.5 * np.sin(angles)
+            hex_x = state_row['x'] + 0.58 * np.cos(angles)
+            hex_y = state_row['y'] + 0.58 * np.sin(angles)
 
             # Normalize value for color
             val = state_row[var]
@@ -500,142 +479,6 @@ def state_map():
     return fig
 ```
 
-# Model {orientation="columns" scrolling="true"}
-
-## Column
-
-::: {.card title="Population vs No. of Hospitals"}
-
-```{python}
-@render_plotly
-def pop_plot():
-    pop_limit = input.pop_slider()
-
-    # Filter counties by population
-    plot_data = us_counties.filter(pl.col("population") <= pop_limit).to_pandas()
-
-    fig = go.Figure()
-
-    # Add scatter points
-    fig.add_trace(go.Scatter(
-        x=plot_data['population'],
-        y=plot_data['hospitals'],
-        mode='markers',
-        marker=dict(
-            size=5,
-            color='#0072B2',
-            opacity=0.6
-        ),
-        hovertemplate='<b>%{customdata[0]}</b><br>Population: %{x:,.0f}<br>Hospitals: %{y}<extra></extra>',
-        customdata=plot_data[['county_name']].values,
-        showlegend=False
-    ))
-
-    fig.update_layout(
-        title=f"Population vs. Number of Hospitals (Population ≤ {format_number(pop_limit)})",
-        xaxis_title="Population",
-        yaxis_title="Number of Hospitals",
-        hovermode="closest",
-        height=500,
-        plot_bgcolor="white",
-        xaxis=dict(gridcolor="#eeeeee"),
-        yaxis=dict(gridcolor="#eeeeee")
-    )
-
-    return fig
-
-ui.input_slider(
-    id="pop_slider",
-    label="Population",
-    min=0,
-    max=11000000,
-    value=11000000,
-    step=1000000,
-    width="700px"
-)
-```
-
-There was a high degree of correlation between the county's population and the number of hospitals
-
-:::
-
-## Column
-
-::: {.card title="Identifying underserved counties"}
-
-```{python}
-@render_plotly
-def pop_plot_model():
-    plot_data = us_counties.to_pandas()
-
-    # Fit simple linear model for display
-    from sklearn.linear_model import LinearRegression
-    X = plot_data[['population']].values
-    y = plot_data['hospitals'].values
-    model = LinearRegression()
-    model.fit(X, y)
-
-    # Create prediction line
-    x_range = np.linspace(0, plot_data['population'].max(), 100)
-    y_pred = model.predict(x_range.reshape(-1, 1))
-
-    fig = go.Figure()
-
-    # Add scatter points colored by status
-    color_map = {"above": "#0072B2", "below": "#CC79A7", "ok": "#009E73"}
-    label_map = {"above": "Above Model", "below": "Below Model", "ok": "At Expected Level"}
-
-    for status in ['below', 'ok', 'above']:
-        status_data = plot_data[plot_data['pred_status'] == status]
-        fig.add_trace(go.Scatter(
-            x=status_data['population'],
-            y=status_data['hospitals'],
-            mode='markers',
-            marker=dict(
-                size=5,
-                color=color_map[status],
-                opacity=0.6
-            ),
-            name=label_map[status],
-            hovertemplate='<b>%{customdata[0]}</b><br>Population: %{x:,.0f}<br>Hospitals: %{y}<br>Status: ' + label_map[status] + '<extra></extra>',
-            customdata=status_data[['county_name']].values
-        ))
-
-    # Add model line
-    fig.add_trace(go.Scatter(
-        x=x_range,
-        y=y_pred,
-        mode='lines',
-        line=dict(color='black', width=2, dash='dash'),
-        name='Model Prediction',
-        hoverinfo='skip'
-    ))
-
-    fig.update_layout(
-        title="Population vs. Number of Hospitals with Model",
-        xaxis_title="Population",
-        yaxis_title="Number of Hospitals",
-        hovermode="closest",
-        height=500,
-        plot_bgcolor="white",
-        xaxis=dict(gridcolor="#eeeeee"),
-        yaxis=dict(gridcolor="#eeeeee"),
-        legend=dict(
-            orientation="h",
-            yanchor="bottom",
-            y=1.02,
-            xanchor="right",
-            x=1
-        )
-    )
-
-    return fig
-```
-
-Fitted a model to estimate how many hospitals should be in a county
-
-:::
-
 ```{python}
 @reactive.effect
 def _():
@@ -645,21 +488,18 @@ def _():
     from shiny import ui as update_ui
     update_ui.update_select("state", selected="All US")
 
-# Handle map clicks for drill-down using custom JavaScript event
+# Handle map clicks for drill-down
 @reactive.effect
 def _():
     try:
-        # Get the custom click event from JavaScript
         click_data = input.map_clicked()
 
         if not click_data:
             return
 
-        # Try to get customdata or use traceName as fallback
         customdata = click_data.get("customdata")
         trace_name = click_data.get("traceName")
 
-        # If no customdata but we have trace name, use that
         if customdata is None and trace_name:
             clicked_value = trace_name
         elif customdata:
@@ -667,48 +507,10 @@ def _():
         else:
             return
 
-        # Check if it's a state name (for US map)
+        # Check if it's a state name (for US map) - drill down to that state
         if str(clicked_value) in state_list:
             from shiny import ui as update_ui
             update_ui.update_select("state", selected=str(clicked_value))
-        # Check if it's a FIPS code (for county map)
-        else:
-            fips_str = str(clicked_value).strip()
-            county_hospitals = us_hospitals.filter(pl.col("fips") == fips_str)
-
-            if len(county_hospitals) > 0:
-                county_name = county_hospitals["county_name"][0]
-                hosp_df = county_hospitals.select([
-                    "facility_name", "city"
-                ]).sort("city", "facility_name").to_pandas()
-
-                if len(hosp_df) == 0:
-                    table_html = "<p style='padding: 20px;'>No hospitals found in this county.</p>"
-                else:
-                    hosp_df.insert(0, "No.", range(1, len(hosp_df) + 1))
-                    table_html = "<table style='width:100%; border-collapse: collapse; font-size: 14px;'>"
-                    table_html += "<thead><tr style='background-color: #f0f0f0;'>"
-                    table_html += "<th style='padding: 8px; text-align: left; border-bottom: 2px solid #ddd;'></th>"
-                    table_html += "<th style='padding: 8px; text-align: left; border-bottom: 2px solid #ddd;'><strong>Hospital Name</strong></th>"
-                    table_html += "<th style='padding: 8px; text-align: left; border-bottom: 2px solid #ddd;'><strong>City</strong></th>"
-                    table_html += "</tr></thead><tbody>"
-
-                    for idx, row in hosp_df.iterrows():
-                        table_html += "<tr style='border-bottom: 1px solid #ddd;'>"
-                        table_html += f"<td style='padding: 8px;'>{row['No.']}</td>"
-                        table_html += f"<td style='padding: 8px;'>{row['facility_name']}</td>"
-                        table_html += f"<td style='padding: 8px;'>{row['city']}</td>"
-                        table_html += "</tr>"
-
-                    table_html += "</tbody></table>"
-
-                m = core_ui.modal(
-                    core_ui.HTML(table_html),
-                    title=county_name,
-                    easy_close=True,
-                    size="l"
-                )
-                core_ui.modal_show(m)
     except Exception as e:
         pass
 ```
