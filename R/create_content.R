@@ -60,6 +60,7 @@ create_content <- function(
         export_data_parquet("us_hex_positions", dest, silent = silent)
         export_data_parquet("us_atc_county_polygons", dest, silent = silent)
         export_data_parquet("us_large_cities", dest, silent = silent)
+        export_data_parquet("us_hospitals", dest, silent = silent)
       }
     }
   }

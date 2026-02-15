@@ -1,0 +1,6 @@
+polars
+plotly
+shiny
+shinywidgets
+scikit-learn
+numpy
