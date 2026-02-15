@@ -3,10 +3,9 @@ reference:
 - title: Content Management
   contents:
   - create_content
-- title: Manifest Creation
+- title: Git-Backed Deployment
   contents:
-  - write_manifest
-  - write_all_manifests
+  - prepare_git_backed
 - title: Plots
   contents:
   - starts_with("atc_plot")
