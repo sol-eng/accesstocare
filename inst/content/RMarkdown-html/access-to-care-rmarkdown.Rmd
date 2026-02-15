@@ -9,7 +9,9 @@ params:
     input: select
     label: 'State:'
     value: California
-output: html_document
+output:
+  html_document:
+    css: custom-style.css
 ---
 
 ```{r, include=FALSE}

@@ -1,8 +1,8 @@
 ---
-title: "Access to Care - Dashboard"
+title: "Access to Care"
 format:
   dashboard:
-    theme: lumen
+    theme: custom-theme.scss
     expandable: false
 server: shiny
 ---
