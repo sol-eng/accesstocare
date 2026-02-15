@@ -38,7 +38,11 @@ create_content <- function(
       dest <- path(target, content_name)
       folder_created <- FALSE
 
-      if (!dir_exists(dest) || force) {
+      if (!dir_exists(dest)) {
+        dir_copy(folder, dest)
+        folder_created <- TRUE
+      } else if (force) {
+        dir_delete(dest)
         dir_copy(folder, dest)
         folder_created <- TRUE
       } else if (!silent) {
@@ -59,7 +63,16 @@ create_content <- function(
   }
   if (content %in% c("all", "plot")) {
     dest_folder <- path(target, "plot")
-    if (!dir_exists(dest_folder) || force) {
+    if (!dir_exists(dest_folder)) {
+      p <- atc_plot_state_map("All US", top_cities = 0)
+      dir_create(dest_folder)
+      ggsave(plot = p, filename = path(dest_folder, "map.png"))
+      writeLines(
+        "<img src=map.png width = 1000>",
+        con = path(dest_folder, "map.html")
+      )
+    } else if (force) {
+      dir_delete(dest_folder)
       p <- atc_plot_state_map("All US", top_cities = 0)
       dir_create(dest_folder)
       ggsave(plot = p, filename = path(dest_folder, "map.png"))
@@ -73,7 +86,13 @@ create_content <- function(
   }
   if (content %in% c("all", "htmlwidgets")) {
     dest_folder <- path(target, "htmlwidgets")
-    if (!dir_exists(dest_folder) || force) {
+    if (!dir_exists(dest_folder)) {
+      p <- atc_plot_state_map("All US", top_cities = 0)
+      gp <- girafe(ggobj = p)
+      dir_create(dest_folder)
+      saveWidget(gp, path(dest_folder, "map.html"))
+    } else if (force) {
+      dir_delete(dest_folder)
       p <- atc_plot_state_map("All US", top_cities = 0)
       gp <- girafe(ggobj = p)
       dir_create(dest_folder)
