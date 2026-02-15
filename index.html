@@ -50,9 +50,6 @@
   </a>
   <ul class="dropdown-menu" role="menu">
 <li>
-      <a href="articles/manifests.html">RStudio Connect Git Manifests</a>
-    </li>
-    <li>
       <a href="articles/plots.html">Interactive plots</a>
     </li>
   </ul>
@@ -80,27 +77,32 @@
 
 
 <ul>
-<li><a href="#access-to-care">Access to Care</a></li>
+<li><a href="#introduction">Introduction</a></li>
 <li><a href="#analysis-background">Analysis Background</a></li>
 <li><a href="#installation">Installation</a></li>
 <li>
 <a href="#usage">Usage</a>
 <ul>
 <li><a href="#copy-a-specific-example">Copy a specific example</a></li>
-<li><a href="#copy-all-examples">Copy all examples</a></li>
 <li><a href="#force-overwrite">Force overwrite</a></li>
+</ul>
+</li>
+<li>
+<a href="#publishing-to-posit-connect">Publishing to Posit Connect</a>
+<ul>
+<li><a href="#git-backed-deployment">Git-backed deployment</a></li>
 </ul>
 </li>
 </ul>
 <div class="section level2">
-<h2 id="access-to-care">Access to Care<a class="anchor" aria-label="anchor" href="#access-to-care"></a>
+<h2 id="introduction">Introduction<a class="anchor" aria-label="anchor" href="#introduction"></a>
 </h2>
 <p>An R package to make it easy to view, copy, interact and publish the data products resulting from the Access to Care analysis. It also contains handy utility functions, and the data needed to create a consistent set of examples across the multiple data product types.</p>
 </div>
 <div class="section level2">
 <h2 id="analysis-background">Analysis Background<a class="anchor" aria-label="anchor" href="#analysis-background"></a>
 </h2>
-<p>This project combines US Census population data with hospital data provided by Medicare. The Census data is as of 2024, and the hospital Medicare date is as of 2025. The analysis uses individual counties as the unit of measurement. A county is considered undeserved based on a linear model.</p>
+<p>This project combines US Census population data with hospital data provided by Medicare. The Census data is as of 2024, and the hospital Medicare data is as of 2025. The analysis uses individual counties as the unit of measurement. A county is considered underserved based on a linear model that compares the number of hospitals to the population.</p>
 </div>
 <div class="section level2">
 <h2 id="installation">Installation<a class="anchor" aria-label="anchor" href="#installation"></a>
@@ -115,11 +117,16 @@
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://sol-eng.github.io/accesstocare">accesstocare</a></span><span class="op">)</span></span></code></pre></div>
 <p>The package includes multiple example data products demonstrating different ways to visualize and present the Access to Care analysis. Use <code><a href="reference/create_content.html">create_content()</a></code> to copy these examples to your working directory.</p>
+<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="reference/create_content.html">create_content</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
+<p>This will create a separate subfolder for each example in your current working directory. Currently, there are 11 examples available. You can also specify a target directory:</p>
+<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="reference/create_content.html">create_content</a></span><span class="op">(</span>target <span class="op">=</span> <span class="st">"my-examples"</span><span class="op">)</span></span></code></pre></div>
 <div class="section level3">
 <h3 id="copy-a-specific-example">Copy a specific example<a class="anchor" aria-label="anchor" href="#copy-a-specific-example"></a>
 </h3>
-<p>Copy a single example by specifying its name:</p>
-<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
+<p>If you wish to copy a specific example, specify its name:</p>
+<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="reference/create_content.html">create_content</a></span><span class="op">(</span>content <span class="op">=</span> <span class="st">"shiny"</span><span class="op">)</span></span></code></pre></div>
 <p>Available content options include:</p>
 <ul>
@@ -130,13 +137,13 @@
 <li>
 <code>"htmlwidgets"</code> - Interactive county-level plot</li>
 <li>
-<code>"jupyter"</code> - Jupyter Notebook</li>
-<li>
 <code>"plot"</code> - Static ggplot2 map of entire country</li>
 <li>
 <code>"plumber-api"</code> - REST API with multiple endpoints</li>
 <li>
 <code>"presentation"</code> - Quarto presentation</li>
+<li>
+<code>"quarto-dashboard-python"</code> - Quarto dashboard with Python, Polars, and Plotnine</li>
 <li>
 <code>"quarto-dashboard-r"</code> - Quarto dashboard by state</li>
 <li>
@@ -146,17 +153,6 @@
 <li>
 <code>"shiny"</code> - Shiny application</li>
 </ul>
-<p>You can also specify a target directory:</p>
-<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu"><a href="reference/create_content.html">create_content</a></span><span class="op">(</span>target <span class="op">=</span> <span class="st">"my-examples"</span>, content <span class="op">=</span> <span class="st">"shiny"</span><span class="op">)</span></span></code></pre></div>
-</div>
-<div class="section level3">
-<h3 id="copy-all-examples">Copy all examples<a class="anchor" aria-label="anchor" href="#copy-all-examples"></a>
-</h3>
-<p>Copy all available examples at once:</p>
-<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu"><a href="reference/create_content.html">create_content</a></span><span class="op">(</span>content <span class="op">=</span> <span class="st">"all"</span><span class="op">)</span></span></code></pre></div>
-<p>This will create a separate subfolder for each example in your target directory.</p>
 </div>
 <div class="section level3">
 <h3 id="force-overwrite">Force overwrite<a class="anchor" aria-label="anchor" href="#force-overwrite"></a>
@@ -164,6 +160,33 @@
 <p>By default, <code><a href="reference/create_content.html">create_content()</a></code> skips folders that already exist. Use <code>force = TRUE</code> to overwrite:</p>
 <div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="reference/create_content.html">create_content</a></span><span class="op">(</span>content <span class="op">=</span> <span class="st">"shiny"</span>, force <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></code></pre></div>
+</div>
+</div>
+<div class="section level2">
+<h2 id="publishing-to-posit-connect">Publishing to Posit Connect<a class="anchor" aria-label="anchor" href="#publishing-to-posit-connect"></a>
+</h2>
+<p>The examples in this package can be published to Posit Connect using the standard push-button deployment from RStudio IDE. However, if you prefer to use Git-backed deployment, the package provides a helper function to create the necessary deployment files.</p>
+<div class="section level3">
+<h3 id="git-backed-deployment">Git-backed deployment<a class="anchor" aria-label="anchor" href="#git-backed-deployment"></a>
+</h3>
+<p><a href="https://docs.posit.co/connect/user/git-backed/" class="external-link">Git-backed deployment</a> is a Posit Connect feature that automatically deploys and updates your content directly from a Git repository. Instead of pushing content from your local machine, Connect pulls the latest code from your Git repository whenever you commit changes. This enables seamless CI/CD workflows and ensures your published content always matches what’s in version control.</p>
+<p><strong>Note:</strong> Using <code><a href="reference/create_git_backed.html">create_git_backed()</a></code> is only necessary if you want to use Git-backed deployment. If you plan to publish manually using an IDE such as RStudio or Positron, you can skip this step.</p>
+<p>To prepare content for Git-backed deployment, use the <code><a href="reference/create_git_backed.html">create_git_backed()</a></code> function:</p>
+<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="co"># Prepare a single folder</span></span>
+<span><span class="fu"><a href="reference/create_git_backed.html">create_git_backed</a></span><span class="op">(</span><span class="st">"my-examples/shiny"</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># Prepare all subfolders in a directory</span></span>
+<span><span class="co"># This will detect subfolders with deployable content and create necessary files for each</span></span>
+<span><span class="fu"><a href="reference/create_git_backed.html">create_git_backed</a></span><span class="op">(</span><span class="st">"my-examples"</span><span class="op">)</span></span></code></pre></div>
+<p>The function intelligently determines what to do:</p>
+<ul>
+<li>
+<strong>Single folder with content</strong>: If the folder contains a deployable file (like app.R, .Rmd, .qmd, etc.), it creates the necessary deployment files for that folder.</li>
+<li>
+<strong>Folder with subfolders</strong>: If the folder doesn’t contain deployable content but its subfolders do, it will create the necessary files for all qualifying subfolders. In interactive sessions, it will prompt you before executing.</li>
+</ul>
+<p>Once the deployment files are created, commit them to your Git repository along with your content, and configure Posit Connect to deploy from your repository. See the <a href="https://docs.posit.co/connect/user/git-backed/" class="external-link">official Git-backed deployment documentation</a> for complete setup instructions.</p>
 </div>
 </div>
 
