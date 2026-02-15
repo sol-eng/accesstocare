@@ -67,10 +67,14 @@ prepare_git_backed <- function(
 
   # If interactive, prompt for confirmation
   if (interactive() && !silent) {
-    cli_alert_info("Found {length(folders_with_primary)} subfolder{?s} with primary documents:")
+    cli_alert_info(
+      "Found {length(folders_with_primary)} subfolder{?s} with primary documents:"
+    )
     walk(folders_with_primary, ~ cli_text("  - {path_file(.x)}"))
 
-    response <- readline(prompt = "Create manifests for all subfolders? (y/n): ")
+    response <- readline(
+      prompt = "Create manifests for all subfolders? (y/n): "
+    )
     if (!tolower(response) %in% c("y", "yes")) {
       cli_alert_info("Cancelled")
       return(invisible(NULL))
@@ -101,7 +105,9 @@ prepare_git_backed <- function(
   )
 
   if (!silent) {
-    cli_alert_success("Created {sum(result_table$created == 'YES')} manifest{?s}")
+    cli_alert_success(
+      "Created {sum(result_table$created == 'YES')} manifest{?s}"
+    )
   }
 
   invisible(result_table)
@@ -155,17 +161,31 @@ create_single_manifest <- function(
     cli_alert("Compiling manifest...")
   }
 
-  app_mode <- NULL
-  if (primary_doc == "plumber.R") {
-    app_mode <- "api"
+  # Check if this is a Python Dash app
+  folder_name <- path_file(full_path)
+  if (folder_name == "dash" && primary_doc == "app.py") {
+    # Use reticulate::uv_run_tool for Python Dash apps
+    cmd <- paste("write-manifest", folder_name, full_path)
+    reticulate::uv_run_tool(
+      "rsconnect",
+      cmd,
+      with = c("dash", "plotly", "polars")
+    )
+  } else {
+    # Use rsconnect::writeManifest for R content
+    app_mode <- NULL
+    if (primary_doc == "plumber.R") {
+      app_mode <- "api"
+    }
+
+    rsconnect::writeManifest(
+      appDir = full_path,
+      appFiles = app_file_names,
+      appPrimaryDoc = primary_doc,
+      appMode = app_mode
+    )
   }
 
-  rsconnect::writeManifest(
-    appDir = full_path,
-    appFiles = app_file_names,
-    appPrimaryDoc = primary_doc,
-    appMode = app_mode
-  )
   if (!silent) {
     cli_alert_success("Manifest complete")
   }

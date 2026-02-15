@@ -6,6 +6,7 @@
 #' @importFrom yaml read_yaml
 #' @importFrom stats predict
 #' @importFrom here here
+#' @importFrom reticulate uv_run_tool
 #' @import ggplot2
 #' @import ggiraph
 #' @import rlang

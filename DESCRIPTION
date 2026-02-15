@@ -30,7 +30,8 @@ Imports:
     yaml,
     rstudioapi,
     htmlwidgets,
-    arrow
+    arrow,
+    reticulate
 Suggests: 
     knitr,
     covr,
