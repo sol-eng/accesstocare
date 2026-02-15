@@ -22,8 +22,8 @@ test_that("create_content copies all content", {
     silent = TRUE
   )
 
-  # Should have 13 inst/content folders + plot + htmlwidgets (dynamically generated)
-  expect_gte(length(dir(temp_dir)), 12)
+  # Should have 9 inst/content folders + plot + htmlwidgets (dynamically generated) = 11 total
+  expect_gte(length(dir(temp_dir)), 11)
 
   unlink(temp_dir, recursive = TRUE, force = TRUE)
 })

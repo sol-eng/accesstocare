@@ -171,6 +171,14 @@ create_single_manifest <- function(
       cmd,
       with = c("dash", "plotly", "polars")
     )
+  } else if (folder_name == "quarto-dashboard-python" && grepl("\\.qmd$", primary_doc)) {
+    # Use reticulate::uv_run_tool for Quarto Python dashboards
+    cmd <- paste("write-manifest", folder_name, full_path)
+    reticulate::uv_run_tool(
+      "rsconnect",
+      cmd,
+      with = c("polars", "plotly", "shiny", "shinywidgets", "numpy")
+    )
   } else {
     # Use rsconnect::writeManifest for R content
     app_mode <- NULL
@@ -199,7 +207,7 @@ create_single_manifest <- function(
 
 primary_docs <- function(full_path) {
   pf <- map(
-    c("*.Rmd", "*.py", "*app.R", "*.ipynb", "*plumber.R", "*map.html"),
+    c("*.Rmd", "*.qmd", "*.py", "*app.R", "*.ipynb", "*plumber.R", "*map.html"),
     ~ {
       dl <- dir_ls(full_path, glob = .x)
       path_file(dl)
