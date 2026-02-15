@@ -95,10 +95,35 @@ $card-border-color: $border-color;
   }
 }
 
-// Value boxes - do not override bslib defaults, just add subtle enhancements
+// Value boxes - override showcase-bottom to show icon on right middle
 .bslib-value-box {
   border-radius: 8px;
   box-shadow: 0 2px 4px rgba(0,0,0,0.08);
+
+  // Override showcase-bottom to position icon on right middle
+  &.showcase-bottom .value-box-grid {
+    grid-template-columns: 1fr auto !important;
+    grid-template-rows: 1fr !important;
+    grid-template-areas: "left right" !important;
+
+    .value-box-showcase {
+      grid-area: right !important;
+      align-self: center !important;
+      padding: 1rem !important;
+      margin: 0 !important;
+      height: auto !important;
+
+      .bi {
+        font-size: 3rem;
+        opacity: 0.85;
+      }
+    }
+
+    .value-box-area {
+      grid-area: left !important;
+      align-self: center !important;
+    }
+  }
 }
 
 // Cards
