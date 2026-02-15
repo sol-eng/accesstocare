@@ -21,6 +21,23 @@ us_counties = pl.read_parquet("data/us_counties.parquet")
 us_states = pl.read_parquet("data/us_states.parquet")
 us_hex_positions = pl.read_parquet("data/us_hex_positions.parquet")
 
+# Add below/above counts to us_states
+below_counts = (
+    us_counties.filter(pl.col("pred_status") == "below")
+    .group_by("state")
+    .agg(pl.count().alias("below"))
+)
+above_counts = (
+    us_counties.filter(pl.col("pred_status") == "above")
+    .group_by("state")
+    .agg(pl.count().alias("above"))
+)
+us_states = us_states.join(below_counts, on="state", how="left").join(above_counts, on="state", how="left")
+us_states = us_states.with_columns([
+    pl.col("below").fill_null(0),
+    pl.col("above").fill_null(0)
+])
+
 # Prepare state list
 state_list = ["All US"] + sorted(us_states["state_name"].to_list())
 
