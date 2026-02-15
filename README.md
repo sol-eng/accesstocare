@@ -53,7 +53,7 @@ create_content()
 ```
 
 This will create a separate subfolder for each example in your current
-working directory. Currently, there are 12 examples available. You can
+working directory. Currently, there are 11 examples available. You can
 also specify a target directory:
 
 ``` r
@@ -73,7 +73,6 @@ Available content options include:
 - `"connectwidgets"` - Overview application listing all related content
 - `"dash"` - Python Dash dashboard
 - `"htmlwidgets"` - Interactive county-level plot
-- `"jupyter"` - Jupyter Notebook
 - `"plot"` - Static ggplot2 map of entire country
 - `"plumber-api"` - REST API with multiple endpoints
 - `"presentation"` - Quarto presentation

@@ -42,7 +42,7 @@ atc_content <- atc_content |>
   mutate(
     title = str_remove(title, "Access to Care - "),
     type = case_when(
-      str_detect(title, "Jupyter|RNotebook") ~ "Notebook",
+      str_detect(title, "RNotebook") ~ "Notebook",
       content_category == "pin" & str_detect(title, "Model") ~ "Model",
       content_category == "pin" ~ "Data",
       str_detect(title, " Prep") ~ "Script",
@@ -55,7 +55,6 @@ atc_content <- atc_content |>
       TRUE ~ "Other"
     ),
     language = case_when(
-      str_detect(title, "Jupyter") ~ "python",
       str_detect(app_mode, "python") ~ "python",
       TRUE ~ "R"
     )

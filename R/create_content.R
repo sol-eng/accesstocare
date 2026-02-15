@@ -4,7 +4,7 @@
 #' Defaults to current directory.
 #' @param content Which content to copy. Can be "all" to copy everything, or
 #' a specific content name. Available options include: "connectwidgets", "dash",
-#' "htmlwidgets", "jupyter", "plot", "plumber-api", "presentation",
+#' "htmlwidgets", "plot", "plumber-api", "presentation",
 #' "quarto-dashboard-python", "quarto-dashboard-r", "RMarkdown-html", "RMarkdown-pdf", "shiny".
 #' @param force If TRUE, overwrites existing folders. If FALSE (default), skips
 #' existing folders.
@@ -17,7 +17,6 @@ create_content <- function(
     "connectwidgets",
     "dash",
     "htmlwidgets",
-    "jupyter",
     "plot",
     "plumber-api",
     "presentation",
