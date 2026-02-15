@@ -2,7 +2,7 @@
 title: "Access to Care - Dashboard"
 format: 
   dashboard:
-    theme: lumen
+    theme: custom-theme.scss
     expandable: false
 server: shiny
 ---
@@ -51,8 +51,7 @@ value_box(
   title = "Population",
   value = textOutput("population"),
   showcase = bs_icon("person"),
-  showcase_layout = showcase_vals,
-  theme = "blue"
+  showcase_layout = showcase_vals
 )
 ```
 
@@ -75,8 +74,7 @@ value_box(
   title = "Counties",
   value = textOutput("counties"),
   showcase = bs_icon("geo-alt"),
-  showcase_layout = showcase_vals,
-  theme = "green"
+  showcase_layout = showcase_vals
 )
 ```
 
@@ -87,8 +85,7 @@ value_box(
   title = "Underserved",
   value = textOutput("underserved"),
   showcase = bs_icon("clipboard2-pulse"),
-  showcase_layout = showcase_vals,
-  theme = "pink"
+  showcase_layout = showcase_vals
 )
 ```
 

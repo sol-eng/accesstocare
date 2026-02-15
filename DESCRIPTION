@@ -18,7 +18,6 @@ RoxygenNote: 7.3.3
 Depends: 
     R (>= 3.5)
 Imports:
-    crayon,
     fs,
     cli,
     here,
@@ -30,7 +29,9 @@ Imports:
     tibble,
     yaml,
     rstudioapi,
-    htmlwidgets
+    htmlwidgets,
+    arrow,
+    reticulate
 Suggests: 
     knitr,
     covr,

@@ -6,15 +6,16 @@
 coverage](https://codecov.io/gh/sol-eng/accesstocare/graph/badge.svg)](https://app.codecov.io/gh/sol-eng/accesstocare)
 <!-- badges: end -->
 
-- [Access to Care](#access-to-care)
+- [Introduction](#introduction)
 - [Analysis Background](#analysis-background)
 - [Installation](#installation)
 - [Usage](#usage)
   - [Copy a specific example](#copy-a-specific-example)
-  - [Copy all examples](#copy-all-examples)
   - [Force overwrite](#force-overwrite)
+- [Publishing to Posit Connect](#publishing-to-posit-connect)
+  - [Git-backed deployment](#git-backed-deployment)
 
-## Access to Care
+## Introduction
 
 An R package to make it easy to view, copy, interact and publish the
 data products resulting from the Access to Care analysis. It also
@@ -25,9 +26,9 @@ consistent set of examples across the multiple data product types.
 
 This project combines US Census population data with hospital data
 provided by Medicare. The Census data is as of 2024, and the hospital
-Medicare date is as of 2025. The analysis uses individual counties as
-the unit of measurement. A county is considered undeserved based on a
-linear model.
+Medicare data is as of 2025. The analysis uses individual counties as
+the unit of measurement. A county is considered underserved based on a
+linear model that compares the number of hospitals to the population.
 
 ## Installation
 
@@ -47,9 +48,21 @@ The package includes multiple example data products demonstrating
 different ways to visualize and present the Access to Care analysis. Use
 `create_content()` to copy these examples to your working directory.
 
+``` r
+create_content()
+```
+
+This will create a separate subfolder for each example in your current
+working directory. Currently, there are 11 examples available. You can
+also specify a target directory:
+
+``` r
+create_content(target = "my-examples")
+```
+
 ### Copy a specific example
 
-Copy a single example by specifying its name:
+If you wish to copy a specific example, specify its name:
 
 ``` r
 create_content(content = "shiny")
@@ -60,31 +73,15 @@ Available content options include:
 - `"connectwidgets"` - Overview application listing all related content
 - `"dash"` - Python Dash dashboard
 - `"htmlwidgets"` - Interactive county-level plot
-- `"jupyter"` - Jupyter Notebook
 - `"plot"` - Static ggplot2 map of entire country
 - `"plumber-api"` - REST API with multiple endpoints
 - `"presentation"` - Quarto presentation
+- `"quarto-dashboard-python"` - Quarto dashboard with Python, Polars,
+  and Plotnine
 - `"quarto-dashboard-r"` - Quarto dashboard by state
 - `"RMarkdown-html"` - HTML report with email template
 - `"RMarkdown-pdf"` - PDF report
 - `"shiny"` - Shiny application
-
-You can also specify a target directory:
-
-``` r
-create_content(target = "my-examples", content = "shiny")
-```
-
-### Copy all examples
-
-Copy all available examples at once:
-
-``` r
-create_content(content = "all")
-```
-
-This will create a separate subfolder for each example in your target
-directory.
 
 ### Force overwrite
 
@@ -94,3 +91,52 @@ By default, `create_content()` skips folders that already exist. Use
 ``` r
 create_content(content = "shiny", force = TRUE)
 ```
+
+## Publishing to Posit Connect
+
+The examples in this package can be published to Posit Connect using the
+standard push-button deployment from RStudio IDE. However, if you prefer
+to use Git-backed deployment, the package provides a helper function to
+create the necessary deployment files.
+
+### Git-backed deployment
+
+[Git-backed deployment](https://docs.posit.co/connect/user/git-backed/)
+is a Posit Connect feature that automatically deploys and updates your
+content directly from a Git repository. Instead of pushing content from
+your local machine, Connect pulls the latest code from your Git
+repository whenever you commit changes. This enables seamless CI/CD
+workflows and ensures your published content always matches what’s in
+version control.
+
+**Note:** Using `create_git_backed()` is only necessary if you want to
+use Git-backed deployment. If you plan to publish manually using an IDE
+such as RStudio or Positron, you can skip this step.
+
+To prepare content for Git-backed deployment, use the
+`create_git_backed()` function:
+
+``` r
+# Prepare a single folder
+create_git_backed("my-examples/shiny")
+
+# Prepare all subfolders in a directory
+# This will detect subfolders with deployable content and create necessary files for each
+create_git_backed("my-examples")
+```
+
+The function intelligently determines what to do:
+
+- **Single folder with content**: If the folder contains a deployable
+  file (like app.R, .Rmd, .qmd, etc.), it creates the necessary
+  deployment files for that folder.
+- **Folder with subfolders**: If the folder doesn’t contain deployable
+  content but its subfolders do, it will create the necessary files for
+  all qualifying subfolders. In interactive sessions, it will prompt you
+  before executing.
+
+Once the deployment files are created, commit them to your Git
+repository along with your content, and configure Posit Connect to
+deploy from your repository. See the [official Git-backed deployment
+documentation](https://docs.posit.co/connect/user/git-backed/) for
+complete setup instructions.
