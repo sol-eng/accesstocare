@@ -5,7 +5,7 @@ reference:
   - create_content
 - title: Git-Backed Deployment
   contents:
-  - prepare_git_backed
+  - create_git_backed
 - title: Plots
   contents:
   - starts_with("atc_plot")

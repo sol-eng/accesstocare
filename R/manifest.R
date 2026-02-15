@@ -12,7 +12,7 @@
 #' @param silent To run with or without console updates
 #'
 #' @export
-prepare_git_backed <- function(
+create_git_backed <- function(
   folder_location = ".",
   primary_document = NULL,
   ignore_files = list(

@@ -96,7 +96,7 @@ create_content(content = "shiny", force = TRUE)
 The examples in this package can be published to Posit Connect using the
 standard push-button deployment from RStudio IDE. However, if you prefer
 to use Git-backed deployment, the package provides a helper function to
-prepare the necessary manifest files.
+create the necessary deployment files.
 
 ### Git-backed deployment
 
@@ -108,34 +108,34 @@ repository whenever you commit changes. This enables seamless CI/CD
 workflows and ensures your published content always matches what’s in
 version control.
 
-**Note:** Using `prepare_git_backed()` is only necessary if you want to
+**Note:** Using `create_git_backed()` is only necessary if you want to
 use Git-backed deployment. If you plan to publish manually using an IDE
 such as RStudio or Positron, you can skip this step.
 
 To prepare content for Git-backed deployment, use the
-`prepare_git_backed()` function:
+`create_git_backed()` function:
 
 ``` r
 # Prepare a single folder
-prepare_git_backed("my-examples/shiny")
+create_git_backed("my-examples/shiny")
 
 # Prepare all subfolders in a directory
-# This will detect subfolders with deployable content and create manifests for each
-prepare_git_backed("my-examples")
+# This will detect subfolders with deployable content and create necessary files for each
+create_git_backed("my-examples")
 ```
 
 The function intelligently determines what to do:
 
 - **Single folder with content**: If the folder contains a deployable
-  file (like app.R, .Rmd, .qmd, etc.), it creates a manifest for that
-  folder.
+  file (like app.R, .Rmd, .qmd, etc.), it creates the necessary
+  deployment files for that folder.
 - **Folder with subfolders**: If the folder doesn’t contain deployable
-  content but its subfolders do, it will create manifests for all
-  qualifying subfolders. In interactive sessions, it will prompt you
+  content but its subfolders do, it will create the necessary files for
+  all qualifying subfolders. In interactive sessions, it will prompt you
   before executing.
 
-Once the manifest files are created, commit them to your Git repository
-along with your content, and configure Posit Connect to deploy from your
-repository. See the [official Git-backed deployment
+Once the deployment files are created, commit them to your Git
+repository along with your content, and configure Posit Connect to
+deploy from your repository. See the [official Git-backed deployment
 documentation](https://docs.posit.co/connect/user/git-backed/) for
 complete setup instructions.
