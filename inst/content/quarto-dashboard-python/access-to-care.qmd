@@ -109,7 +109,6 @@ def population_box():
         title="Population",
         value=format_number(total),
         showcase=ui.HTML('<i class="bi bi-person"></i>'),
-        theme="blue",
         showcase_layout="bottom"
     )
 ```
@@ -130,7 +129,6 @@ def hospitals_box():
         title="Hospitals",
         value=format_number(total),
         showcase=ui.HTML('<i class="bi bi-hospital"></i>'),
-        theme="teal",
         showcase_layout="bottom"
     )
 ```
@@ -150,7 +148,6 @@ def counties_box():
         title="Counties",
         value=str(len(data)),
         showcase=ui.HTML('<i class="bi bi-geo-alt"></i>'),
-        theme="green",
         showcase_layout="bottom"
     )
 ```
@@ -171,7 +168,6 @@ def underserved_box():
         title="Underserved",
         value=str(len(below)),
         showcase=ui.HTML('<i class="bi bi-clipboard2-pulse"></i>'),
-        theme="pink",
         showcase_layout="bottom"
     )
 ```
