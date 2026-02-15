@@ -29,7 +29,8 @@ Imports:
     tibble,
     yaml,
     rstudioapi,
-    htmlwidgets
+    htmlwidgets,
+    arrow
 Suggests: 
     knitr,
     covr,

@@ -106,3 +106,21 @@ test_that("create_content generates htmlwidgets content", {
 
   unlink(temp_dir, recursive = TRUE, force = TRUE)
 })
+
+test_that("create_content exports parquet for dash", {
+  skip_if_not_installed("arrow")
+
+  temp_dir <- paste0(tempdir(), "/create-dash")
+
+  create_content(
+    target = temp_dir,
+    content = "dash",
+    silent = TRUE
+  )
+
+  expect_true(dir.exists(file.path(temp_dir, "dash")))
+  expect_true(dir.exists(file.path(temp_dir, "dash", "data")))
+  expect_true(file.exists(file.path(temp_dir, "dash", "data", "us_counties.parquet")))
+
+  unlink(temp_dir, recursive = TRUE, force = TRUE)
+})

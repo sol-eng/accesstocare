@@ -35,10 +35,18 @@ create_content <- function(
     content_name <- path_file(folder)
     if (content == content_name | content == "all") {
       dest <- path(target, content_name)
+      folder_created <- FALSE
+
       if (!dir_exists(dest) || force) {
         dir_copy(folder, dest)
+        folder_created <- TRUE
       } else if (!silent) {
         cli_alert_warning("Skipping '{content_name}' - folder already exists")
+      }
+
+      # Export data for Python examples (runs whether folder was just created or already exists)
+      if (content_name == "dash" && (folder_created || dir_exists(dest))) {
+        export_data_parquet("us_counties", dest, silent = silent)
       }
     }
   }
@@ -83,4 +91,22 @@ get_contents <- function() {
   folder_names <- path_file(folders)
   contents <- c("all", folder_names, "htmlwidgets", "plot")
   cat(paste0("\"", sort(contents), "\"", collapse = ", "))
+}
+
+# Internal function to export data as parquet for Python examples
+export_data_parquet <- function(data_name, dest_folder, silent = FALSE) {
+  # Get the data object
+  data_obj <- get(data_name, envir = asNamespace("accesstocare"))
+
+  # Create data subfolder if it doesn't exist
+  data_folder <- path(dest_folder, "data")
+  if (!dir_exists(data_folder)) {
+    dir_create(data_folder)
+  }
+
+  # Write parquet file
+  parquet_path <- path(data_folder, paste0(data_name, ".parquet"))
+  arrow::write_parquet(data_obj, parquet_path)
+
+  invisible(parquet_path)
 }
