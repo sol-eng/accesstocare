@@ -83,6 +83,7 @@ Available content options include:
 - `"plot"` - Static ggplot2 map of entire country
 - `"plumber-api"` - REST API with multiple endpoints
 - `"presentation"` - Quarto presentation
+- `"quarto-dashboard-python"` - Quarto dashboard with Python, Polars, and Plotnine
 - `"quarto-dashboard-r"` - Quarto dashboard by state
 - `"RMarkdown-html"` - HTML report with email template
 - `"RMarkdown-pdf"` - PDF report

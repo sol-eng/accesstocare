@@ -1,0 +1,220 @@
+---
+title: "Access to Care - Dashboard"
+format:
+  dashboard:
+    theme: lumen
+    expandable: false
+server: shiny
+---
+
+```{python}
+#| context: setup
+import polars as pl
+from plotnine import *
+from shiny import render, reactive, ui as core_ui
+from shiny.express import input, ui
+import warnings
+warnings.filterwarnings('ignore')
+
+# Read data
+us_counties = pl.read_parquet("data/us_counties.parquet")
+us_states = pl.read_parquet("data/us_states.parquet")
+
+# Prepare state list
+state_list = ["All US"] + sorted(us_states["state_name"].to_list())
+
+us_choices = ["Population", "No. of Hospitals", "Below model", "Above model"]
+
+def format_number(x):
+    """Format large numbers with K/M suffix"""
+    if x >= 1_000_000:
+        return f"{x/1_000_000:.1f}M"
+    elif x >= 1_000:
+        return f"{x/1_000:.1f}K"
+    else:
+        return str(int(x))
+```
+
+# State info
+
+## Row {height=20%}
+
+### Column
+
+```{python}
+ui.input_select(
+    id="state",
+    label="Select a State:",
+    choices=state_list,
+    selected="All US"
+)
+```
+
+### Column
+
+```{python}
+@render.express
+def population_box():
+    selected = input.state()
+    if selected == "All US":
+        data = us_states
+    else:
+        data = us_states.filter(pl.col("state_name") == selected)
+    total = data["population"].sum()
+
+    ui.value_box(
+        title="Population",
+        value=format_number(total),
+        showcase=ui.HTML('<i class="bi bi-person"></i>'),
+        theme="blue"
+    )
+```
+
+### Column
+
+```{python}
+@render.express
+def hospitals_box():
+    selected = input.state()
+    if selected == "All US":
+        data = us_states
+    else:
+        data = us_states.filter(pl.col("state_name") == selected)
+    total = data["hospitals"].sum()
+
+    ui.value_box(
+        title="Hospitals",
+        value=format_number(total),
+        showcase=ui.HTML('<i class="bi bi-hospital"></i>'),
+        theme="teal"
+    )
+```
+
+### Column
+
+```{python}
+@render.express
+def counties_box():
+    selected = input.state()
+    if selected == "All US":
+        data = us_counties
+    else:
+        data = us_counties.filter(pl.col("state_name") == selected)
+
+    ui.value_box(
+        title="Counties",
+        value=str(len(data)),
+        showcase=ui.HTML('<i class="bi bi-geo-alt"></i>'),
+        theme="green"
+    )
+```
+
+### Column
+
+```{python}
+@render.express
+def underserved_box():
+    selected = input.state()
+    if selected == "All US":
+        data = us_counties
+    else:
+        data = us_counties.filter(pl.col("state_name") == selected)
+    below = data.filter(pl.col("pred_status") == "below")
+
+    ui.value_box(
+        title="Underserved",
+        value=str(len(below)),
+        showcase=ui.HTML('<i class="bi bi-clipboard2-pulse"></i>'),
+        theme="pink"
+    )
+```
+
+## Row {height=80%}
+
+### {.sidebar}
+
+```{python}
+ui.input_radio_buttons(
+    id="view",
+    label=ui.strong("Select a view:"),
+    choices=us_choices,
+    inline=True
+)
+
+ui.tags.br()
+
+ui.input_action_button(
+    id="reset_btn",
+    label="Reset"
+)
+
+ui.tags.hr()
+
+ui.tags.p(
+    ui.tags.em("Sources: Centers of Medicine & Medicaid services (2025), and US Census Bureau (2024).")
+)
+```
+
+### Column
+
+```{python}
+@render.plot
+def state_map():
+    import matplotlib.pyplot as plt
+
+    # Get selected state data
+    selected = input.state()
+
+    if selected == "All US":
+        plot_data = us_states
+        title = "United States"
+    else:
+        plot_data = us_counties.filter(pl.col("state_name") == selected)
+        title = selected
+
+    # Determine variable to plot
+    view = input.view()
+    if view == "Population":
+        var = "population"
+        fill_label = "Population"
+    elif view == "No. of Hospitals":
+        var = "hospitals"
+        fill_label = "Hospitals"
+    elif view == "Below model":
+        plot_data = plot_data.filter(pl.col("pred_status") == "below")
+        var = "hospitals"
+        fill_label = "Underserved"
+    elif view == "Above model":
+        plot_data = plot_data.filter(pl.col("pred_status") == "above")
+        var = "hospitals"
+        fill_label = "Overserved"
+    else:
+        var = "hospitals"
+        fill_label = "Hospitals"
+
+    # Create simple bar plot (placeholder for map)
+    if selected == "All US":
+        # State-level view
+        p = (
+            ggplot(plot_data.to_pandas(), aes(x="state", y=var, fill=var)) +
+            geom_col() +
+            coord_flip() +
+            scale_fill_gradient(low="#deebf7", high="#08519c") +
+            labs(title=f"{title} - {fill_label}", x="State", y=fill_label) +
+            theme_minimal() +
+            theme(figure_size=(10, 8))
+        )
+    else:
+        # County-level view
+        p = (
+            ggplot(plot_data.to_pandas(), aes(x="county_name", y=var, fill=var)) +
+            geom_col() +
+            coord_flip() +
+            scale_fill_gradient(low="#deebf7", high="#08519c") +
+            labs(title=f"{title} Counties - {fill_label}", x="County", y=fill_label) +
+            theme_minimal() +
+            theme(figure_size=(10, 8))
+        )
+
+    return p
+```
