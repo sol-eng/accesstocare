@@ -20,6 +20,8 @@ warnings.filterwarnings('ignore')
 us_counties = pl.read_parquet("data/us_counties.parquet")
 us_states = pl.read_parquet("data/us_states.parquet")
 us_hex_positions = pl.read_parquet("data/us_hex_positions.parquet")
+us_atc_county_polygons = pl.read_parquet("data/us_atc_county_polygons.parquet")
+us_large_cities = pl.read_parquet("data/us_large_cities.parquet")
 
 # Add below/above counts to us_states
 below_counts = (
@@ -177,12 +179,20 @@ def underserved_box():
 ### {.sidebar}
 
 ```{python}
-ui.input_radio_buttons(
-    id="view",
-    label=ui.strong("Select a view:"),
-    choices=us_choices,
-    inline=True
-)
+@render.express
+def view_options():
+    selected = input.state()
+    if selected == "All US":
+        choices = ["Population", "No. of Hospitals", "Below model", "Above model"]
+    else:
+        choices = ["Model", "Population", "Hospitals"]
+
+    ui.input_radio_buttons(
+        id="view",
+        label=ui.strong("Select a view:"),
+        choices=choices,
+        inline=True
+    )
 
 ui.tags.br()
 
@@ -218,18 +228,23 @@ def state_map():
         if view == "Population":
             var = "population"
             fill_label = "Population"
+            high_color = "#0072B2"
         elif view == "No. of Hospitals":
             var = "hospitals"
             fill_label = "Hospitals"
+            high_color = "#0072B2"
         elif view == "Below model":
             var = "below"
             fill_label = "Underserved"
+            high_color = "#CC79A7"
         elif view == "Above model":
             var = "above"
             fill_label = "Overserved"
+            high_color = "#0072B2"
         else:
             var = "hospitals"
             fill_label = "Hospitals"
+            high_color = "#0072B2"
 
         # Join state data with hex positions
         hex_data = us_hex_positions.join(
@@ -257,7 +272,7 @@ def state_map():
                 size=8,
                 color="black"
             ) +
-            scale_fill_gradient(low="#deebf7", high="#08519c") +
+            scale_fill_gradient(low="#ffffff", high=high_color) +
             coord_fixed() +
             labs(title=f"United States - {fill_label}", fill=fill_label) +
             theme_void() +
@@ -267,36 +282,77 @@ def state_map():
             )
         )
     else:
-        # County-level bar plot
-        plot_data = us_counties.filter(pl.col("state_name") == selected)
+        # County-level geographic map
+        plot_data = us_atc_county_polygons.filter(pl.col("state_name") == selected)
+        city_data = us_large_cities.filter(pl.col("state") == plot_data["state"][0]).filter(pl.col("position") <= 3)
 
-        if view == "Population":
+        if view == "Model":
+            var = "pred_status"
+            fill_label = "Model results"
+            use_categorical = True
+        elif view == "Population":
             var = "population"
             fill_label = "Population"
-        elif view == "No. of Hospitals":
+            high_color = "#0072B2"
+            use_categorical = False
+        elif view == "Hospitals":
             var = "hospitals"
             fill_label = "Hospitals"
-        elif view == "Below model":
-            plot_data = plot_data.filter(pl.col("pred_status") == "below")
-            var = "hospitals"
-            fill_label = "Underserved"
-        elif view == "Above model":
-            plot_data = plot_data.filter(pl.col("pred_status") == "above")
-            var = "hospitals"
-            fill_label = "Overserved"
+            high_color = "#0072B2"
+            use_categorical = False
         else:
             var = "hospitals"
             fill_label = "Hospitals"
+            high_color = "#0072B2"
+            use_categorical = False
 
-        p = (
-            ggplot(plot_data.to_pandas(), aes(x="county_name", y=var, fill=var)) +
-            geom_col() +
-            coord_flip() +
-            scale_fill_gradient(low="#deebf7", high="#08519c") +
-            labs(title=f"{selected} Counties - {fill_label}", x="County", y=fill_label) +
-            theme_minimal() +
-            theme(figure_size=(10, 8))
-        )
+        if use_categorical:
+            p = (
+                ggplot(plot_data.to_pandas(), aes(x="x", y="y", group="group", fill=var)) +
+                geom_polygon(color="#cccccc", alpha=0.6) +
+                geom_point(data=city_data.to_pandas(), mapping=aes(x="x", y="y"), inherit_aes=False) +
+                geom_text(
+                    data=city_data.to_pandas(),
+                    mapping=aes(x="x", y="y", label="city_name"),
+                    inherit_aes=False,
+                    ha="right",
+                    nudge_x=-0.1
+                ) +
+                scale_fill_manual(
+                    values={"above": "#0072B2", "below": "#CC79A7", "ok": "#009E73"},
+                    labels={"above": "Above", "below": "Below", "ok": "At Level"}
+                ) +
+                coord_fixed() +
+                labs(title=f"{selected} - {fill_label}", fill=fill_label) +
+                theme_void() +
+                theme(
+                    legend_position="bottom",
+                    figure_size=(10, 8)
+                )
+            )
+        else:
+            min_val = plot_data[var].min()
+            max_val = plot_data[var].max()
+            p = (
+                ggplot(plot_data.to_pandas(), aes(x="x", y="y", group="group", fill=var)) +
+                geom_polygon(color="#cccccc", alpha=0.6) +
+                geom_point(data=city_data.to_pandas(), mapping=aes(x="x", y="y"), inherit_aes=False) +
+                geom_text(
+                    data=city_data.to_pandas(),
+                    mapping=aes(x="x", y="y", label="city_name"),
+                    inherit_aes=False,
+                    ha="right",
+                    nudge_x=-0.1
+                ) +
+                scale_fill_gradient(low="#ffffff", high=high_color) +
+                coord_fixed() +
+                labs(title=f"{selected} - {fill_label}", fill=fill_label) +
+                theme_void() +
+                theme(
+                    legend_position="bottom",
+                    figure_size=(10, 8)
+                )
+            )
 
     return p
 ```
