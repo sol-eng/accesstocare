@@ -11,6 +11,7 @@ params:
     value: California
 output:
   pdf_document:
+    latex_engine: xelatex
     df_print: kable
     includes:
       in_header: preamble.tex
