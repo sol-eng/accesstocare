@@ -22,8 +22,8 @@ test_that("create_content copies all content", {
     silent = TRUE
   )
 
-  # Should have 12 inst/content folders + r-plot + r-htmlwidgets (dynamically generated) = 14 total
-  expect_gte(length(dir(temp_dir)), 14)
+  # Should have 12 inst/content folders + r-plot + r-htmlwidgets + pins-data (dynamically generated) = 15 total
+  expect_gte(length(dir(temp_dir)), 15)
 
   unlink(temp_dir, recursive = TRUE, force = TRUE)
 })
@@ -103,6 +103,21 @@ test_that("create_content generates r-htmlwidgets content", {
 
   expect_true(dir.exists(file.path(temp_dir, "r-htmlwidgets")))
   expect_true(file.exists(file.path(temp_dir, "r-htmlwidgets", "map.html")))
+
+  unlink(temp_dir, recursive = TRUE, force = TRUE)
+})
+
+test_that("create_content generates pins-data content", {
+  temp_dir <- paste0(tempdir(), "/create-pins-data")
+
+  create_content(
+    target = temp_dir,
+    content = "pins-data",
+    silent = TRUE
+  )
+
+  expect_true(dir.exists(file.path(temp_dir, "pins-data")))
+  expect_true(file.exists(file.path(temp_dir, "pins-data", "us_counties.csv")))
 
   unlink(temp_dir, recursive = TRUE, force = TRUE)
 })

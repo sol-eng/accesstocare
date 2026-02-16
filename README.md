@@ -79,6 +79,7 @@ Available content options include:
   Plotnine
 - `"dashboard-r"` - Quarto dashboard with R
 - `"pdf-r"` - PDF report
+- `"pins-data"` - Data file for pins deployment
 - `"presentation-python"` - Quarto presentation (Python)
 - `"presentation-r"` - Quarto presentation (R)
 - `"r-htmlwidgets"` - Interactive county-level plot
