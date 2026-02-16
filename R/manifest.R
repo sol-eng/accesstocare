@@ -189,7 +189,7 @@ create_single_manifest <- function(
     reticulate::uv_run_tool(
       "rsconnect",
       cmd,
-      with = c("polars", "plotnine", "pyarrow", "tabulate")
+      with = c("polars", "plotnine", "pyarrow", "great-tables")
     )
   } else {
     # Use rsconnect::writeManifest for R content

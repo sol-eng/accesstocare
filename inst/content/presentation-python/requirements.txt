@@ -1,4 +1,4 @@
 polars
 plotnine
 pyarrow
-tabulate
+great-tables
