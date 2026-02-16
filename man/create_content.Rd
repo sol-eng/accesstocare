@@ -7,7 +7,7 @@
 create_content(
   target = ".",
   content = c("all", "api-python", "api-r", "app-python", "app-r", "connectwidgets",
-    "dashboard-python", "dashboard-r", "pin-data", "pdf-r", "presentation-python",
+    "dashboard-python", "dashboard-r", "pins-data", "pdf-r", "presentation-python",
     "presentation-r", "r-htmlwidgets", "r-plot", "report-python", "report-r"),
   force = FALSE,
   silent = FALSE

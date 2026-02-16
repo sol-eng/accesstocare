@@ -22,7 +22,7 @@ create_content <- function(
     "connectwidgets",
     "dashboard-python",
     "dashboard-r",
-    "pin-data",
+    "pins-data",
     "pdf-r",
     "presentation-python",
     "presentation-r",
