@@ -164,7 +164,7 @@ create_single_manifest <- function(
   # Check if this is a Python Dash app
   folder_name <- path_file(full_path)
   if (folder_name == "dash" && primary_doc == "app.py") {
-    py_manifest("dash", full_path, c("dash", "plotly", "polars"))
+    py_manifest("dash", full_path, c("dash", "dash-bootstrap-components", "plotly", "polars"))
   } else if (folder_name == "fastapi" && primary_doc == "main.py") {
     py_manifest(
       "fastapi",
