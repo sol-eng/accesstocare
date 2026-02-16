@@ -166,16 +166,38 @@ create_single_manifest <- function(
   if (folder_name == "dash" && primary_doc == "app.py") {
     py_manifest("dash", full_path, c("dash", "plotly", "polars"))
   } else if (folder_name == "fastapi" && primary_doc == "main.py") {
-    py_manifest("fastapi", full_path, c("fastapi", "uvicorn[standard]", "polars", "pyarrow"))
-  } else if (folder_name == "quarto-dashboard-python" && grepl("\\.qmd$", primary_doc)) {
+    py_manifest(
+      "fastapi",
+      full_path,
+      c("fastapi", "uvicorn[standard]", "polars", "pyarrow")
+    )
+  } else if (
+    folder_name == "quarto-dashboard-python" && grepl("\\.qmd$", primary_doc)
+  ) {
     qmd_file <- path(full_path, primary_doc)
-    py_manifest("quarto", qmd_file, c("polars", "plotly", "shiny", "shinywidgets", "numpy"))
-  } else if (folder_name == "presentation-python" && grepl("\\.qmd$", primary_doc)) {
+    py_manifest(
+      "quarto",
+      qmd_file,
+      c("polars", "plotly", "shiny", "shinywidgets", "numpy")
+    )
+  } else if (
+    folder_name == "presentation-python" && grepl("\\.qmd$", primary_doc)
+  ) {
     qmd_file <- path(full_path, primary_doc)
-    py_manifest("quarto", qmd_file, c("polars", "plotnine", "pyarrow", "great-tables"))
-  } else if (folder_name == "quarto-html-python" && grepl("\\.qmd$", primary_doc)) {
+    py_manifest(
+      "quarto",
+      qmd_file,
+      c("polars", "plotnine", "pyarrow", "great-tables")
+    )
+  } else if (
+    folder_name == "quarto-html-python" && grepl("\\.qmd$", primary_doc)
+  ) {
     qmd_file <- path(full_path, primary_doc)
-    py_manifest("quarto", qmd_file, c("polars", "plotnine", "pyarrow", "great-tables"))
+    py_manifest(
+      "quarto",
+      qmd_file,
+      c("polars", "plotnine", "pyarrow", "great-tables")
+    )
   } else {
     # Use rsconnect::writeManifest for R content
     app_mode <- NULL
