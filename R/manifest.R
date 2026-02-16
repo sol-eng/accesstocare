@@ -164,51 +164,18 @@ create_single_manifest <- function(
   # Check if this is a Python Dash app
   folder_name <- path_file(full_path)
   if (folder_name == "dash" && primary_doc == "app.py") {
-    # Use reticulate::uv_run_tool for Python Dash apps
-    cmd <- paste("write-manifest dash", full_path)
-    reticulate::uv_run_tool(
-      "rsconnect",
-      cmd,
-      with = c("dash", "plotly", "polars")
-    )
+    py_manifest("dash", full_path, c("dash", "plotly", "polars"))
   } else if (folder_name == "fastapi" && primary_doc == "main.py") {
-    # Use reticulate::uv_run_tool for FastAPI apps
-    cmd <- paste("write-manifest fastapi", full_path)
-    reticulate::uv_run_tool(
-      "rsconnect",
-      cmd,
-      with = c("fastapi", "uvicorn[standard]", "polars", "pyarrow")
-    )
+    py_manifest("fastapi", full_path, c("fastapi", "uvicorn[standard]", "polars", "pyarrow"))
   } else if (folder_name == "quarto-dashboard-python" && grepl("\\.qmd$", primary_doc)) {
-    # Use reticulate::uv_run_tool for Quarto Python dashboards
-    # For single-file Quarto docs, pass the full file path not just the directory
     qmd_file <- path(full_path, primary_doc)
-    cmd <- paste("write-manifest quarto", qmd_file)
-    reticulate::uv_run_tool(
-      "rsconnect",
-      cmd,
-      with = c("polars", "plotly", "shiny", "shinywidgets", "numpy")
-    )
+    py_manifest("quarto", qmd_file, c("polars", "plotly", "shiny", "shinywidgets", "numpy"))
   } else if (folder_name == "presentation-python" && grepl("\\.qmd$", primary_doc)) {
-    # Use reticulate::uv_run_tool for Python Quarto presentations
-    # For single-file Quarto docs, pass the full file path not just the directory
     qmd_file <- path(full_path, primary_doc)
-    cmd <- paste("write-manifest quarto", qmd_file)
-    reticulate::uv_run_tool(
-      "rsconnect",
-      cmd,
-      with = c("polars", "plotnine", "pyarrow", "great-tables")
-    )
+    py_manifest("quarto", qmd_file, c("polars", "plotnine", "pyarrow", "great-tables"))
   } else if (folder_name == "quarto-html-python" && grepl("\\.qmd$", primary_doc)) {
-    # Use reticulate::uv_run_tool for Python Quarto HTML documents
-    # For single-file Quarto docs, pass the full file path not just the directory
     qmd_file <- path(full_path, primary_doc)
-    cmd <- paste("write-manifest quarto", qmd_file)
-    reticulate::uv_run_tool(
-      "rsconnect",
-      cmd,
-      with = c("polars", "plotnine", "pyarrow", "great-tables")
-    )
+    py_manifest("quarto", qmd_file, c("polars", "plotnine", "pyarrow", "great-tables"))
   } else {
     # Use rsconnect::writeManifest for R content
     app_mode <- NULL
@@ -233,6 +200,19 @@ create_single_manifest <- function(
   } else {
     NULL
   }
+}
+
+# Internal helper function to create Python manifests using rsconnect
+# @param command_type The rsconnect command type (dash, fastapi, quarto)
+# @param target_path The path to the content (directory for apps, file for quarto)
+# @param libraries Character vector of Python packages to include
+py_manifest <- function(command_type, target_path, libraries) {
+  cmd <- paste("write-manifest", command_type, target_path)
+  reticulate::uv_run_tool(
+    "rsconnect",
+    cmd,
+    with = libraries
+  )
 }
 
 primary_docs <- function(full_path) {
