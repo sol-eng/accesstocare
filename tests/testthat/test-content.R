@@ -22,7 +22,7 @@ test_that("create_content copies all content", {
     silent = TRUE
   )
 
-  # Should have 12 inst/content folders + plot + htmlwidgets (dynamically generated) = 14 total
+  # Should have 12 inst/content folders + r-plot + r-htmlwidgets (dynamically generated) = 14 total
   expect_gte(length(dir(temp_dir)), 14)
 
   unlink(temp_dir, recursive = TRUE, force = TRUE)
@@ -76,33 +76,33 @@ test_that("create_content with force=TRUE overwrites", {
   unlink(temp_dir, recursive = TRUE, force = TRUE)
 })
 
-test_that("create_content generates plot content", {
-  temp_dir <- paste0(tempdir(), "/create-plot")
+test_that("create_content generates r-plot content", {
+  temp_dir <- paste0(tempdir(), "/create-r-plot")
 
   create_content(
     target = temp_dir,
-    content = "plot",
+    content = "r-plot",
     silent = TRUE
   )
 
-  expect_true(dir.exists(file.path(temp_dir, "plot")))
-  expect_true(file.exists(file.path(temp_dir, "plot", "map.png")))
-  expect_true(file.exists(file.path(temp_dir, "plot", "map.html")))
+  expect_true(dir.exists(file.path(temp_dir, "r-plot")))
+  expect_true(file.exists(file.path(temp_dir, "r-plot", "map.png")))
+  expect_true(file.exists(file.path(temp_dir, "r-plot", "map.html")))
 
   unlink(temp_dir, recursive = TRUE, force = TRUE)
 })
 
-test_that("create_content generates htmlwidgets content", {
-  temp_dir <- paste0(tempdir(), "/create-htmlwidgets")
+test_that("create_content generates r-htmlwidgets content", {
+  temp_dir <- paste0(tempdir(), "/create-r-htmlwidgets")
 
   create_content(
     target = temp_dir,
-    content = "htmlwidgets",
+    content = "r-htmlwidgets",
     silent = TRUE
   )
 
-  expect_true(dir.exists(file.path(temp_dir, "htmlwidgets")))
-  expect_true(file.exists(file.path(temp_dir, "htmlwidgets", "map.html")))
+  expect_true(dir.exists(file.path(temp_dir, "r-htmlwidgets")))
+  expect_true(file.exists(file.path(temp_dir, "r-htmlwidgets", "map.html")))
 
   unlink(temp_dir, recursive = TRUE, force = TRUE)
 })

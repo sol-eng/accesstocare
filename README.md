@@ -78,11 +78,11 @@ Available content options include:
 - `"dashboard-python"` - Quarto dashboard with Python, Polars, and
   Plotnine
 - `"dashboard-r"` - Quarto dashboard with R
-- `"htmlwidgets"` - Interactive county-level plot
 - `"pdf-r"` - PDF report
-- `"plot"` - Static ggplot2 map of entire country
 - `"presentation-python"` - Quarto presentation (Python)
 - `"presentation-r"` - Quarto presentation (R)
+- `"r-htmlwidgets"` - Interactive county-level plot
+- `"r-plot"` - Static ggplot2 map of entire country
 - `"report-python"` - Quarto HTML document with Python, Polars,
   Plotnine, and Great Tables
 - `"report-r"` - R Markdown HTML report with email template

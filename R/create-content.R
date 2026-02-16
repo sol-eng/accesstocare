@@ -5,8 +5,8 @@
 #' @param content Which content to copy. Can be "all" to copy everything, or
 #' a specific content name. Available options include: "all", "api-python",
 #' "api-r", "app-python", "app-r", "connectwidgets", "dashboard-python",
-#' "dashboard-r", "htmlwidgets", "pdf-r", "plot", "presentation-python",
-#' "presentation-r", "report-python", "report-r".
+#' "dashboard-r", "pdf-r", "presentation-python", "presentation-r",
+#' "r-htmlwidgets", "r-plot", "report-python", "report-r".
 #' @param force If TRUE, overwrites existing folders. If FALSE (default), skips
 #' existing folders.
 #' @param silent If TRUE, suppresses console messages. Defaults to FALSE.
@@ -22,11 +22,12 @@ create_content <- function(
     "connectwidgets",
     "dashboard-python",
     "dashboard-r",
-    "htmlwidgets",
+    "pin-data",
     "pdf-r",
-    "plot",
     "presentation-python",
     "presentation-r",
+    "r-htmlwidgets",
+    "r-plot",
     "report-python",
     "report-r"
   ),
@@ -53,16 +54,23 @@ create_content <- function(
       }
 
       # Export data for Python examples (runs whether folder was just created or already exists)
-      if (content_name == "app-python" && (folder_created || dir_exists(dest))) {
+      if (
+        content_name == "app-python" && (folder_created || dir_exists(dest))
+      ) {
         export_data_parquet("us_counties", dest, silent = silent)
       }
 
-      if (content_name == "api-python" && (folder_created || dir_exists(dest))) {
+      if (
+        content_name == "api-python" && (folder_created || dir_exists(dest))
+      ) {
         export_data_parquet("us_counties", dest, silent = silent)
         export_data_parquet("us_states", dest, silent = silent)
       }
 
-      if (content_name == "dashboard-python" && (folder_created || dir_exists(dest))) {
+      if (
+        content_name == "dashboard-python" &&
+          (folder_created || dir_exists(dest))
+      ) {
         export_data_parquet("us_counties", dest, silent = silent)
         export_data_parquet("us_states", dest, silent = silent)
         export_data_parquet("us_hex_positions", dest, silent = silent)
@@ -70,14 +78,19 @@ create_content <- function(
         export_data_parquet("us_large_cities", dest, silent = silent)
       }
 
-      if (content_name == "presentation-python" && (folder_created || dir_exists(dest))) {
+      if (
+        content_name == "presentation-python" &&
+          (folder_created || dir_exists(dest))
+      ) {
         export_data_parquet("us_counties", dest, silent = silent)
         export_data_parquet("us_states", dest, silent = silent)
         export_data_parquet("us_atc_county_polygons", dest, silent = silent)
         export_data_parquet("us_large_cities", dest, silent = silent)
       }
 
-      if (content_name == "report-python" && (folder_created || dir_exists(dest))) {
+      if (
+        content_name == "report-python" && (folder_created || dir_exists(dest))
+      ) {
         export_data_parquet("us_counties", dest, silent = silent)
         export_data_parquet("us_states", dest, silent = silent)
         export_data_parquet("us_atc_county_polygons", dest, silent = silent)
@@ -85,8 +98,8 @@ create_content <- function(
       }
     }
   }
-  if (content %in% c("all", "plot")) {
-    dest_folder <- path(target, "plot")
+  if (content %in% c("all", "r-plot")) {
+    dest_folder <- path(target, "r-plot")
     if (!dir_exists(dest_folder)) {
       p <- atc_plot_state_map("All US", top_cities = 0)
       dir_create(dest_folder)
@@ -105,11 +118,11 @@ create_content <- function(
         con = path(dest_folder, "map.html")
       )
     } else if (!silent) {
-      cli_alert_warning("Skipping 'plot' - folder already exists")
+      cli_alert_warning("Skipping 'r-plot' - folder already exists")
     }
   }
-  if (content %in% c("all", "htmlwidgets")) {
-    dest_folder <- path(target, "htmlwidgets")
+  if (content %in% c("all", "r-htmlwidgets")) {
+    dest_folder <- path(target, "r-htmlwidgets")
     if (!dir_exists(dest_folder)) {
       p <- atc_plot_state_map("All US", top_cities = 0)
       gp <- girafe(ggobj = p)
@@ -122,7 +135,7 @@ create_content <- function(
       dir_create(dest_folder)
       saveWidget(gp, path(dest_folder, "map.html"))
     } else if (!silent) {
-      cli_alert_warning("Skipping 'htmlwidgets' - folder already exists")
+      cli_alert_warning("Skipping 'r-htmlwidgets' - folder already exists")
     }
   }
 }
@@ -139,7 +152,7 @@ get_contents <- function() {
   folder <- content_folder()
   folders <- dir_ls(folder)
   folder_names <- path_file(folders)
-  contents <- c("all", folder_names, "htmlwidgets", "plot")
+  contents <- c("all", folder_names, "r-htmlwidgets", "r-plot")
   cat(paste0("\"", sort(contents), "\"", collapse = ", "))
 }
 
