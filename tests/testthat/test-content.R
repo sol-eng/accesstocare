@@ -3,11 +3,11 @@ test_that("create_content copies single content", {
 
   create_content(
     target = temp_dir,
-    content = "shiny",
+    content = "app-r",
     silent = TRUE
   )
 
-  expect_true(dir.exists(file.path(temp_dir, "shiny")))
+  expect_true(dir.exists(file.path(temp_dir, "app-r")))
   expect_length(dir(temp_dir), 1)
 
   unlink(temp_dir, recursive = TRUE, force = TRUE)
@@ -22,8 +22,8 @@ test_that("create_content copies all content", {
     silent = TRUE
   )
 
-  # Should have 11 inst/content folders + plot + htmlwidgets (dynamically generated) = 13 total
-  expect_gte(length(dir(temp_dir)), 13)
+  # Should have 12 inst/content folders + plot + htmlwidgets (dynamically generated) = 14 total
+  expect_gte(length(dir(temp_dir)), 14)
 
   unlink(temp_dir, recursive = TRUE, force = TRUE)
 })
@@ -34,7 +34,7 @@ test_that("create_content respects force=FALSE", {
   # Create first time
   create_content(
     target = temp_dir,
-    content = "shiny",
+    content = "app-r",
     silent = TRUE
   )
 
@@ -42,7 +42,7 @@ test_that("create_content respects force=FALSE", {
   expect_warning(
     create_content(
       target = temp_dir,
-      content = "shiny",
+      content = "app-r",
       silent = FALSE
     ),
     NA # Expect no error, just skip
@@ -59,19 +59,19 @@ test_that("create_content with force=TRUE overwrites", {
   # Create first time
   create_content(
     target = temp_dir,
-    content = "shiny",
+    content = "app-r",
     silent = TRUE
   )
 
   # Create again with force
   create_content(
     target = temp_dir,
-    content = "shiny",
+    content = "app-r",
     force = TRUE,
     silent = TRUE
   )
 
-  expect_true(dir.exists(file.path(temp_dir, "shiny")))
+  expect_true(dir.exists(file.path(temp_dir, "app-r")))
 
   unlink(temp_dir, recursive = TRUE, force = TRUE)
 })
@@ -107,64 +107,64 @@ test_that("create_content generates htmlwidgets content", {
   unlink(temp_dir, recursive = TRUE, force = TRUE)
 })
 
-test_that("create_content exports parquet for dash", {
+test_that("create_content exports parquet for app-python", {
   skip_if_not_installed("arrow")
 
-  temp_dir <- paste0(tempdir(), "/create-dash")
+  temp_dir <- paste0(tempdir(), "/create-app-python")
 
   create_content(
     target = temp_dir,
-    content = "dash",
+    content = "app-python",
     silent = TRUE
   )
 
-  expect_true(dir.exists(file.path(temp_dir, "dash")))
-  expect_true(dir.exists(file.path(temp_dir, "dash", "data")))
-  expect_true(file.exists(file.path(temp_dir, "dash", "data", "us_counties.parquet")))
+  expect_true(dir.exists(file.path(temp_dir, "app-python")))
+  expect_true(dir.exists(file.path(temp_dir, "app-python", "data")))
+  expect_true(file.exists(file.path(temp_dir, "app-python", "data", "us_counties.parquet")))
 
   unlink(temp_dir, recursive = TRUE, force = TRUE)
 })
 
-test_that("create_content exports parquet for quarto-dashboard-python", {
+test_that("create_content exports parquet for dashboard-python", {
   skip_if_not_installed("arrow")
 
-  temp_dir <- paste0(tempdir(), "/create-quarto-python")
+  temp_dir <- paste0(tempdir(), "/create-dashboard-python")
 
   create_content(
     target = temp_dir,
-    content = "quarto-dashboard-python",
+    content = "dashboard-python",
     silent = TRUE
   )
 
-  expect_true(dir.exists(file.path(temp_dir, "quarto-dashboard-python")))
-  expect_true(dir.exists(file.path(temp_dir, "quarto-dashboard-python", "data")))
-  expect_true(file.exists(file.path(temp_dir, "quarto-dashboard-python", "data", "us_counties.parquet")))
-  expect_true(file.exists(file.path(temp_dir, "quarto-dashboard-python", "data", "us_states.parquet")))
-  expect_true(file.exists(file.path(temp_dir, "quarto-dashboard-python", "data", "us_hex_positions.parquet")))
-  expect_true(file.exists(file.path(temp_dir, "quarto-dashboard-python", "data", "us_atc_county_polygons.parquet")))
-  expect_true(file.exists(file.path(temp_dir, "quarto-dashboard-python", "data", "us_large_cities.parquet")))
-  expect_true(file.exists(file.path(temp_dir, "quarto-dashboard-python", "access-to-care.qmd")))
+  expect_true(dir.exists(file.path(temp_dir, "dashboard-python")))
+  expect_true(dir.exists(file.path(temp_dir, "dashboard-python", "data")))
+  expect_true(file.exists(file.path(temp_dir, "dashboard-python", "data", "us_counties.parquet")))
+  expect_true(file.exists(file.path(temp_dir, "dashboard-python", "data", "us_states.parquet")))
+  expect_true(file.exists(file.path(temp_dir, "dashboard-python", "data", "us_hex_positions.parquet")))
+  expect_true(file.exists(file.path(temp_dir, "dashboard-python", "data", "us_atc_county_polygons.parquet")))
+  expect_true(file.exists(file.path(temp_dir, "dashboard-python", "data", "us_large_cities.parquet")))
+  expect_true(file.exists(file.path(temp_dir, "dashboard-python", "access-to-care.qmd")))
 
   unlink(temp_dir, recursive = TRUE, force = TRUE)
 })
 
-test_that("create_content exports parquet for fastapi", {
+test_that("create_content exports parquet for api-python", {
   skip_if_not_installed("arrow")
 
-  temp_dir <- paste0(tempdir(), "/create-fastapi")
+  temp_dir <- paste0(tempdir(), "/create-api-python")
 
   create_content(
     target = temp_dir,
-    content = "fastapi",
+    content = "api-python",
     silent = TRUE
   )
 
-  expect_true(dir.exists(file.path(temp_dir, "fastapi")))
-  expect_true(dir.exists(file.path(temp_dir, "fastapi", "data")))
-  expect_true(file.exists(file.path(temp_dir, "fastapi", "data", "us_counties.parquet")))
-  expect_true(file.exists(file.path(temp_dir, "fastapi", "data", "us_states.parquet")))
-  expect_true(file.exists(file.path(temp_dir, "fastapi", "main.py")))
-  expect_true(file.exists(file.path(temp_dir, "fastapi", ".gitignore")))
+  expect_true(dir.exists(file.path(temp_dir, "api-python")))
+  expect_true(dir.exists(file.path(temp_dir, "api-python", "data")))
+  expect_true(file.exists(file.path(temp_dir, "api-python", "data", "us_counties.parquet")))
+  expect_true(file.exists(file.path(temp_dir, "api-python", "data", "us_states.parquet")))
+  expect_true(file.exists(file.path(temp_dir, "api-python", "main.py")))
+  expect_true(file.exists(file.path(temp_dir, "api-python", ".gitignore")))
 
   unlink(temp_dir, recursive = TRUE, force = TRUE)
 })

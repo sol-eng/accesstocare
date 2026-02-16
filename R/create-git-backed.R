@@ -161,18 +161,18 @@ create_single_manifest <- function(
     cli_alert("Compiling manifest...")
   }
 
-  # Check if this is a Python Dash app
+  # Check if this is a Python app
   folder_name <- path_file(full_path)
-  if (folder_name == "dash" && primary_doc == "app.py") {
+  if (folder_name == "app-python" && primary_doc == "app.py") {
     py_manifest("dash", full_path, c("dash", "dash-bootstrap-components", "plotly", "polars"))
-  } else if (folder_name == "fastapi" && primary_doc == "main.py") {
+  } else if (folder_name == "api-python" && primary_doc == "main.py") {
     py_manifest(
       "fastapi",
       full_path,
       c("fastapi", "uvicorn[standard]", "polars", "pyarrow")
     )
   } else if (
-    folder_name == "quarto-dashboard-python" && grepl("\\.qmd$", primary_doc)
+    folder_name == "dashboard-python" && grepl("\\.qmd$", primary_doc)
   ) {
     qmd_file <- path(full_path, primary_doc)
     py_manifest(
@@ -190,7 +190,7 @@ create_single_manifest <- function(
       c("polars", "plotnine", "pyarrow", "great-tables")
     )
   } else if (
-    folder_name == "quarto-html-python" && grepl("\\.qmd$", primary_doc)
+    folder_name == "report-python" && grepl("\\.qmd$", primary_doc)
   ) {
     qmd_file <- path(full_path, primary_doc)
     py_manifest(

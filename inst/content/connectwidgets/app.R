@@ -52,7 +52,6 @@ atc_content <- atc_content |>
       content_category == "pin" & str_detect(title, "Model") ~ "Model",
       content_category == "pin" ~ "Data",
       str_detect(title, " Prep") ~ "Script",
-      str_detect(title, "Presentation|PowerPoint") ~ "Presentation",
       app_mode == "rmd-static" ~ "Report",
       app_mode %in% c("rmd-shiny", "python-dash", "quarto-shiny") ~ "Dashboard",
       app_mode == "static" ~ "Plot",

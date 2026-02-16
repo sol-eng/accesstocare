@@ -65,27 +65,27 @@ create_content(target = "my-examples")
 If you wish to copy a specific example, specify its name:
 
 ``` r
-create_content(content = "shiny")
+create_content(content = "app-r")
 ```
 
 Available content options include:
 
+- `"api-python"` - REST API using FastAPI and Python
+- `"api-r"` - REST API using Plumber and R
+- `"app-python"` - Python Dash application
+- `"app-r"` - Shiny application
 - `"connectwidgets"` - Overview application listing all related content
-- `"dash"` - Python Dash dashboard
-- `"fastapi"` - REST API using FastAPI and Python
+- `"dashboard-python"` - Quarto dashboard with Python, Polars, and
+  Plotnine
+- `"dashboard-r"` - Quarto dashboard with R
 - `"htmlwidgets"` - Interactive county-level plot
+- `"pdf-r"` - PDF report
 - `"plot"` - Static ggplot2 map of entire country
-- `"plumber-api"` - REST API with multiple endpoints
-- `"presentation"` - Quarto presentation (R)
 - `"presentation-python"` - Quarto presentation (Python)
-- `"quarto-dashboard-python"` - Quarto dashboard with Python, Polars,
-  and Plotnine
-- `"quarto-dashboard-r"` - Quarto dashboard by state
-- `"quarto-html-python"` - Quarto HTML document with Python, Polars,
+- `"presentation-r"` - Quarto presentation (R)
+- `"report-python"` - Quarto HTML document with Python, Polars,
   Plotnine, and Great Tables
-- `"RMarkdown-html"` - HTML report with email template
-- `"RMarkdown-pdf"` - PDF report
-- `"shiny"` - Shiny application
+- `"report-r"` - R Markdown HTML report with email template
 
 ### Force overwrite
 
@@ -93,7 +93,7 @@ By default, `create_content()` skips folders that already exist. Use
 `force = TRUE` to overwrite:
 
 ``` r
-create_content(content = "shiny", force = TRUE)
+create_content(content = "app-r", force = TRUE)
 ```
 
 ## Publishing to Posit Connect
@@ -122,7 +122,7 @@ To prepare content for Git-backed deployment, use the
 
 ``` r
 # Prepare a single folder
-create_git_backed("my-examples/shiny")
+create_git_backed("my-examples/app-r")
 
 # Prepare all subfolders in a directory
 # This will detect subfolders with deployable content and create necessary files for each

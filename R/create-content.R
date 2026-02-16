@@ -3,10 +3,10 @@
 #' @param target The destination directory where content will be copied.
 #' Defaults to current directory.
 #' @param content Which content to copy. Can be "all" to copy everything, or
-#' a specific content name. Available options include: "connectwidgets", "dash",
-#' "fastapi", "htmlwidgets", "plot", "plumber-api", "presentation", "presentation-python",
-#' "quarto-dashboard-python", "quarto-dashboard-r", "quarto-html-python",
-#' "RMarkdown-html", "RMarkdown-pdf", "shiny".
+#' a specific content name. Available options include: "all", "api-python",
+#' "api-r", "app-python", "app-r", "connectwidgets", "dashboard-python",
+#' "dashboard-r", "htmlwidgets", "pdf-r", "plot", "presentation-python",
+#' "presentation-r", "report-python", "report-r".
 #' @param force If TRUE, overwrites existing folders. If FALSE (default), skips
 #' existing folders.
 #' @param silent If TRUE, suppresses console messages. Defaults to FALSE.
@@ -15,20 +15,20 @@ create_content <- function(
   target = ".",
   content = c(
     "all",
+    "api-python",
+    "api-r",
+    "app-python",
+    "app-r",
     "connectwidgets",
-    "dash",
-    "fastapi",
+    "dashboard-python",
+    "dashboard-r",
     "htmlwidgets",
+    "pdf-r",
     "plot",
-    "plumber-api",
-    "presentation",
     "presentation-python",
-    "quarto-dashboard-python",
-    "quarto-dashboard-r",
-    "quarto-html-python",
-    "RMarkdown-html",
-    "RMarkdown-pdf",
-    "shiny"
+    "presentation-r",
+    "report-python",
+    "report-r"
   ),
   force = FALSE,
   silent = FALSE
@@ -53,16 +53,16 @@ create_content <- function(
       }
 
       # Export data for Python examples (runs whether folder was just created or already exists)
-      if (content_name == "dash" && (folder_created || dir_exists(dest))) {
+      if (content_name == "app-python" && (folder_created || dir_exists(dest))) {
         export_data_parquet("us_counties", dest, silent = silent)
       }
 
-      if (content_name == "fastapi" && (folder_created || dir_exists(dest))) {
+      if (content_name == "api-python" && (folder_created || dir_exists(dest))) {
         export_data_parquet("us_counties", dest, silent = silent)
         export_data_parquet("us_states", dest, silent = silent)
       }
 
-      if (content_name == "quarto-dashboard-python" && (folder_created || dir_exists(dest))) {
+      if (content_name == "dashboard-python" && (folder_created || dir_exists(dest))) {
         export_data_parquet("us_counties", dest, silent = silent)
         export_data_parquet("us_states", dest, silent = silent)
         export_data_parquet("us_hex_positions", dest, silent = silent)
@@ -77,7 +77,7 @@ create_content <- function(
         export_data_parquet("us_large_cities", dest, silent = silent)
       }
 
-      if (content_name == "quarto-html-python" && (folder_created || dir_exists(dest))) {
+      if (content_name == "report-python" && (folder_created || dir_exists(dest))) {
         export_data_parquet("us_counties", dest, silent = silent)
         export_data_parquet("us_states", dest, silent = silent)
         export_data_parquet("us_atc_county_polygons", dest, silent = silent)
