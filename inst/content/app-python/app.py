@@ -125,7 +125,7 @@ def update_counties(value):
     # Map pred_status to colors - matching other assets
     color_map = {"below": "#CC79A7", "ok": "#009E73", "above": "#0072B2"}
     counties_df = st_counties.with_columns(
-        pl.col("pred_status").map_dict(color_map).alias("color")
+        pl.col("pred_status").replace(color_map).alias("color")
     )
 
     # Calculate dynamic height based on number of counties
@@ -182,8 +182,10 @@ def update_counties(value):
         height=chart_height,
         margin=dict(l=200, r=20, t=60, b=60),
         xaxis=dict(
-            title="Number of Hospitals",
-            titlefont=dict(size=14, color="#2c3e50", family="Open Sans"),
+            title=dict(
+                text="Number of Hospitals",
+                font=dict(size=14, color="#2c3e50", family="Open Sans")
+            ),
             gridcolor="#e8f4fd",
             zerolinecolor="#d4e6f1"
         ),
