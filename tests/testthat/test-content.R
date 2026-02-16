@@ -183,3 +183,75 @@ test_that("create_content exports parquet for api-python", {
 
   unlink(temp_dir, recursive = TRUE, force = TRUE)
 })
+
+test_that("clear_folder_contents preserves .connect files", {
+  temp_dir <- paste0(tempdir(), "/clear-folder-test")
+  dir.create(temp_dir, showWarnings = FALSE)
+
+  # Create various files
+  writeLines("regular file", file.path(temp_dir, "regular.txt"))
+  writeLines("connect file", file.path(temp_dir, "deployment.connect"))
+  writeLines("another connect", file.path(temp_dir, ".connect-data"))
+  dir.create(file.path(temp_dir, "subfolder"))
+  writeLines("subfolder file", file.path(temp_dir, "subfolder", "data.txt"))
+
+  # Call clear_folder_contents
+  accesstocare:::clear_folder_contents(temp_dir)
+
+  # Regular files should be deleted
+  expect_false(file.exists(file.path(temp_dir, "regular.txt")))
+  expect_false(dir.exists(file.path(temp_dir, "subfolder")))
+
+  # .connect files should be preserved
+  expect_true(file.exists(file.path(temp_dir, "deployment.connect")))
+  expect_true(file.exists(file.path(temp_dir, ".connect-data")))
+
+  unlink(temp_dir, recursive = TRUE, force = TRUE)
+})
+
+test_that("clear_folder_contents creates folder if missing", {
+  temp_dir <- paste0(tempdir(), "/clear-folder-missing")
+
+  # Ensure folder doesn't exist
+  if (dir.exists(temp_dir)) {
+    unlink(temp_dir, recursive = TRUE)
+  }
+
+  # Call clear_folder_contents on non-existent folder
+  accesstocare:::clear_folder_contents(temp_dir)
+
+  # Folder should be created
+  expect_true(dir.exists(temp_dir))
+
+  unlink(temp_dir, recursive = TRUE, force = TRUE)
+})
+
+test_that("create_content with force preserves .connect files", {
+  temp_dir <- paste0(tempdir(), "/create-force-connect")
+
+  # Create content first time
+  create_content(
+    target = temp_dir,
+    content = "pins-data",
+    silent = TRUE
+  )
+
+  # Add a .connect file
+  writeLines("connect data", file.path(temp_dir, "pins-data", "deployment.connect"))
+
+  # Force overwrite
+  create_content(
+    target = temp_dir,
+    content = "pins-data",
+    force = TRUE,
+    silent = TRUE
+  )
+
+  # Content should be recreated
+  expect_true(file.exists(file.path(temp_dir, "pins-data", "us_counties.csv")))
+
+  # .connect file should still exist
+  expect_true(file.exists(file.path(temp_dir, "pins-data", "deployment.connect")))
+
+  unlink(temp_dir, recursive = TRUE, force = TRUE)
+})

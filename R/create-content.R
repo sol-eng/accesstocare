@@ -46,7 +46,7 @@ create_content <- function(
         dir_copy(folder, dest)
         folder_created <- TRUE
       } else if (force) {
-        dir_delete(dest)
+        clear_folder_contents(dest)
         dir_copy(folder, dest)
         folder_created <- TRUE
       } else if (!silent) {
@@ -109,9 +109,8 @@ create_content <- function(
         con = path(dest_folder, "map.html")
       )
     } else if (force) {
-      dir_delete(dest_folder)
+      clear_folder_contents(dest_folder)
       p <- atc_plot_state_map("All US", top_cities = 0)
-      dir_create(dest_folder)
       ggsave(plot = p, filename = path(dest_folder, "map.png"))
       writeLines(
         "<img src=map.png width = 1000>",
@@ -129,10 +128,9 @@ create_content <- function(
       dir_create(dest_folder)
       saveWidget(gp, path(dest_folder, "map.html"))
     } else if (force) {
-      dir_delete(dest_folder)
+      clear_folder_contents(dest_folder)
       p <- atc_plot_state_map("All US", top_cities = 0)
       gp <- girafe(ggobj = p)
-      dir_create(dest_folder)
       saveWidget(gp, path(dest_folder, "map.html"))
     } else if (!silent) {
       cli_alert_warning("Skipping 'r-htmlwidgets' - folder already exists")
@@ -144,8 +142,7 @@ create_content <- function(
       dir_create(dest_folder)
       write.csv(accesstocare::us_counties, path(dest_folder, "us_counties.csv"))
     } else if (force) {
-      dir_delete(dest_folder)
-      dir_create(dest_folder)
+      clear_folder_contents(dest_folder)
       write.csv(accesstocare::us_counties, path(dest_folder, "us_counties.csv"))
     } else if (!silent) {
       cli_alert_warning("Skipping 'pins-data' - folder already exists")
@@ -185,4 +182,32 @@ export_data_parquet <- function(data_name, dest_folder, silent = FALSE) {
   arrow::write_parquet(data_obj, parquet_path)
 
   invisible(parquet_path)
+}
+
+# Internal function to clear folder contents while preserving .connect files
+# @param folder_path Path to the folder to clear
+# @return The folder path (invisibly)
+clear_folder_contents <- function(folder_path) {
+  # Ensure folder exists
+  if (!dir_exists(folder_path)) {
+    dir_create(folder_path)
+    return(invisible(folder_path))
+  }
+
+  # Get all items in the folder
+  all_items <- dir_ls(folder_path, all = TRUE, recurse = FALSE)
+
+  # Filter out items containing ".connect" in their name
+  items_to_delete <- all_items[!grepl("\\.connect", path_file(all_items))]
+
+  # Delete each item
+  walk(items_to_delete, ~ {
+    if (dir_exists(.x)) {
+      dir_delete(.x)
+    } else if (file_exists(.x)) {
+      file_delete(.x)
+    }
+  })
+
+  invisible(folder_path)
 }
