@@ -68,9 +68,12 @@ atc_content <- atc_content |>
 
 ui <- material_page(
   title = "Access to Care",
-  primary_theme_color = palette_atc$ok,
-  secondary_theme_color = palette_atc$above,
+  primary_theme_color = "#0357b8",
+  secondary_theme_color = "#5b9bd5",
   background_color = "white",
+  tags$head(
+    tags$link(rel = "stylesheet", type = "text/css", href = "custom-theme.css")
+  ),
   material_parallax("hospital.jpg"),
   fluidRow(
     absolutePanel(
