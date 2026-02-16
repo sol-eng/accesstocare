@@ -5,7 +5,7 @@
 #' @param content Which content to copy. Can be "all" to copy everything, or
 #' a specific content name. Available options include: "all", "api-python",
 #' "api-r", "app-python", "app-r", "connectwidgets", "dashboard-python",
-#' "dashboard-r", "pdf-r", "presentation-python", "presentation-r",
+#' "dashboard-r", "pins-data", "pdf-r", "presentation-python", "presentation-r",
 #' "r-htmlwidgets", "r-plot", "report-python", "report-r".
 #' @param force If TRUE, overwrites existing folders. If FALSE (default), skips
 #' existing folders.
@@ -136,6 +136,18 @@ create_content <- function(
       saveWidget(gp, path(dest_folder, "map.html"))
     } else if (!silent) {
       cli_alert_warning("Skipping 'r-htmlwidgets' - folder already exists")
+    }
+  }
+  if (content %in% c("all", "pins-data")) {
+    dest_folder <- path(target, "pins_data")
+    if (!dir_exists(dest_folder)) {
+      write.csv(us_counties, dest_folder)
+    } else if (force) {
+      dir_delete(dest_folder)
+      dir_create(dest_folder)
+      write.csv(us_counties, dest_folder)
+    } else if (!silent) {
+      cli_alert_warning("Skipping 'pins-data' - folder already exists")
     }
   }
 }
