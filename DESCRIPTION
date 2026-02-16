@@ -31,7 +31,9 @@ Imports:
     rstudioapi,
     htmlwidgets,
     arrow,
-    reticulate
+    reticulate,
+    gert,
+    connectapi
 Suggests: 
     knitr,
     covr,
