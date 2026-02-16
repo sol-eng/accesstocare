@@ -4,7 +4,7 @@
 #' Defaults to current directory.
 #' @param content Which content to copy. Can be "all" to copy everything, or
 #' a specific content name. Available options include: "connectwidgets", "dash",
-#' "htmlwidgets", "plot", "plumber-api", "presentation", "presentation-python",
+#' "fastapi", "htmlwidgets", "plot", "plumber-api", "presentation", "presentation-python",
 #' "quarto-dashboard-python", "quarto-dashboard-r", "quarto-html-python",
 #' "RMarkdown-html", "RMarkdown-pdf", "shiny".
 #' @param force If TRUE, overwrites existing folders. If FALSE (default), skips
@@ -17,6 +17,7 @@ create_content <- function(
     "all",
     "connectwidgets",
     "dash",
+    "fastapi",
     "htmlwidgets",
     "plot",
     "plumber-api",
@@ -54,6 +55,11 @@ create_content <- function(
       # Export data for Python examples (runs whether folder was just created or already exists)
       if (content_name == "dash" && (folder_created || dir_exists(dest))) {
         export_data_parquet("us_counties", dest, silent = silent)
+      }
+
+      if (content_name == "fastapi" && (folder_created || dir_exists(dest))) {
+        export_data_parquet("us_counties", dest, silent = silent)
+        export_data_parquet("us_states", dest, silent = silent)
       }
 
       if (content_name == "quarto-dashboard-python" && (folder_created || dir_exists(dest))) {

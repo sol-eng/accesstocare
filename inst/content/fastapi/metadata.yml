@@ -1,0 +1,9 @@
+title: "FastAPI"
+description: "REST API with multiple endpoints using FastAPI and Python"
+type: "REST API"
+url: "fastapi"
+tags:
+  - "Access to Care"
+  - "API"
+  - "Python"
+  - "FastAPI"

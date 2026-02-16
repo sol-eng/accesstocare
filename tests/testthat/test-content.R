@@ -22,8 +22,8 @@ test_that("create_content copies all content", {
     silent = TRUE
   )
 
-  # Should have 10 inst/content folders + plot + htmlwidgets (dynamically generated) = 12 total
-  expect_gte(length(dir(temp_dir)), 12)
+  # Should have 11 inst/content folders + plot + htmlwidgets (dynamically generated) = 13 total
+  expect_gte(length(dir(temp_dir)), 13)
 
   unlink(temp_dir, recursive = TRUE, force = TRUE)
 })
@@ -144,6 +144,27 @@ test_that("create_content exports parquet for quarto-dashboard-python", {
   expect_true(file.exists(file.path(temp_dir, "quarto-dashboard-python", "data", "us_atc_county_polygons.parquet")))
   expect_true(file.exists(file.path(temp_dir, "quarto-dashboard-python", "data", "us_large_cities.parquet")))
   expect_true(file.exists(file.path(temp_dir, "quarto-dashboard-python", "access-to-care.qmd")))
+
+  unlink(temp_dir, recursive = TRUE, force = TRUE)
+})
+
+test_that("create_content exports parquet for fastapi", {
+  skip_if_not_installed("arrow")
+
+  temp_dir <- paste0(tempdir(), "/create-fastapi")
+
+  create_content(
+    target = temp_dir,
+    content = "fastapi",
+    silent = TRUE
+  )
+
+  expect_true(dir.exists(file.path(temp_dir, "fastapi")))
+  expect_true(dir.exists(file.path(temp_dir, "fastapi", "data")))
+  expect_true(file.exists(file.path(temp_dir, "fastapi", "data", "us_counties.parquet")))
+  expect_true(file.exists(file.path(temp_dir, "fastapi", "data", "us_states.parquet")))
+  expect_true(file.exists(file.path(temp_dir, "fastapi", "main.py")))
+  expect_true(file.exists(file.path(temp_dir, "fastapi", ".gitignore")))
 
   unlink(temp_dir, recursive = TRUE, force = TRUE)
 })

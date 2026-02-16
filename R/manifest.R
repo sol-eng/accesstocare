@@ -171,6 +171,14 @@ create_single_manifest <- function(
       cmd,
       with = c("dash", "plotly", "polars")
     )
+  } else if (folder_name == "fastapi" && primary_doc == "main.py") {
+    # Use reticulate::uv_run_tool for FastAPI apps
+    cmd <- paste("write-manifest fastapi", full_path)
+    reticulate::uv_run_tool(
+      "rsconnect",
+      cmd,
+      with = c("fastapi", "uvicorn[standard]", "polars", "pyarrow")
+    )
   } else if (folder_name == "quarto-dashboard-python" && grepl("\\.qmd$", primary_doc)) {
     # Use reticulate::uv_run_tool for Quarto Python dashboards
     # For single-file Quarto docs, pass the full file path not just the directory

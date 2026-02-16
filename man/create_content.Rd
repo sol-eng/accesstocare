@@ -6,8 +6,8 @@
 \usage{
 create_content(
   target = ".",
-  content = c("all", "connectwidgets", "dash", "htmlwidgets", "plot", "plumber-api",
-    "presentation", "presentation-python", "quarto-dashboard-python",
+  content = c("all", "connectwidgets", "dash", "fastapi", "htmlwidgets", "plot",
+    "plumber-api", "presentation", "presentation-python", "quarto-dashboard-python",
     "quarto-dashboard-r", "quarto-html-python", "RMarkdown-html", "RMarkdown-pdf",
     "shiny"),
   force = FALSE,
@@ -20,7 +20,7 @@ Defaults to current directory.}
 
 \item{content}{Which content to copy. Can be "all" to copy everything, or
 a specific content name. Available options include: "connectwidgets", "dash",
-"htmlwidgets", "plot", "plumber-api", "presentation", "presentation-python",
+"fastapi", "htmlwidgets", "plot", "plumber-api", "presentation", "presentation-python",
 "quarto-dashboard-python", "quarto-dashboard-r", "quarto-html-python",
 "RMarkdown-html", "RMarkdown-pdf", "shiny".}
 

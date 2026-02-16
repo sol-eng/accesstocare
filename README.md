@@ -53,7 +53,7 @@ create_content()
 ```
 
 This will create a separate subfolder for each example in your current
-working directory. Currently, there are 13 examples available. You can
+working directory. Currently, there are 14 examples available. You can
 also specify a target directory:
 
 ``` r
@@ -72,6 +72,7 @@ Available content options include:
 
 - `"connectwidgets"` - Overview application listing all related content
 - `"dash"` - Python Dash dashboard
+- `"fastapi"` - REST API using FastAPI and Python
 - `"htmlwidgets"` - Interactive county-level plot
 - `"plot"` - Static ggplot2 map of entire country
 - `"plumber-api"` - REST API with multiple endpoints
