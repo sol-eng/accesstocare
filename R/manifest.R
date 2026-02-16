@@ -165,7 +165,7 @@ create_single_manifest <- function(
   folder_name <- path_file(full_path)
   if (folder_name == "dash" && primary_doc == "app.py") {
     # Use reticulate::uv_run_tool for Python Dash apps
-    cmd <- paste("write-manifest", folder_name, full_path)
+    cmd <- paste("write-manifest dash", full_path)
     reticulate::uv_run_tool(
       "rsconnect",
       cmd,
@@ -173,7 +173,9 @@ create_single_manifest <- function(
     )
   } else if (folder_name == "quarto-dashboard-python" && grepl("\\.qmd$", primary_doc)) {
     # Use reticulate::uv_run_tool for Quarto Python dashboards
-    cmd <- paste("write-manifest", folder_name, full_path)
+    # For single-file Quarto docs, pass the full file path not just the directory
+    qmd_file <- path(full_path, primary_doc)
+    cmd <- paste("write-manifest quarto", qmd_file)
     reticulate::uv_run_tool(
       "rsconnect",
       cmd,
@@ -221,6 +223,13 @@ primary_docs <- function(full_path) {
     return(NA)
   }
   pd <- pd[[1]]
+
+  # Exclude README.Rmd as it's not deployable content
+  pd <- pd[pd != "README.Rmd"]
+
+  if (length(pd) == 0) {
+    return(NA)
+  }
   if (length(pd) > 1) {
     res <- NA
   }

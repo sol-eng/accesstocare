@@ -58,3 +58,19 @@ test_that("No manifest created without primary doc", {
 
   unlink(temp_folder, recursive = TRUE, force = TRUE)
 })
+
+test_that("README.Rmd is excluded as primary doc", {
+  temp_folder <- paste0(tempdir(), "/atc-manifest-readme")
+  dir.create(temp_folder, showWarnings = FALSE)
+
+  # Create only a README.Rmd file
+  writeLines("# README", con = paste0(temp_folder, "/README.Rmd"))
+
+  # Should return NULL since README.Rmd is not deployable
+  res <- create_git_backed(temp_folder, silent = TRUE)
+
+  expect_null(res)
+  expect_false(file.exists(paste0(temp_folder, "/manifest.json")))
+
+  unlink(temp_folder, recursive = TRUE, force = TRUE)
+})
