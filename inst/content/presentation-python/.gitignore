@@ -1,0 +1,5 @@
+manifest.json
+*.rsconnect
+
+/.quarto/
+**/*.quarto_ipynb

@@ -181,6 +181,16 @@ create_single_manifest <- function(
       cmd,
       with = c("polars", "plotly", "shiny", "shinywidgets", "numpy")
     )
+  } else if (folder_name == "presentation-python" && grepl("\\.qmd$", primary_doc)) {
+    # Use reticulate::uv_run_tool for Python Quarto presentations
+    # For single-file Quarto docs, pass the full file path not just the directory
+    qmd_file <- path(full_path, primary_doc)
+    cmd <- paste("write-manifest quarto", qmd_file)
+    reticulate::uv_run_tool(
+      "rsconnect",
+      cmd,
+      with = c("polars", "plotnine", "pyarrow", "tabulate")
+    )
   } else {
     # Use rsconnect::writeManifest for R content
     app_mode <- NULL
