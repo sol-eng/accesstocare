@@ -100,7 +100,7 @@ create_content <- function(
   }
   if (content %in% c("all", "plot-r")) {
     dest_folder <- path(target, "plot-r")
-    if (!dir_exists(dest_folder)) {
+    if (!dir_exists(dest_folder) | folder_created) {
       p <- atc_plot_state_map("All US", top_cities = 0)
       dir_create(dest_folder)
       ggsave(plot = p, filename = path(dest_folder, "map.png"))
@@ -122,7 +122,7 @@ create_content <- function(
   }
   if (content %in% c("all", "htmlwidgets-r")) {
     dest_folder <- path(target, "htmlwidgets-r")
-    if (!dir_exists(dest_folder)) {
+    if (!dir_exists(dest_folder) | folder_created) {
       p <- atc_plot_state_map("All US", top_cities = 0)
       gp <- girafe(ggobj = p)
       dir_create(dest_folder)
@@ -201,13 +201,16 @@ clear_folder_contents <- function(folder_path) {
   items_to_delete <- all_items[!grepl("\\.connect", path_file(all_items))]
 
   # Delete each item
-  walk(items_to_delete, ~ {
-    if (dir_exists(.x)) {
-      dir_delete(.x)
-    } else if (file_exists(.x)) {
-      file_delete(.x)
+  walk(
+    items_to_delete,
+    ~ {
+      if (dir_exists(.x)) {
+        dir_delete(.x)
+      } else if (file_exists(.x)) {
+        file_delete(.x)
+      }
     }
-  })
+  )
 
   invisible(folder_path)
 }
