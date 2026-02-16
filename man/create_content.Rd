@@ -8,7 +8,8 @@ create_content(
   target = ".",
   content = c("all", "connectwidgets", "dash", "htmlwidgets", "plot", "plumber-api",
     "presentation", "presentation-python", "quarto-dashboard-python",
-    "quarto-dashboard-r", "RMarkdown-html", "RMarkdown-pdf", "shiny"),
+    "quarto-dashboard-r", "quarto-html-python", "RMarkdown-html", "RMarkdown-pdf",
+    "shiny"),
   force = FALSE,
   silent = FALSE
 )
@@ -20,7 +21,8 @@ Defaults to current directory.}
 \item{content}{Which content to copy. Can be "all" to copy everything, or
 a specific content name. Available options include: "connectwidgets", "dash",
 "htmlwidgets", "plot", "plumber-api", "presentation", "presentation-python",
-"quarto-dashboard-python", "quarto-dashboard-r", "RMarkdown-html", "RMarkdown-pdf", "shiny".}
+"quarto-dashboard-python", "quarto-dashboard-r", "quarto-html-python",
+"RMarkdown-html", "RMarkdown-pdf", "shiny".}
 
 \item{force}{If TRUE, overwrites existing folders. If FALSE (default), skips
 existing folders.}

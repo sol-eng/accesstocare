@@ -53,7 +53,7 @@ create_content()
 ```
 
 This will create a separate subfolder for each example in your current
-working directory. Currently, there are 12 examples available. You can
+working directory. Currently, there are 13 examples available. You can
 also specify a target directory:
 
 ``` r
@@ -80,6 +80,8 @@ Available content options include:
 - `"quarto-dashboard-python"` - Quarto dashboard with Python, Polars,
   and Plotnine
 - `"quarto-dashboard-r"` - Quarto dashboard by state
+- `"quarto-html-python"` - Quarto HTML document with Python, Polars,
+  Plotnine, and Great Tables
 - `"RMarkdown-html"` - HTML report with email template
 - `"RMarkdown-pdf"` - PDF report
 - `"shiny"` - Shiny application
