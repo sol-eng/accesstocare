@@ -139,7 +139,7 @@ create_content <- function(
     }
   }
   if (content %in% c("all", "pins-data")) {
-    dest_folder <- path(target, "pins_data")
+    dest_folder <- path(target, "pins-data")
     if (!dir_exists(dest_folder)) {
       dir_create(dest_folder)
       write.csv(accesstocare::us_counties, path(dest_folder, "us_counties.csv"))
