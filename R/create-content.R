@@ -141,11 +141,12 @@ create_content <- function(
   if (content %in% c("all", "pins-data")) {
     dest_folder <- path(target, "pins_data")
     if (!dir_exists(dest_folder)) {
-      write.csv(us_counties, dest_folder)
+      dir_create(dest_folder)
+      write.csv(accesstocare::us_counties, path(dest_folder, "us_counties.csv"))
     } else if (force) {
       dir_delete(dest_folder)
       dir_create(dest_folder)
-      write.csv(us_counties, dest_folder)
+      write.csv(accesstocare::us_counties, path(dest_folder, "us_counties.csv"))
     } else if (!silent) {
       cli_alert_warning("Skipping 'pins-data' - folder already exists")
     }
