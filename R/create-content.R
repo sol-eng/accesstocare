@@ -5,8 +5,8 @@
 #' @param content Which content to copy. Can be "all" to copy everything, or
 #' a specific content name. Available options include: "all", "api-python",
 #' "api-r", "app-python", "app-r", "connectwidgets", "dashboard-python",
-#' "dashboard-r", "pins-data", "pdf-r", "presentation-python", "presentation-r",
-#' "r-htmlwidgets", "r-plot", "report-python", "report-r".
+#' "dashboard-r", "htmlwidgets-r", "pdf-r", "pins-data", "plot-r",
+#' "presentation-python", "presentation-r", "report-python", "report-r".
 #' @param force If TRUE, overwrites existing folders. If FALSE (default), skips
 #' existing folders.
 #' @param silent If TRUE, suppresses console messages. Defaults to FALSE.
@@ -22,12 +22,12 @@ create_content <- function(
     "connectwidgets",
     "dashboard-python",
     "dashboard-r",
-    "pins-data",
+    "htmlwidgets-r",
     "pdf-r",
+    "pins-data",
+    "plot-r",
     "presentation-python",
     "presentation-r",
-    "r-htmlwidgets",
-    "r-plot",
     "report-python",
     "report-r"
   ),
@@ -98,8 +98,8 @@ create_content <- function(
       }
     }
   }
-  if (content %in% c("all", "r-plot")) {
-    dest_folder <- path(target, "r-plot")
+  if (content %in% c("all", "plot-r")) {
+    dest_folder <- path(target, "plot-r")
     if (!dir_exists(dest_folder)) {
       p <- atc_plot_state_map("All US", top_cities = 0)
       dir_create(dest_folder)
@@ -117,11 +117,11 @@ create_content <- function(
         con = path(dest_folder, "map.html")
       )
     } else if (!silent) {
-      cli_alert_warning("Skipping 'r-plot' - folder already exists")
+      cli_alert_warning("Skipping 'plot-r' - folder already exists")
     }
   }
-  if (content %in% c("all", "r-htmlwidgets")) {
-    dest_folder <- path(target, "r-htmlwidgets")
+  if (content %in% c("all", "htmlwidgets-r")) {
+    dest_folder <- path(target, "htmlwidgets-r")
     if (!dir_exists(dest_folder)) {
       p <- atc_plot_state_map("All US", top_cities = 0)
       gp <- girafe(ggobj = p)
@@ -133,7 +133,7 @@ create_content <- function(
       gp <- girafe(ggobj = p)
       saveWidget(gp, path(dest_folder, "map.html"))
     } else if (!silent) {
-      cli_alert_warning("Skipping 'r-htmlwidgets' - folder already exists")
+      cli_alert_warning("Skipping 'htmlwidgets-r' - folder already exists")
     }
   }
   if (content %in% c("all", "pins-data")) {
@@ -162,7 +162,7 @@ get_contents <- function() {
   folder <- content_folder()
   folders <- dir_ls(folder)
   folder_names <- path_file(folders)
-  contents <- c("all", folder_names, "r-htmlwidgets", "r-plot")
+  contents <- c("all", folder_names, "htmlwidgets-r", "plot-r")
   cat(paste0("\"", sort(contents), "\"", collapse = ", "))
 }
 

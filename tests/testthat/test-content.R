@@ -22,7 +22,7 @@ test_that("create_content copies all content", {
     silent = TRUE
   )
 
-  # Should have 12 inst/content folders + r-plot + r-htmlwidgets + pins-data (dynamically generated) = 15 total
+  # Should have 12 inst/content folders + plot-r + htmlwidgets-r + pins-data (dynamically generated) = 15 total
   expect_gte(length(dir(temp_dir)), 15)
 
   unlink(temp_dir, recursive = TRUE, force = TRUE)
@@ -76,33 +76,33 @@ test_that("create_content with force=TRUE overwrites", {
   unlink(temp_dir, recursive = TRUE, force = TRUE)
 })
 
-test_that("create_content generates r-plot content", {
-  temp_dir <- paste0(tempdir(), "/create-r-plot")
+test_that("create_content generates plot-r content", {
+  temp_dir <- paste0(tempdir(), "/create-plot-r")
 
   create_content(
     target = temp_dir,
-    content = "r-plot",
+    content = "plot-r",
     silent = TRUE
   )
 
-  expect_true(dir.exists(file.path(temp_dir, "r-plot")))
-  expect_true(file.exists(file.path(temp_dir, "r-plot", "map.png")))
-  expect_true(file.exists(file.path(temp_dir, "r-plot", "map.html")))
+  expect_true(dir.exists(file.path(temp_dir, "plot-r")))
+  expect_true(file.exists(file.path(temp_dir, "plot-r", "map.png")))
+  expect_true(file.exists(file.path(temp_dir, "plot-r", "map.html")))
 
   unlink(temp_dir, recursive = TRUE, force = TRUE)
 })
 
-test_that("create_content generates r-htmlwidgets content", {
-  temp_dir <- paste0(tempdir(), "/create-r-htmlwidgets")
+test_that("create_content generates htmlwidgets-r content", {
+  temp_dir <- paste0(tempdir(), "/create-htmlwidgets-r")
 
   create_content(
     target = temp_dir,
-    content = "r-htmlwidgets",
+    content = "htmlwidgets-r",
     silent = TRUE
   )
 
-  expect_true(dir.exists(file.path(temp_dir, "r-htmlwidgets")))
-  expect_true(file.exists(file.path(temp_dir, "r-htmlwidgets", "map.html")))
+  expect_true(dir.exists(file.path(temp_dir, "htmlwidgets-r")))
+  expect_true(file.exists(file.path(temp_dir, "htmlwidgets-r", "map.html")))
 
   unlink(temp_dir, recursive = TRUE, force = TRUE)
 })

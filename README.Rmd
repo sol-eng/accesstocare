@@ -83,12 +83,12 @@ Available content options include:
 - `"connectwidgets"` - Overview application listing all related content
 - `"dashboard-python"` - Quarto dashboard with Python, Polars, and Plotnine
 - `"dashboard-r"` - Quarto dashboard with R
+- `"htmlwidgets-r"` - Interactive county-level plot
 - `"pdf-r"` - PDF report
 - `"pins-data"` - Data file for pins deployment
+- `"plot-r"` - Static ggplot2 map of entire country
 - `"presentation-python"` - Quarto presentation (Python)
 - `"presentation-r"` - Quarto presentation (R)
-- `"r-htmlwidgets"` - Interactive county-level plot
-- `"r-plot"` - Static ggplot2 map of entire country
 - `"report-python"` - Quarto HTML document with Python, Polars, Plotnine, and Great Tables
 - `"report-r"` - R Markdown HTML report with email template
 
