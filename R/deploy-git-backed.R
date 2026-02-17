@@ -41,8 +41,7 @@ deploy_git_backed <- function(
     repository <- sub("\\.git", "", repository)
     cli_alert_success("Repository: {.url {repository}}")
   }
-  connect_file <- path(content_location, ".connect")
-  if (file_exists(connect_file)) {
+  if (file_exists(path(content_location, "manifest.json"))) {
     cli_alert_info("Deploying single content item...")
     deploy_single(content_location, client, repository, branch)
   } else {
@@ -87,7 +86,9 @@ deploy_single <- function(
 
   if (file_exists(connect_file)) {
     target_guid <- readLines(connect_file)
-    cli_alert_info("Updating '{metadata$title}' (GUID: {substr(target_guid, 1, 8)}...)")
+    cli_alert_info(
+      "Updating '{metadata$title}' (GUID: {substr(target_guid, 1, 8)}...)"
+    )
     item <- content_item(client, target_guid)
   } else {
     cli_alert_info("Deploying '{metadata$title}' as new content...")
@@ -99,7 +100,9 @@ deploy_single <- function(
       title = paste("Access to Care -", metadata$title)
     )
     writeLines(item$content$guid, path(content_folder, ".connect"))
-    cli_alert_success("Created .connect file with GUID: {substr(item$content$guid, 1, 8)}...")
+    cli_alert_success(
+      "Created .connect file with GUID: {substr(item$content$guid, 1, 8)}..."
+    )
   }
 
   thumbnail_file <- path(content_folder, "thumbnail.png")
