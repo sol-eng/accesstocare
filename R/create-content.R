@@ -47,7 +47,7 @@ create_content <- function(
         folder_created <- TRUE
       } else if (force) {
         clear_folder_contents(dest)
-        dir_copy(folder, dest)
+        file_copy(dir_ls(folder, recurse = TRUE, type = "file"), dest)
         folder_created <- TRUE
       } else if (!silent) {
         cli_alert_warning("Skipping '{content_name}' - folder already exists")
