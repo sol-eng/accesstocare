@@ -1,6 +1,6 @@
 # Plot of county level data
 
-Returns a plot with actual shape of the state, and highlights each
+Returns a plot with the actual shape of the state, and highlights each
 county with a color. The color will depend on which variable is being
 used to plot.
 
@@ -31,7 +31,7 @@ atc_plot_state_map(
 
 - colors:
 
-  A list of two colors. One set the value of the high number and the
+  A list of two colors. One for the value of the high number and the
   other for the low number.
 
 - model_colors:
@@ -41,7 +41,7 @@ atc_plot_state_map(
 
 - top_cities:
 
-  Plots the most populated cities. The default to plot the 3 most
+  Plots the most populated cities. The default is to plot the 3 most
   populated cities. To avoid displaying any cities, use 0.
 
 ## Examples

@@ -20,13 +20,13 @@ atc_plot_us_map(
   The variable to use as the driver for the color or level of
   transparency that will be displayed. There are four options:
   population of the state, the number of hospitals in that state,
-  highlight states with counties with counties above or below the
-  model's predictions. The values that can be used are: population,
-  hospitals, abover or below. The default is population.
+  highlight states with counties above or below the model's predictions.
+  The values that can be used are: population, hospitals, above or
+  below. The default is population.
 
 - colors:
 
-  A list of two colors. One set the value of the high number and the
+  A list of two colors. One for the value of the high number and the
   other for the low number.
 
 ## Examples

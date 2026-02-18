@@ -1,7 +1,7 @@
-# Plot of all counties hospital and population
+# Plot of county hospitals and population
 
-Returns a scatter plot comparing Hospital vs Population counts in a
-given county
+Returns a scatter plot comparing Hospital vs Population counts for all
+counties
 
 ## Usage
 

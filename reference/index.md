@@ -1,29 +1,18 @@
 # Package index
 
-## View examples
+## Content Management
 
-- [`atc_package_content()`](https://sol-eng.github.io/accesstocare/reference/atc_package_content.md)
-  : A list of the Access To Care examples
-- [`atc_open_content()`](https://sol-eng.github.io/accesstocare/reference/atc_open_content.md)
-  : Opens an examples in RSTudio
-
-## Copy one or all examples
-
-- [`atc_copy_content()`](https://sol-eng.github.io/accesstocare/reference/atc_copy_content.md)
-  [`atc_copy_all_content()`](https://sol-eng.github.io/accesstocare/reference/atc_copy_content.md)
-  : Copies the Access To Care examples
-
-## Write manifests
-
-- [`atc_write_all_manifests()`](https://sol-eng.github.io/accesstocare/reference/atc_write_all_manifests.md)
-  : Batch creation of manifests
-- [`atc_write_manifest()`](https://sol-eng.github.io/accesstocare/reference/atc_write_manifest.md)
-  : Prepares manifest file
+- [`deploy_git_backed()`](https://sol-eng.github.io/accesstocare/reference/deploy_git_backed.md)
+  : Deploy Git-backed content to Posit Connect
+- [`create_content()`](https://sol-eng.github.io/accesstocare/reference/create_content.md)
+  : Create Access To Care example content
+- [`create_git_backed()`](https://sol-eng.github.io/accesstocare/reference/create_git_backed.md)
+  : Prepare Git-backed deployment manifests
 
 ## Plots
 
 - [`atc_plot_hospitals()`](https://sol-eng.github.io/accesstocare/reference/atc_plot_hospitals.md)
-  : Plot of all counties hospital and population
+  : Plot of county hospitals and population
 - [`atc_plot_state_map()`](https://sol-eng.github.io/accesstocare/reference/atc_plot_state_map.md)
   : Plot of county level data
 - [`atc_plot_us_map()`](https://sol-eng.github.io/accesstocare/reference/atc_plot_us_map.md)
@@ -57,8 +46,6 @@
 
 - [`format_number()`](https://sol-eng.github.io/accesstocare/reference/format_number.md)
   [`format_currency()`](https://sol-eng.github.io/accesstocare/reference/format_number.md)
-  : Returns a abbreviated version of a large number
+  : Returns an abbreviated version of a large number
 - [`palette_atc`](https://sol-eng.github.io/accesstocare/reference/palette_atc.md)
   : A list of color defaults
-- [`folder_content_metadata()`](https://sol-eng.github.io/accesstocare/reference/folder_content_metadata.md)
-  : A list of examples in a folder

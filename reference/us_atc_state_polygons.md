@@ -18,7 +18,7 @@ A tibble with 11 variables and 306 rows:
 
 - hospitals:
 
-  Number of hospitals inside the county
+  Number of hospitals in the state
 
 - population:
 
@@ -40,6 +40,18 @@ A tibble with 11 variables and 306 rows:
 
   Sets the 'x' position
 
-- x:
+- y:
 
   Sets the 'y' position
+
+- pred_above:
+
+  Number of counties above the model prediction
+
+- pred_below:
+
+  Number of counties below the model prediction
+
+- pred_ok:
+
+  Number of counties at the expected level

@@ -16,7 +16,7 @@ A tibble with 3 variables and 306 rows:
 
   Sets the 'x' position
 
-- x:
+- y:
 
   Sets the 'y' position
 

@@ -12,9 +12,9 @@ us_large_cities
 
 A tibble with 7 variables and 1,005 rows:
 
-- state_name:
+- city_name:
 
-  Name of the state
+  Name of the city
 
 - state:
 
@@ -30,11 +30,11 @@ A tibble with 7 variables and 1,005 rows:
 
 - x:
 
-  Map location used a converted number from the citie's longitude
+  Map location used a converted number from the city's longitude
 
 - y:
 
-  Map location used a converted number from the citie's latitude
+  Map location used a converted number from the city's latitude
 
 - position:
 

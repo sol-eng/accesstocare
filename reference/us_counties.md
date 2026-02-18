@@ -12,7 +12,7 @@ us_counties
 
 ## Format
 
-A tibble with 9 variables and 3,142 rows:
+A tibble with 10 variables and 3,142 rows:
 
 - fips:
 
@@ -20,7 +20,7 @@ A tibble with 9 variables and 3,142 rows:
 
 - state:
 
-  Two letter state abbriviation
+  Two letter state abbreviation
 
 - county_name:
 
@@ -49,4 +49,8 @@ A tibble with 9 variables and 3,142 rows:
 - pred_status:
 
   ok = If above lower end, and below upper end, above = Above upper end,
-  bellow = Bellow lower end
+  below = Below lower end
+
+- state_name:
+
+  Name of the state

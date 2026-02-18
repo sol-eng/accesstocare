@@ -1,12 +1,13 @@
-- [Access to Care](#access-to-care)
+- [Introduction](#introduction)
 - [Analysis Background](#analysis-background)
-- [Installation](#installation)
-- [Usage](#usage)
-  - [Run an example](#run-an-example)
-  - [Copy example](#copy-example)
-  - [Copy all examples](#copy-all-examples)
+- [Quick Start: Deploy to Posit
+  Connect](#quick-start-deploy-to-posit-connect)
+  - [Programmatic deployment](#programmatic-deployment)
+  - [Manual deployment](#manual-deployment)
+  - [Customizing content](#customizing-content)
+- [Available Content](#available-content)
 
-## Access to Care
+## Introduction
 
 An R package to make it easy to view, copy, interact and publish the
 data products resulting from the Access to Care analysis. It also
@@ -17,173 +18,143 @@ consistent set of examples across the multiple data product types.
 
 This project combines US Census population data with hospital data
 provided by Medicare. The Census data is as of 2024, and the hospital
-Medicare date is as of 2025. The analysis uses individual counties as
-the unit of measurement. A county is considered undeserved based on a
-linear model.
+Medicare data is as of 2025. The analysis uses individual counties as
+the unit of measurement. A county is considered underserved based on a
+linear model that compares the number of hospitals to the population.
 
-## Installation
+## Quick Start: Deploy to Posit Connect
 
-Install `accesstocare` from GitHub using:
+The fastest way to get started is to deploy the pre-built content
+collection directly to your Posit Connect instance.
+
+### Programmatic deployment
+
+1.  Clone the
+    [sol-eng/access-to-care](https://github.com/sol-eng/access-to-care)
+    repository:
+
+``` bash
+git clone https://github.com/sol-eng/access-to-care.git
+cd access-to-care
+```
+
+2.  Install the `accesstocare` package:
 
 ``` r
 pak::pak("sol-eng/accesstocare")
 ```
 
-## Usage
+3.  Deploy all content to Posit Connect:
 
 ``` r
 library(accesstocare)
+deploy_git_backed(".")
 ```
 
-To view the available examples, use `atc_packate_content()`. It returns
-a `list` object with all of the available content. It is presented in
-the console, or RMarkdown, as a table.
+This will automatically deploy all example data products to your Posit
+Connect instance using Git-backed deployment. The function will:
+
+- Set custom
+  [thumbnails](https://docs.posit.co/connect/user/content-settings/#content-image)
+  for each content item
+- Configure [vanity
+  URLs](https://docs.posit.co/connect/user/content-settings/#vanity-url)
+  for easy access
+
+### Manual deployment
+
+If you prefer not to deploy programmatically, you can deploy the content
+manually through the Posit Connect interface:
+
+1.  Clone the
+    [sol-eng/access-to-care](https://github.com/sol-eng/access-to-care)
+    repository
+2.  Follow the instructions for [linking Git to Posit
+    Connect](https://docs.posit.co/connect/user/git-backed/#linking-git-to-posit-connect)
+    to deploy the content
+
+### Customizing content
+
+If you want to customize the example content:
+
+1.  Fork the
+    [sol-eng/access-to-care](https://github.com/sol-eng/access-to-care)
+    repository
+2.  Clone your fork locally
+3.  Install the package:
 
 ``` r
-atc_package_content()
-#> No.  Name                      Type 
-#> 1    connectwidgets            Application 
-#> 2    dash                      Dashboard 
-#> 3    flexdashboard             Dashboard 
-#> 4    htmlwidgets               Plot 
-#> 5    jupyter                   Jupyter 
-#> 6    launcher-programatic      Launcher 
-#> 7    plot                      Plot 
-#> 8    plumber-api               REST API 
-#> 9    powerpoint                PowerPoint 
-#> 10   powerpoint-state          PowerPoint 
-#> 11   presentation              Presentation 
-#> 12   quarto-dashboard-r        Dashboard 
-#> 13   RMarkdown-DataPrep        Scheduled R Script 
-#> 14   RMarkdown-html            Report 
-#> 15   RMarkdown-pdf             Report 
-#> 16   RNotebook                 Notebook 
-#> 17   shiny                     Application
+pak::pak("sol-eng/accesstocare")
+library(accesstocare)
 ```
 
-There are three ways to use the examples:
-
-- Open an example in your RStudio session -
-  [`atc_open_content()`](https://sol-eng.github.io/accesstocare/reference/atc_open_content.md)
-- Copy a single example to disk -
-  [`atc_copy_content()`](https://sol-eng.github.io/accesstocare/reference/atc_copy_content.md)
-- Copy all examples to disk -
-  [`atc_copy_all_content()`](https://sol-eng.github.io/accesstocare/reference/atc_copy_content.md)
-
-### Run an example
+4.  Generate fresh content:
 
 ``` r
-atc_open_content()
+create_content()
 ```
 
-``` R
-#> No.  Name                      Type 
-#> 1    connectwidgets            Application 
-#> 2    dash                      Dashboard 
-#> 3    flexdashboard             Dashboard 
-#> 4    htmlwidgets               Plot 
-#> 5    jupyter                   Jupyter 
-#> 6    launcher-programatic      Launcher 
-#> 7    plot                      Plot 
-#> 8    plumber-api               REST API 
-#> 9    powerpoint                PowerPoint 
-#> 10   powerpoint-state          PowerPoint 
-#> 11   presentation              Presentation 
-#> 12   quarto-dashboard-r        Dashboard 
-#> 13   RMarkdown-DataPrep        Scheduled R Script 
-#> 14   RMarkdown-html            Report 
-#> 15   RMarkdown-pdf             Report 
-#> 16   RNotebook                 Notebook 
-#> 17   shiny                     Application
-#> 18   Cancel
-#> Enter the content number:
-```
+5.  Make your edits to the content folders
 
-Enter the number to the left of the example in order to run it. For
-example, to open the `flexdashboard` example, type 3 and press enter.
-
-To run an example without the prompt, pass the `content_no` argument
-with the number. Again, to open the `flexdashboard` use:
+6.  Deploy to Posit Connect:
 
 ``` r
-atc_open_content(3)
+deploy_git_backed(".")
 ```
 
-### Copy example
+This will update any needed manifests and deploy your customized content
 
-An example can be copied to your working directory by using
-[`atc_copy_content()`](https://sol-eng.github.io/accesstocare/reference/atc_copy_content.md).
-It will create a new sub-folder and load the files for that particular
-example.
+## Available Content
 
-It has the same interactive mechanism as the open example function.
+The package includes 14 example data products demonstrating different
+ways to visualize and present the Access to Care analysis across
+multiple frameworks and languages:
+
+- `"api-python"` - REST API using FastAPI and Python
+- `"api-r"` - REST API using Plumber and R
+- `"app-python"` - Python Dash application
+- `"app-r"` - Shiny application
+- `"connectwidgets"` - Overview application listing all related content
+- `"dashboard-python"` - Quarto dashboard with Python, Polars, and
+  Plotnine
+- `"dashboard-r"` - Quarto dashboard with R
+- `"htmlwidgets-r"` - Interactive county-level plot
+- `"pdf-r"` - PDF report
+- `"pins-data"` - Data file for pins deployment
+- `"plot-r"` - Static ggplot2 map of entire country
+- `"presentation-python"` - Quarto presentation (Python)
+- `"presentation-r"` - Quarto presentation (R)
+- `"report-python"` - Quarto HTML document with Python, Polars,
+  Plotnine, and Great Tables
+- `"report-r"` - R Markdown HTML report with email template
+
+If you wish to create individual content locally, you can use these
+values with
+[`create_content()`](https://sol-eng.github.io/accesstocare/reference/create_content.md):
 
 ``` r
-atc_copy_content()
+# Create a specific content type
+create_content(content = "app-r")
+
+# Or create all content
+create_content(content = "all")
 ```
-
-``` R
-#> No.  Name                      Type 
-#> 1    connectwidgets            Application 
-#> 2    dash                      Dashboard 
-#> 3    flexdashboard             Dashboard 
-#> 4    htmlwidgets               Plot 
-#> 5    jupyter                   Jupyter 
-#> 6    launcher-programatic      Launcher 
-#> 7    plot                      Plot 
-#> 8    plumber-api               REST API 
-#> 9    powerpoint                PowerPoint 
-#> 10   powerpoint-state          PowerPoint 
-#> 11   presentation              Presentation 
-#> 12   quarto-dashboard-r        Dashboard 
-#> 13   RMarkdown-DataPrep        Scheduled R Script 
-#> 14   RMarkdown-html            Report 
-#> 15   RMarkdown-pdf             Report 
-#> 16   RNotebook                 Notebook 
-#> 17   shiny                     Application
-#> 18   Cancel
-#> Enter the content number:
-```
-
-To avoid the interactive menu, pass the number to the left of the
-example, as an argument of the function:
-
-``` r
-atc_copy_content(3) # Copies the `flexdashboard` folder
-```
-
-### Copy all examples
-
-[`atc_copy_all_content()`](https://sol-eng.github.io/accesstocare/reference/atc_copy_content.md)
-will copy all of the examples. It will as many sub-folders as there are
-examples available.
 
 # Package index
 
-## View examples
+## Content Management
 
-- [`atc_package_content()`](https://sol-eng.github.io/accesstocare/reference/atc_package_content.md)
-  : A list of the Access To Care examples
-- [`atc_open_content()`](https://sol-eng.github.io/accesstocare/reference/atc_open_content.md)
-  : Opens an examples in RSTudio
-
-## Copy one or all examples
-
-- [`atc_copy_content()`](https://sol-eng.github.io/accesstocare/reference/atc_copy_content.md)
-  [`atc_copy_all_content()`](https://sol-eng.github.io/accesstocare/reference/atc_copy_content.md)
-  : Copies the Access To Care examples
-
-## Write manifests
-
-- [`atc_write_all_manifests()`](https://sol-eng.github.io/accesstocare/reference/atc_write_all_manifests.md)
-  : Batch creation of manifests
-- [`atc_write_manifest()`](https://sol-eng.github.io/accesstocare/reference/atc_write_manifest.md)
-  : Prepares manifest file
+- [`deploy_git_backed()`](https://sol-eng.github.io/accesstocare/reference/deploy_git_backed.md)
+  : Deploy Git-backed content to Posit Connect
+- [`create_content()`](https://sol-eng.github.io/accesstocare/reference/create_content.md)
+  : Create Access To Care example content
+- [`create_git_backed()`](https://sol-eng.github.io/accesstocare/reference/create_git_backed.md)
+  : Prepare Git-backed deployment manifests
 
 ## Plots
 
 - [`atc_plot_hospitals()`](https://sol-eng.github.io/accesstocare/reference/atc_plot_hospitals.md)
-  : Plot of all counties hospital and population
+  : Plot of county hospitals and population
 - [`atc_plot_state_map()`](https://sol-eng.github.io/accesstocare/reference/atc_plot_state_map.md)
   : Plot of county level data
 - [`atc_plot_us_map()`](https://sol-eng.github.io/accesstocare/reference/atc_plot_us_map.md)
@@ -217,17 +188,13 @@ examples available.
 
 - [`format_number()`](https://sol-eng.github.io/accesstocare/reference/format_number.md)
   [`format_currency()`](https://sol-eng.github.io/accesstocare/reference/format_number.md)
-  : Returns a abbreviated version of a large number
+  : Returns an abbreviated version of a large number
 - [`palette_atc`](https://sol-eng.github.io/accesstocare/reference/palette_atc.md)
   : A list of color defaults
-- [`folder_content_metadata()`](https://sol-eng.github.io/accesstocare/reference/folder_content_metadata.md)
-  : A list of examples in a folder
 
 # Articles
 
 ### All vignettes
 
-- [RStudio Connect Git
-  Manifests](https://sol-eng.github.io/accesstocare/articles/manifests.md):
 - [Interactive
   plots](https://sol-eng.github.io/accesstocare/articles/plots.md):

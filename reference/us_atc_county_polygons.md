@@ -1,6 +1,7 @@
 # Coordinates to draw counties
 
-Coordinates to draw counties
+Contains county polygon coordinates in both projected (x/y for ggplot)
+and geographic (long/lat for leaflet) coordinate systems.
 
 ## Usage
 
@@ -10,7 +11,7 @@ us_atc_county_polygons
 
 ## Format
 
-A tibble with 19 variables and 54,187 rows:
+A tibble with 18 variables and 54,187 rows:
 
 - fips:
 
@@ -18,7 +19,7 @@ A tibble with 19 variables and 54,187 rows:
 
 - state:
 
-  Two letter state abbriviation
+  Two letter state abbreviation
 
 - county_name:
 
@@ -47,7 +48,7 @@ A tibble with 19 variables and 54,187 rows:
 - pred_status:
 
   ok = If above lower end, and below upper end, above = Above upper end,
-  bellow = Bellow lower end
+  below = Below lower end
 
 - state_name:
 
@@ -55,16 +56,32 @@ A tibble with 19 variables and 54,187 rows:
 
 - x:
 
-  Map location used a converted number from longitude
+  Map location in projected coordinates (for ggplot)
 
 - y:
 
-  Map location used a converted number from latitude
+  Map location in projected coordinates (for ggplot)
 
-- order:
+- long:
 
-  The order or the position
+  Longitude in decimal degrees (for leaflet)
+
+- lat:
+
+  Latitude in decimal degrees (for leaflet)
 
 - hole:
 
   Is a hole
+
+- piece:
+
+  Polygon piece number
+
+- group:
+
+  Grouping variable for polygons
+
+- order:
+
+  Row number within each group for proper coordinate matching

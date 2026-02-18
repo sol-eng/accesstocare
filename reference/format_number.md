@@ -1,4 +1,4 @@
-# Returns a abbreviated version of a large number
+# Returns an abbreviated version of a large number
 
 It will return 1K if passed 1000.
 
