@@ -2,10 +2,8 @@ url: https://sol-eng.github.io/accesstocare
 reference:
 - title: Content Management
   contents:
-  - create_content
-- title: Git-Backed Deployment
-  contents:
-  - create_git_backed
+  - starts_with("deploy_")
+  - starts_with("create_")
 - title: Plots
   contents:
   - starts_with("atc_plot")
