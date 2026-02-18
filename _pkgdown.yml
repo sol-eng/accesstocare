@@ -1,4 +1,8 @@
 url: https://sol-eng.github.io/accesstocare
+template:
+  bootstrap: 5
+  light-switch: true
+  bootswatch: yeti
 reference:
 - title: Content Management
   contents:
