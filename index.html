@@ -33,7 +33,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="index.html">accesstocare</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.0.1.9013</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.0.1.9014</span>
       </span>
     </div>
 
@@ -79,20 +79,15 @@
 <ul>
 <li><a href="#introduction">Introduction</a></li>
 <li><a href="#analysis-background">Analysis Background</a></li>
-<li><a href="#installation">Installation</a></li>
 <li>
-<a href="#usage">Usage</a>
+<a href="#quick-start-deploy-to-posit-connect">Quick Start: Deploy to Posit Connect</a>
 <ul>
-<li><a href="#copy-a-specific-example">Copy a specific example</a></li>
-<li><a href="#force-overwrite">Force overwrite</a></li>
+<li><a href="#programmatic-deployment">Programmatic deployment</a></li>
+<li><a href="#manual-deployment">Manual deployment</a></li>
+<li><a href="#customizing-content">Customizing content</a></li>
 </ul>
 </li>
-<li>
-<a href="#publishing-to-posit-connect">Publishing to Posit Connect</a>
-<ul>
-<li><a href="#git-backed-deployment">Git-backed deployment</a></li>
-</ul>
-</li>
+<li><a href="#available-content">Available Content</a></li>
 </ul>
 <div class="section level2">
 <h2 id="introduction">Introduction<a class="anchor" aria-label="anchor" href="#introduction"></a>
@@ -105,89 +100,112 @@
 <p>This project combines US Census population data with hospital data provided by Medicare. The Census data is as of 2024, and the hospital Medicare data is as of 2025. The analysis uses individual counties as the unit of measurement. A county is considered underserved based on a linear model that compares the number of hospitals to the population.</p>
 </div>
 <div class="section level2">
-<h2 id="installation">Installation<a class="anchor" aria-label="anchor" href="#installation"></a>
+<h2 id="quick-start-deploy-to-posit-connect">Quick Start: Deploy to Posit Connect<a class="anchor" aria-label="anchor" href="#quick-start-deploy-to-posit-connect"></a>
 </h2>
-<p>Install <code>accesstocare</code> from GitHub using:</p>
-<div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
+<p>The fastest way to get started is to deploy the pre-built content collection directly to your Posit Connect instance.</p>
+<div class="section level3">
+<h3 id="programmatic-deployment">Programmatic deployment<a class="anchor" aria-label="anchor" href="#programmatic-deployment"></a>
+</h3>
+<ol style="list-style-type: decimal">
+<li>Clone the <a href="https://github.com/sol-eng/access-to-care" class="external-link">sol-eng/access-to-care</a> repository:</li>
+</ol>
+<div class="sourceCode" id="cb1"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb1-1"><a href="#cb1-1" tabindex="-1"></a><span class="fu">git</span> clone https://github.com/sol-eng/access-to-care.git</span>
+<span id="cb1-2"><a href="#cb1-2" tabindex="-1"></a><span class="bu">cd</span> access-to-care</span></code></pre></div>
+<ol start="2" style="list-style-type: decimal">
+<li>Install the <code>accesstocare</code> package:</li>
+</ol>
+<div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu">pak</span><span class="fu">::</span><span class="fu"><a href="https://pak.r-lib.org/reference/pak.html" class="external-link">pak</a></span><span class="op">(</span><span class="st">"sol-eng/accesstocare"</span><span class="op">)</span></span></code></pre></div>
+<ol start="3" style="list-style-type: decimal">
+<li>Deploy all content to Posit Connect:</li>
+</ol>
+<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://sol-eng.github.io/accesstocare">accesstocare</a></span><span class="op">)</span></span>
+<span><span class="fu"><a href="reference/deploy_git_backed.html">deploy_git_backed</a></span><span class="op">(</span><span class="st">"."</span><span class="op">)</span></span></code></pre></div>
+<p>This will automatically deploy all example data products to your Posit Connect instance using Git-backed deployment. The function will:</p>
+<ul>
+<li>Set custom <a href="https://docs.posit.co/connect/user/content-settings/#content-image" class="external-link">thumbnails</a> for each content item</li>
+<li>Configure <a href="https://docs.posit.co/connect/user/content-settings/#vanity-url" class="external-link">vanity URLs</a> for easy access</li>
+</ul>
+</div>
+<div class="section level3">
+<h3 id="manual-deployment">Manual deployment<a class="anchor" aria-label="anchor" href="#manual-deployment"></a>
+</h3>
+<p>If you prefer not to deploy programmatically, you can deploy the content manually through the Posit Connect interface:</p>
+<ol style="list-style-type: decimal">
+<li>Clone the <a href="https://github.com/sol-eng/access-to-care" class="external-link">sol-eng/access-to-care</a> repository</li>
+<li>Follow the instructions for <a href="https://docs.posit.co/connect/user/git-backed/#linking-git-to-posit-connect" class="external-link">linking Git to Posit Connect</a> to deploy the content</li>
+</ol>
+</div>
+<div class="section level3">
+<h3 id="customizing-content">Customizing content<a class="anchor" aria-label="anchor" href="#customizing-content"></a>
+</h3>
+<p>If you want to customize the example content:</p>
+<ol style="list-style-type: decimal">
+<li>Fork the <a href="https://github.com/sol-eng/access-to-care" class="external-link">sol-eng/access-to-care</a> repository</li>
+<li>Clone your fork locally</li>
+<li>Install the package:</li>
+</ol>
+<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu">pak</span><span class="fu">::</span><span class="fu"><a href="https://pak.r-lib.org/reference/pak.html" class="external-link">pak</a></span><span class="op">(</span><span class="st">"sol-eng/accesstocare"</span><span class="op">)</span></span>
+<span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://sol-eng.github.io/accesstocare">accesstocare</a></span><span class="op">)</span></span></code></pre></div>
+<ol start="4" style="list-style-type: decimal">
+<li>Generate fresh content:</li>
+</ol>
+<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="reference/create_content.html">create_content</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
+<ol start="5" style="list-style-type: decimal">
+<li><p>Make your edits to the content folders</p></li>
+<li><p>Deploy to Posit Connect:</p></li>
+</ol>
+<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="reference/deploy_git_backed.html">deploy_git_backed</a></span><span class="op">(</span><span class="st">"."</span><span class="op">)</span></span></code></pre></div>
+<p>This will update any needed manifests and deploy your customized content</p>
+</div>
 </div>
 <div class="section level2">
-<h2 id="usage">Usage<a class="anchor" aria-label="anchor" href="#usage"></a>
+<h2 id="available-content">Available Content<a class="anchor" aria-label="anchor" href="#available-content"></a>
 </h2>
-<div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://sol-eng.github.io/accesstocare">accesstocare</a></span><span class="op">)</span></span></code></pre></div>
-<p>The package includes multiple example data products demonstrating different ways to visualize and present the Access to Care analysis. Use <code><a href="reference/create_content.html">create_content()</a></code> to copy these examples to your working directory.</p>
-<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu"><a href="reference/create_content.html">create_content</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
-<p>This will create a separate subfolder for each example in your current working directory. Currently, there are 11 examples available. You can also specify a target directory:</p>
-<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu"><a href="reference/create_content.html">create_content</a></span><span class="op">(</span>target <span class="op">=</span> <span class="st">"my-examples"</span><span class="op">)</span></span></code></pre></div>
-<div class="section level3">
-<h3 id="copy-a-specific-example">Copy a specific example<a class="anchor" aria-label="anchor" href="#copy-a-specific-example"></a>
-</h3>
-<p>If you wish to copy a specific example, specify its name:</p>
-<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu"><a href="reference/create_content.html">create_content</a></span><span class="op">(</span>content <span class="op">=</span> <span class="st">"shiny"</span><span class="op">)</span></span></code></pre></div>
-<p>Available content options include:</p>
+<p>The package includes 14 example data products demonstrating different ways to visualize and present the Access to Care analysis across multiple frameworks and languages:</p>
 <ul>
+<li>
+<code>"api-python"</code> - REST API using FastAPI and Python</li>
+<li>
+<code>"api-r"</code> - REST API using Plumber and R</li>
+<li>
+<code>"app-python"</code> - Python Dash application</li>
+<li>
+<code>"app-r"</code> - Shiny application</li>
 <li>
 <code>"connectwidgets"</code> - Overview application listing all related content</li>
 <li>
-<code>"dash"</code> - Python Dash dashboard</li>
+<code>"dashboard-python"</code> - Quarto dashboard with Python, Polars, and Plotnine</li>
 <li>
-<code>"htmlwidgets"</code> - Interactive county-level plot</li>
+<code>"dashboard-r"</code> - Quarto dashboard with R</li>
 <li>
-<code>"plot"</code> - Static ggplot2 map of entire country</li>
+<code>"htmlwidgets-r"</code> - Interactive county-level plot</li>
 <li>
-<code>"plumber-api"</code> - REST API with multiple endpoints</li>
+<code>"pdf-r"</code> - PDF report</li>
 <li>
-<code>"presentation"</code> - Quarto presentation</li>
+<code>"pins-data"</code> - Data file for pins deployment</li>
 <li>
-<code>"quarto-dashboard-python"</code> - Quarto dashboard with Python, Polars, and Plotnine</li>
+<code>"plot-r"</code> - Static ggplot2 map of entire country</li>
 <li>
-<code>"quarto-dashboard-r"</code> - Quarto dashboard by state</li>
+<code>"presentation-python"</code> - Quarto presentation (Python)</li>
 <li>
-<code>"RMarkdown-html"</code> - HTML report with email template</li>
+<code>"presentation-r"</code> - Quarto presentation (R)</li>
 <li>
-<code>"RMarkdown-pdf"</code> - PDF report</li>
+<code>"report-python"</code> - Quarto HTML document with Python, Polars, Plotnine, and Great Tables</li>
 <li>
-<code>"shiny"</code> - Shiny application</li>
+<code>"report-r"</code> - R Markdown HTML report with email template</li>
 </ul>
-</div>
-<div class="section level3">
-<h3 id="force-overwrite">Force overwrite<a class="anchor" aria-label="anchor" href="#force-overwrite"></a>
-</h3>
-<p>By default, <code><a href="reference/create_content.html">create_content()</a></code> skips folders that already exist. Use <code>force = TRUE</code> to overwrite:</p>
-<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu"><a href="reference/create_content.html">create_content</a></span><span class="op">(</span>content <span class="op">=</span> <span class="st">"shiny"</span>, force <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></code></pre></div>
-</div>
-</div>
-<div class="section level2">
-<h2 id="publishing-to-posit-connect">Publishing to Posit Connect<a class="anchor" aria-label="anchor" href="#publishing-to-posit-connect"></a>
-</h2>
-<p>The examples in this package can be published to Posit Connect using the standard push-button deployment from RStudio IDE. However, if you prefer to use Git-backed deployment, the package provides a helper function to create the necessary deployment files.</p>
-<div class="section level3">
-<h3 id="git-backed-deployment">Git-backed deployment<a class="anchor" aria-label="anchor" href="#git-backed-deployment"></a>
-</h3>
-<p><a href="https://docs.posit.co/connect/user/git-backed/" class="external-link">Git-backed deployment</a> is a Posit Connect feature that automatically deploys and updates your content directly from a Git repository. Instead of pushing content from your local machine, Connect pulls the latest code from your Git repository whenever you commit changes. This enables seamless CI/CD workflows and ensures your published content always matches what’s in version control.</p>
-<p><strong>Note:</strong> Using <code><a href="reference/create_git_backed.html">create_git_backed()</a></code> is only necessary if you want to use Git-backed deployment. If you plan to publish manually using an IDE such as RStudio or Positron, you can skip this step.</p>
-<p>To prepare content for Git-backed deployment, use the <code><a href="reference/create_git_backed.html">create_git_backed()</a></code> function:</p>
+<p>If you wish to create individual content locally, you can use these values with <code><a href="reference/create_content.html">create_content()</a></code>:</p>
 <div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="co"># Prepare a single folder</span></span>
-<span><span class="fu"><a href="reference/create_git_backed.html">create_git_backed</a></span><span class="op">(</span><span class="st">"my-examples/shiny"</span><span class="op">)</span></span>
+<code class="sourceCode R"><span><span class="co"># Create a specific content type</span></span>
+<span><span class="fu"><a href="reference/create_content.html">create_content</a></span><span class="op">(</span>content <span class="op">=</span> <span class="st">"app-r"</span><span class="op">)</span></span>
 <span></span>
-<span><span class="co"># Prepare all subfolders in a directory</span></span>
-<span><span class="co"># This will detect subfolders with deployable content and create necessary files for each</span></span>
-<span><span class="fu"><a href="reference/create_git_backed.html">create_git_backed</a></span><span class="op">(</span><span class="st">"my-examples"</span><span class="op">)</span></span></code></pre></div>
-<p>The function intelligently determines what to do:</p>
-<ul>
-<li>
-<strong>Single folder with content</strong>: If the folder contains a deployable file (like app.R, .Rmd, .qmd, etc.), it creates the necessary deployment files for that folder.</li>
-<li>
-<strong>Folder with subfolders</strong>: If the folder doesn’t contain deployable content but its subfolders do, it will create the necessary files for all qualifying subfolders. In interactive sessions, it will prompt you before executing.</li>
-</ul>
-<p>Once the deployment files are created, commit them to your Git repository along with your content, and configure Posit Connect to deploy from your repository. See the <a href="https://docs.posit.co/connect/user/git-backed/" class="external-link">official Git-backed deployment documentation</a> for complete setup instructions.</p>
-</div>
+<span><span class="co"># Or create all content</span></span>
+<span><span class="fu"><a href="reference/create_content.html">create_content</a></span><span class="op">(</span>content <span class="op">=</span> <span class="st">"all"</span><span class="op">)</span></span></code></pre></div>
 </div>
 
   </div>
