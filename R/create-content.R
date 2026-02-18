@@ -40,112 +40,86 @@ create_content <- function(
     content_name <- path_file(folder)
     if (content == content_name | content == "all") {
       dest <- path(target, content_name)
-      folder_created <- FALSE
-
+      finalize_content <- FALSE
       if (!dir_exists(dest)) {
         dir_copy(folder, dest)
-        folder_created <- TRUE
+        finalize_content <- TRUE
       } else if (force) {
         clear_folder_contents(dest)
-        file_copy(dir_ls(folder, recurse = TRUE, type = "file"), dest)
-        folder_created <- TRUE
+        dir_copy(folder, target)
+        finalize_content <- TRUE
+        cli_alert_info(
+          "Writting '{content_name}' - replacing existing contents"
+        )
       } else if (!silent) {
-        cli_alert_warning("Skipping '{content_name}' - folder already exists")
+        cli_alert_warning("Skipping '{content_name}' - content already exists")
       }
+      if (finalize_content) {
+        if (content_name == "plot-r") {
+          p <- atc_plot_state_map("All US", top_cities = 0)
+          ggsave(plot = p, filename = path(dest, "map.png"))
+          writeLines(
+            "<img src=map.png width = 1000>",
+            con = path(dest, "map.html")
+          )
+        }
 
-      # Export data for Python examples (runs whether folder was just created or already exists)
-      if (
-        content_name == "app-python" && (folder_created || dir_exists(dest))
-      ) {
-        export_data_parquet("us_counties", dest, silent = silent)
-      }
+        if (content_name == "htmlwidgets-r") {
+          p <- atc_plot_state_map("All US", top_cities = 0)
+          gp <- girafe(ggobj = p)
+          saveWidget(gp, path(dest, "map.html"))
+        }
 
-      if (
-        content_name == "api-python" && (folder_created || dir_exists(dest))
-      ) {
-        export_data_parquet("us_counties", dest, silent = silent)
-        export_data_parquet("us_states", dest, silent = silent)
-      }
+        if (content_name == "pins-data") {
+          data_obj <- get("us_counties", envir = asNamespace("accesstocare"))
+          write.csv(data_obj, path(dest, "us_counties.csv"))
+        }
 
-      if (
-        content_name == "dashboard-python" &&
-          (folder_created || dir_exists(dest))
-      ) {
-        export_data_parquet("us_counties", dest, silent = silent)
-        export_data_parquet("us_states", dest, silent = silent)
-        export_data_parquet("us_hex_positions", dest, silent = silent)
-        export_data_parquet("us_atc_county_polygons", dest, silent = silent)
-        export_data_parquet("us_large_cities", dest, silent = silent)
-      }
+        if (content_name == "app-python") {
+          export_data_parquet("us_counties", dest)
+        }
 
-      if (
-        content_name == "presentation-python" &&
-          (folder_created || dir_exists(dest))
-      ) {
-        export_data_parquet("us_counties", dest, silent = silent)
-        export_data_parquet("us_states", dest, silent = silent)
-        export_data_parquet("us_atc_county_polygons", dest, silent = silent)
-        export_data_parquet("us_large_cities", dest, silent = silent)
-      }
+        if (content_name == "api-python") {
+          export_data_parquet(c("us_counties", "us_states"), dest)
+        }
 
-      if (
-        content_name == "report-python" && (folder_created || dir_exists(dest))
-      ) {
-        export_data_parquet("us_counties", dest, silent = silent)
-        export_data_parquet("us_states", dest, silent = silent)
-        export_data_parquet("us_atc_county_polygons", dest, silent = silent)
-        export_data_parquet("us_large_cities", dest, silent = silent)
+        if (content_name == "dashboard-python") {
+          export_data_parquet(
+            c(
+              "us_counties",
+              "us_states",
+              "us_hex_positions",
+              "us_atc_county_polygons",
+              "us_large_cities"
+            ),
+            dest
+          )
+        }
+
+        if (content_name == "presentation-python") {
+          export_data_parquet(
+            c(
+              "us_counties",
+              "us_states",
+              "us_atc_county_polygons",
+              "us_large_cities"
+            ),
+            dest
+          )
+        }
+
+        if (content_name == "report-python") {
+          export_data_parquet(
+            c(
+              "us_counties",
+              "us_states",
+              "us_atc_county_polygons",
+              "us_large_cities"
+            ),
+            dest
+          )
+        }
       }
-    }
-  }
-  if (content %in% c("all", "plot-r")) {
-    dest_folder <- path(target, "plot-r")
-    if (!dir_exists(dest_folder) | folder_created) {
-      p <- atc_plot_state_map("All US", top_cities = 0)
-      dir_create(dest_folder)
-      ggsave(plot = p, filename = path(dest_folder, "map.png"))
-      writeLines(
-        "<img src=map.png width = 1000>",
-        con = path(dest_folder, "map.html")
-      )
-    } else if (force) {
-      clear_folder_contents(dest_folder)
-      p <- atc_plot_state_map("All US", top_cities = 0)
-      ggsave(plot = p, filename = path(dest_folder, "map.png"))
-      writeLines(
-        "<img src=map.png width = 1000>",
-        con = path(dest_folder, "map.html")
-      )
-    } else if (!silent) {
-      cli_alert_warning("Skipping 'plot-r' - folder already exists")
-    }
-  }
-  if (content %in% c("all", "htmlwidgets-r")) {
-    dest_folder <- path(target, "htmlwidgets-r")
-    if (!dir_exists(dest_folder) | folder_created) {
-      p <- atc_plot_state_map("All US", top_cities = 0)
-      gp <- girafe(ggobj = p)
-      dir_create(dest_folder)
-      saveWidget(gp, path(dest_folder, "map.html"))
-    } else if (force) {
-      clear_folder_contents(dest_folder)
-      p <- atc_plot_state_map("All US", top_cities = 0)
-      gp <- girafe(ggobj = p)
-      saveWidget(gp, path(dest_folder, "map.html"))
-    } else if (!silent) {
-      cli_alert_warning("Skipping 'htmlwidgets-r' - folder already exists")
-    }
-  }
-  if (content %in% c("all", "pins-data")) {
-    dest_folder <- path(target, "pins-data")
-    if (!dir_exists(dest_folder)) {
-      dir_create(dest_folder)
-      write.csv(accesstocare::us_counties, path(dest_folder, "us_counties.csv"))
-    } else if (force) {
-      clear_folder_contents(dest_folder)
-      write.csv(accesstocare::us_counties, path(dest_folder, "us_counties.csv"))
-    } else if (!silent) {
-      cli_alert_warning("Skipping 'pins-data' - folder already exists")
     }
   }
 }
@@ -167,21 +141,24 @@ get_contents <- function() {
 }
 
 # Internal function to export data as parquet for Python examples
-export_data_parquet <- function(data_name, dest_folder, silent = FALSE) {
-  # Get the data object
-  data_obj <- get(data_name, envir = asNamespace("accesstocare"))
+export_data_parquet <- function(data_names, dest_folder) {
+  for (data_name in data_names) {
+    # Get the data object
+    data_obj <- get(data_name, envir = asNamespace("accesstocare"))
 
-  # Create data subfolder if it doesn't exist
-  data_folder <- path(dest_folder, "data")
-  if (!dir_exists(data_folder)) {
-    dir_create(data_folder)
+    # Create data subfolder if it doesn't exist
+    data_folder <- path(dest_folder, "data")
+    if (!dir_exists(data_folder)) {
+      dir_create(data_folder)
+    }
+
+    # Write parquet file
+    parquet_path <- path(data_folder, paste0(data_name, ".parquet"))
+    if (!file.exists(parquet_path)) {
+      arrow::write_parquet(data_obj, parquet_path)
+    }
   }
-
-  # Write parquet file
-  parquet_path <- path(data_folder, paste0(data_name, ".parquet"))
-  arrow::write_parquet(data_obj, parquet_path)
-
-  invisible(parquet_path)
+  invisible()
 }
 
 # Internal function to clear folder contents while preserving .connect files
