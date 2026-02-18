@@ -53,7 +53,7 @@ pak::pak("sol-eng/accesstocare")
 
 ```{r, eval = FALSE}
 library(accesstocare)
-deploy_git_backed(".")
+deploy_content()
 ```
 
 This will automatically deploy all example data products to your Posit Connect instance. The function will:
@@ -92,10 +92,16 @@ create_content()
 
 5. Make your edits to the content folders
 
-6. Deploy to Posit Connect:
+6. Ensure the manifests for Connect are still current
 
 ```{r, eval = FALSE}
-deploy_git_backed()
+create_manifests()
+```
+
+7. Deploy to Posit Connect:
+
+```{r, eval = FALSE}
+deploy_content()
 ```
 
 This will update any needed manifests and deploy your customized content

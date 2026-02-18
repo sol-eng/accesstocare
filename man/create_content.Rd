@@ -7,9 +7,8 @@
 create_content(
   target = ".",
   content = c("all", "api-python", "api-r", "app-python", "app-r", "connectwidgets",
-    "dashboard-python", "dashboard-r", "htmlwidgets-r", "pdf-r", "pins-data",
-    "pins-model", "plot-r", "presentation-python", "presentation-r", "report-python",
-    "report-r"),
+    "dashboard-r", "htmlwidgets-r", "pdf-r", "pins-data", "pins-model", "plot-r",
+    "presentation-python", "presentation-r", "report-python", "report-r"),
   force = FALSE,
   silent = FALSE,
   manifest = TRUE
@@ -21,8 +20,8 @@ Defaults to current directory.}
 
 \item{content}{Which content to copy. Can be "all" to copy everything, or
 a specific content name. Available options include: "all", "api-python",
-"api-r", "app-python", "app-r", "connectwidgets", "dashboard-python",
-"dashboard-r", "htmlwidgets-r", "pdf-r", "pins-data", "plot-r",
+"api-r", "app-python", "app-r", "connectwidgets", "dashboard-r",
+"htmlwidgets-r", "pdf-r", "pins-data", "pins-model", "plot-r",
 "presentation-python", "presentation-r", "report-python", "report-r".}
 
 \item{force}{If TRUE, overwrites existing folders. If FALSE (default), skips

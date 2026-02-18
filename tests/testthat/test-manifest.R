@@ -8,7 +8,7 @@ test_that("Single folder manifest is created", {
   writeLines("config.yml", con = paste0(temp_html, "/.gitignore"))
 
   # Should create manifest for single folder with primary doc
-  create_git_backed(
+  create_manifests(
     temp_html,
     silent = FALSE
   )
@@ -32,7 +32,7 @@ test_that("Multiple subfolder manifests are created", {
   writeLines("# Title", con = paste0(temp_rmd, "/report.Rmd"))
 
   # Should create manifests for subfolders (non-interactive test, silent = TRUE)
-  res <- create_git_backed(temp_folder, silent = TRUE)
+  res <- create_manifests(temp_folder, silent = TRUE)
 
   expect_s3_class(res, "tbl_df")
   expect_equal(nrow(res), 2)
@@ -51,7 +51,7 @@ test_that("No manifest created without primary doc", {
   writeLines("just text", con = paste0(temp_subfolder, "/readme.txt"))
 
   # Should return NULL when no primary docs found
-  res <- create_git_backed(temp_folder, silent = TRUE)
+  res <- create_manifests(temp_folder, silent = TRUE)
 
   expect_null(res)
   expect_false(file.exists(paste0(temp_subfolder, "/manifest.json")))
@@ -67,7 +67,7 @@ test_that("README.Rmd is excluded as primary doc", {
   writeLines("# README", con = paste0(temp_folder, "/README.Rmd"))
 
   # Should return NULL since README.Rmd is not deployable
-  res <- create_git_backed(temp_folder, silent = TRUE)
+  res <- create_manifests(temp_folder, silent = TRUE)
 
   expect_null(res)
   expect_false(file.exists(paste0(temp_folder, "/manifest.json")))

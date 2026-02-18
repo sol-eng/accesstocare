@@ -1,5 +1,6 @@
-#' Deploy Git-backed content to Posit Connect
-#' @description Deploys content to Posit Connect using Git-backed deployment.
+#' Deploy content to Posit Connect
+#' @description Deploys content to Posit Connect using Git-backed deployment
+#' for most content, and direct deployment for pins content.
 #' If the content location contains a .connect file, deploys only that content.
 #' Otherwise, deploys all subfolders that have a manifest.json file.
 #'
@@ -16,7 +17,7 @@
 #'
 #' @details
 #' For each content item:
-#' - Checks for manifest.json (skips if missing)
+#' - Checks for manifest.json (skips if missing for non-pins content)
 #' - Reads metadata.yml for title and vanity URL configuration
 #' - Creates or updates deployment on Posit Connect
 #' - Saves the content GUID to a .connect file for future updates
@@ -27,7 +28,7 @@
 #' updates to existing content rather than creating duplicates.
 #'
 #' @export
-deploy_git_backed <- function(
+deploy_content <- function(
   repository = NULL,
   branch = "main",
   content_location = ".",

@@ -1,6 +1,6 @@
-#' Prepare Git-backed deployment manifests
-#' @description Intelligently creates manifest files for Posit Connect Git-backed
-#' deployment. If the folder contains a primary document, creates a manifest for
+#' Create deployment manifests
+#' @description Intelligently creates manifest files for Posit Connect deployment.
+#' If the folder contains a primary document, creates a manifest for
 #' that folder. If not, checks subfolders (one level deep) and creates manifests
 #' for each subfolder with a primary document.
 #'
@@ -12,7 +12,7 @@
 #' @param silent To run with or without console updates
 #'
 #' @export
-create_git_backed <- function(
+create_manifests <- function(
   folder_location = ".",
   primary_document = NULL,
   ignore_files = list(
