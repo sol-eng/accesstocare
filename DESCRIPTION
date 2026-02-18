@@ -1,6 +1,6 @@
 Package: accesstocare
 Title: Example content of Access to Care project
-Version: 0.0.1.9014
+Version: 0.0.1.9015
 Authors@R: 
     person(given = "Edgar",
            family = "Ruiz",
@@ -33,7 +33,9 @@ Imports:
     arrow,
     reticulate,
     gert,
-    connectapi
+    connectapi,
+    pins,
+    vetiver
 Suggests: 
     knitr,
     covr,

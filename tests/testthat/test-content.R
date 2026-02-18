@@ -24,7 +24,7 @@ test_that("create_content copies all content", {
     manifest = FALSE
   )
 
-  # Should have 12 inst/content folders + plot-r + htmlwidgets-r + pins-data (dynamically generated) = 15 total
+  # Should have 15 inst/content folders (includes pins-data and pins-model)
   expect_gte(length(dir(temp_dir)), 15)
 
   unlink(temp_dir, recursive = TRUE, force = TRUE)
@@ -131,6 +131,22 @@ test_that("create_content generates pins-data content", {
   unlink(temp_dir, recursive = TRUE, force = TRUE)
 })
 
+test_that("create_content generates pins-model content", {
+  temp_dir <- paste0(tempdir(), "/create-pins-model")
+
+  create_content(
+    target = temp_dir,
+    content = "pins-model",
+    silent = TRUE,
+    manifest = FALSE
+  )
+
+  expect_true(dir.exists(file.path(temp_dir, "pins-model")))
+  expect_true(file.exists(file.path(temp_dir, "pins-model", "us_atc_model.rds")))
+
+  unlink(temp_dir, recursive = TRUE, force = TRUE)
+})
+
 test_that("create_content exports parquet for app-python", {
   skip_if_not_installed("arrow")
 
@@ -150,59 +166,6 @@ test_that("create_content exports parquet for app-python", {
     "app-python",
     "data",
     "us_counties.parquet"
-  )))
-
-  unlink(temp_dir, recursive = TRUE, force = TRUE)
-})
-
-test_that("create_content exports parquet for dashboard-python", {
-  skip_if_not_installed("arrow")
-
-  temp_dir <- paste0(tempdir(), "/create-dashboard-python")
-
-  create_content(
-    target = temp_dir,
-    content = "dashboard-python",
-    silent = TRUE,
-    manifest = FALSE
-  )
-
-  expect_true(dir.exists(file.path(temp_dir, "dashboard-python")))
-  expect_true(dir.exists(file.path(temp_dir, "dashboard-python", "data")))
-  expect_true(file.exists(file.path(
-    temp_dir,
-    "dashboard-python",
-    "data",
-    "us_counties.parquet"
-  )))
-  expect_true(file.exists(file.path(
-    temp_dir,
-    "dashboard-python",
-    "data",
-    "us_states.parquet"
-  )))
-  expect_true(file.exists(file.path(
-    temp_dir,
-    "dashboard-python",
-    "data",
-    "us_hex_positions.parquet"
-  )))
-  expect_true(file.exists(file.path(
-    temp_dir,
-    "dashboard-python",
-    "data",
-    "us_atc_county_polygons.parquet"
-  )))
-  expect_true(file.exists(file.path(
-    temp_dir,
-    "dashboard-python",
-    "data",
-    "us_large_cities.parquet"
-  )))
-  expect_true(file.exists(file.path(
-    temp_dir,
-    "dashboard-python",
-    "access-to-care.qmd"
   )))
 
   unlink(temp_dir, recursive = TRUE, force = TRUE)
