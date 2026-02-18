@@ -2,12 +2,12 @@
 
 ## Content Management
 
-- [`deploy_git_backed()`](https://sol-eng.github.io/accesstocare/reference/deploy_git_backed.md)
-  : Deploy Git-backed content to Posit Connect
+- [`deploy_content()`](https://sol-eng.github.io/accesstocare/reference/deploy_content.md)
+  : Deploy content to Posit Connect
 - [`create_content()`](https://sol-eng.github.io/accesstocare/reference/create_content.md)
   : Create Access To Care example content
-- [`create_git_backed()`](https://sol-eng.github.io/accesstocare/reference/create_git_backed.md)
-  : Prepare Git-backed deployment manifests
+- [`create_manifests()`](https://sol-eng.github.io/accesstocare/reference/create_manifests.md)
+  : Create deployment manifests
 
 ## Plots
 

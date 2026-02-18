@@ -8,7 +8,7 @@ Copies example content from the package to a target directory.
 create_content(
   target = ".",
   content = c("all", "api-python", "api-r", "app-python", "app-r", "connectwidgets",
-    "dashboard-python", "dashboard-r", "htmlwidgets-r", "pdf-r", "pins-data", "plot-r",
+    "dashboard-r", "htmlwidgets-r", "pdf-r", "pins-data", "pins-model", "plot-r",
     "presentation-python", "presentation-r", "report-python", "report-r"),
   force = FALSE,
   silent = FALSE,
@@ -27,8 +27,8 @@ create_content(
 
   Which content to copy. Can be "all" to copy everything, or a specific
   content name. Available options include: "all", "api-python", "api-r",
-  "app-python", "app-r", "connectwidgets", "dashboard-python",
-  "dashboard-r", "htmlwidgets-r", "pdf-r", "pins-data", "plot-r",
+  "app-python", "app-r", "connectwidgets", "dashboard-r",
+  "htmlwidgets-r", "pdf-r", "pins-data", "pins-model", "plot-r",
   "presentation-python", "presentation-r", "report-python", "report-r".
 
 - force:

@@ -22,7 +22,7 @@
 
     <a class="navbar-brand me-2" href="index.html">accesstocare</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.0.1.9014</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.0.1.9015</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -60,19 +60,6 @@
 </nav><div class="container template-home">
 <div class="row">
   <main id="main" class="col-md-9">
-<ul>
-<li><a href="#introduction">Introduction</a></li>
-<li><a href="#analysis-background">Analysis Background</a></li>
-<li>
-<a href="#quick-start-deploy-to-posit-connect">Quick Start: Deploy to Posit Connect</a>
-<ul>
-<li><a href="#programmatic-deployment">Programmatic deployment</a></li>
-<li><a href="#manual-deployment">Manual deployment</a></li>
-<li><a href="#customizing-content">Customizing content</a></li>
-</ul>
-</li>
-<li><a href="#available-content">Available Content</a></li>
-</ul>
 <div class="section level2">
 <h2 id="introduction">Introduction<a class="anchor" aria-label="anchor" href="#introduction"></a>
 </h2>
@@ -105,12 +92,14 @@
 </ol>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://sol-eng.github.io/accesstocare">accesstocare</a></span><span class="op">)</span></span>
-<span><span class="fu"><a href="reference/deploy_git_backed.html">deploy_git_backed</a></span><span class="op">(</span><span class="st">"."</span><span class="op">)</span></span></code></pre></div>
-<p>This will automatically deploy all example data products to your Posit Connect instance using Git-backed deployment. The function will:</p>
+<span><span class="fu"><a href="reference/deploy_content.html">deploy_content</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
+<p>This will automatically deploy all example data products to your Posit Connect instance. The function will:</p>
 <ul>
+<li>Deploy most content using Git-backed deployment for version control and easy updates</li>
 <li>Set custom <a href="https://docs.posit.co/connect/user/content-settings/#content-image" class="external-link">thumbnails</a> for each content item</li>
 <li>Configure <a href="https://docs.posit.co/connect/user/content-settings/#vanity-url" class="external-link">vanity URLs</a> for easy access</li>
 </ul>
+<p><strong>Note:</strong> The <a href="https://pins.rstudio.com/" class="external-link">pins</a> content (pins-data and pins-model) will be deployed directly from your local machine rather than using Git-backed deployment, as they leverage <a href="https://docs.posit.co/connect/user/pins/" class="external-link">Posit Connect’s pins board</a> infrastructure. Additionally, a <a href="https://vetiver.rstudio.com/" class="external-link">Vetiver</a> API endpoint will be created for the model pin, enabling model serving and predictions through a REST API.</p>
 </div>
 <div class="section level3">
 <h3 id="manual-deployment">Manual deployment<a class="anchor" aria-label="anchor" href="#manual-deployment"></a>
@@ -140,17 +129,22 @@
 <code class="sourceCode R"><span><span class="fu"><a href="reference/create_content.html">create_content</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
 <ol start="5" style="list-style-type: decimal">
 <li><p>Make your edits to the content folders</p></li>
-<li><p>Deploy to Posit Connect:</p></li>
+<li><p>Ensure the manifests for Connect are still current</p></li>
 </ol>
 <div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu"><a href="reference/deploy_git_backed.html">deploy_git_backed</a></span><span class="op">(</span><span class="st">"."</span><span class="op">)</span></span></code></pre></div>
+<code class="sourceCode R"><span><span class="fu"><a href="reference/create_manifests.html">create_manifests</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
+<ol start="7" style="list-style-type: decimal">
+<li>Deploy to Posit Connect:</li>
+</ol>
+<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="reference/deploy_content.html">deploy_content</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
 <p>This will update any needed manifests and deploy your customized content</p>
 </div>
 </div>
 <div class="section level2">
 <h2 id="available-content">Available Content<a class="anchor" aria-label="anchor" href="#available-content"></a>
 </h2>
-<p>The package includes 14 example data products demonstrating different ways to visualize and present the Access to Care analysis across multiple frameworks and languages:</p>
+<p>The package includes 15 example data products demonstrating different ways to visualize and present the Access to Care analysis across multiple frameworks and languages:</p>
 <ul>
 <li>
 <code>"api-python"</code> - REST API using FastAPI and Python</li>
@@ -163,8 +157,6 @@
 <li>
 <code>"connectwidgets"</code> - Overview application listing all related content</li>
 <li>
-<code>"dashboard-python"</code> - Quarto dashboard with Python, Polars, and Plotnine</li>
-<li>
 <code>"dashboard-r"</code> - Quarto dashboard with R</li>
 <li>
 <code>"htmlwidgets-r"</code> - Interactive county-level plot</li>
@@ -172,6 +164,8 @@
 <code>"pdf-r"</code> - PDF report</li>
 <li>
 <code>"pins-data"</code> - Data file for pins deployment</li>
+<li>
+<code>"pins-model"</code> - Model file for pins deployment (linear regression for hospital/population analysis)</li>
 <li>
 <code>"plot-r"</code> - Static ggplot2 map of entire country</li>
 <li>
@@ -184,7 +178,7 @@
 <code>"report-r"</code> - R Markdown HTML report with email template</li>
 </ul>
 <p>If you wish to create individual content locally, you can use these values with <code><a href="reference/create_content.html">create_content()</a></code>:</p>
-<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># Create a specific content type</span></span>
 <span><span class="fu"><a href="reference/create_content.html">create_content</a></span><span class="op">(</span>content <span class="op">=</span> <span class="st">"app-r"</span><span class="op">)</span></span>
 <span></span>
