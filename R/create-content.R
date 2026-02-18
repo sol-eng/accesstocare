@@ -32,7 +32,8 @@ create_content <- function(
     "report-r"
   ),
   force = FALSE,
-  silent = FALSE
+  silent = FALSE,
+  manifest = TRUE
 ) {
   content <- match.arg(content)
   content_folders <- dir_ls(content_folder())
@@ -120,6 +121,10 @@ create_content <- function(
           )
         }
       }
+    }
+    # Manifest is created if not a pin
+    if (manifest && !grepl("pins - ", content_name)) {
+      create_single_manifest(dest, silent = silent)
     }
   }
 }
