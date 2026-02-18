@@ -10,6 +10,9 @@
 #' Defaults to current directory.
 #' @param client Posit Connect client object. If NULL (default), creates a new
 #' connection using connectapi::connect().
+#' @param skip_if_exists Skips content folder if it already exists. Defaults to
+#' TRUE. Change to FALSE if you need to replace the thumbnail or update the
+#' Vanity URL.
 #'
 #' @details
 #' For each content item:
@@ -28,7 +31,8 @@ deploy_git_backed <- function(
   repository = NULL,
   branch = "main",
   content_location = ".",
-  client = NULL
+  client = NULL,
+  skip_if_exists = TRUE
 ) {
   if (is.null(client)) {
     cli_alert_info("Connecting to Posit Connect...")
@@ -49,11 +53,12 @@ deploy_git_backed <- function(
     cli_alert_info("Found {length(folders)} subfolder{?s} to process")
     for (folder in folders) {
       deploy_single(
-        content_location,
-        client,
-        repository,
-        branch,
-        path_file(folder)
+        content_location = content_location,
+        client = client,
+        repository = repository,
+        branch = branch,
+        sub_folder = path_file(folder),
+        skip_if_exists = skip_if_exists
       )
     }
   }
@@ -72,7 +77,8 @@ deploy_single <- function(
   client,
   repository,
   branch,
-  sub_folder = NULL
+  sub_folder = NULL,
+  skip_if_exists = TRUE
 ) {
   if (is.null(sub_folder)) {
     content_folder <- path(content_location)
@@ -89,13 +95,17 @@ deploy_single <- function(
     return(NULL)
   }
   metadata <- yaml::read_yaml(path(content_folder, "metadata.yml"))
+  content_title <- paste0("Access to Care - ", metadata$title)
   connect_file <- path(content_folder, ".connect")
-
   if (!grepl("pins-", folder_name)) {
     if (file_exists(connect_file)) {
       target_guid <- readLines(connect_file)
+      if (skip_if_exists) {
+        cli_alert_warning("Skipping '{folder_name}' - content exists")
+        return(NULL)
+      }
       cli_alert_info(
-        "Updating '{metadata$title}' (GUID: {substr(target_guid, 1, 8)}...)"
+        "Updating thumbnail and vanity URL for '{metadata$title}' (GUID: {substr(target_guid, 1, 8)}...)"
       )
       item <- content_item(client, target_guid)
     } else {
@@ -105,28 +115,39 @@ deploy_single <- function(
         repository = repository,
         branch = branch,
         subdirectory = path_file(content_folder),
-        title = paste("Access to Care -", metadata$title)
+        title = content_title
       )
       writeLines(item$content$guid, path(content_folder, ".connect"))
       cli_alert_success(
         "Created .connect file with GUID: {substr(item$content$guid, 1, 8)}..."
       )
     }
-    else
-    {
-      board_connect <- board_connect(
-        server = client$server,
-        key = client$api_key
-      )
-      content <- metadata$primary
-      cli_alert_info("Uploading '{metadata$title}' ...")
-      upload_pin <- pin_upload(
-        board = board_connect,
-        paths = path(content_folder, content),
-        title = paste0("Access to Care - ", metadata$title),
-        description = metadata$description,
-        name = path_ext_remove(content)
-      )
+  } else {
+    board_connect <- board_connect(
+      server = client$server,
+      key = client$api_key
+    )
+    content <- metadata$primary
+    cli_alert_info("Uploading '{metadata$title}' ...")
+    content_name <- path_ext_remove(content)
+    upload_pin <- pin_upload(
+      board = board_connect,
+      paths = path(content_folder, content),
+      title = content_title,
+      description = metadata$description,
+      name = content_name
+    )
+
+    tbl_content <- get_content(client, name = content_name)
+    tbl_content <- tbl_content[
+      tbl_content$title == content_title &&
+        tbl_content$content_category == "pin"
+    ]
+    if (nrow(tbl_content) == 1) {
+      item <- content_item(client, tbl_content$guid)
+    } else {
+      cli_alert_warning("Skipping '{folder_name}' - thumbnail and vanity URL")
+      return(NULL)
     }
   }
 

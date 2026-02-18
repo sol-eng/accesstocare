@@ -8,7 +8,8 @@ deploy_git_backed(
   repository = NULL,
   branch = "main",
   content_location = ".",
-  client = NULL
+  client = NULL,
+  skip_if_exists = TRUE
 )
 }
 \arguments{
@@ -22,6 +23,10 @@ Defaults to current directory.}
 
 \item{client}{Posit Connect client object. If NULL (default), creates a new
 connection using connectapi::connect().}
+
+\item{skip_if_exists}{Skips content folder if it already exists. Defaults to
+TRUE. Change to FALSE if you need to replace the thumbnail or update the
+Vanity URL.}
 }
 \description{
 Deploys content to Posit Connect using Git-backed deployment.
