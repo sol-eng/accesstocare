@@ -96,20 +96,21 @@ deploy_single <- function(
     return(NULL)
   }
   metadata <- yaml::read_yaml(path(content_folder, "metadata.yml"))
+  is_vetiver <- metadata$type == "Model"
   content_title <- paste0("Access to Care - ", metadata$title)
   connect_file <- path(content_folder, ".connect")
-  if (!grepl("pins-", folder_name)) {
-    if (file_exists(connect_file)) {
-      target_guid <- readLines(connect_file)
-      if (skip_if_exists) {
-        cli_alert_warning("Skipping '{folder_name}' - content exists")
-        return(NULL)
-      }
-      cli_alert_info(
-        "Updating thumbnail and vanity URL for '{metadata$title}' (GUID: {substr(target_guid, 1, 8)}...)"
-      )
-      item <- content_item(client, target_guid)
-    } else {
+  if (file_exists(connect_file)) {
+    target_guid <- readLines(connect_file)
+    if (skip_if_exists) {
+      cli_alert_warning("Skipping '{folder_name}' - content exists")
+      return(NULL)
+    }
+    cli_alert_info(
+      "Updating thumbnail and vanity URL for '{metadata$title}' (GUID: {substr(target_guid, 1, 8)}...)"
+    )
+    item <- content_item(client, target_guid)
+  } else {
+    if (!grepl("pins-", folder_name)) {
       cli_alert_info("Deploying '{metadata$title}' as new content...")
       item <- deploy_repo(
         client = client,
@@ -118,58 +119,62 @@ deploy_single <- function(
         subdirectory = path_file(content_folder),
         title = content_title
       )
-      writeLines(item$content$guid, path(content_folder, ".connect"))
+      writeLines(item$content$guid, connect_file)
       cli_alert_success(
         "Created .connect file with GUID: {substr(item$content$guid, 1, 8)}..."
       )
-    }
-  } else {
-    board_connect <- board_connect(
-      server = client$server,
-      key = client$api_key
-    )
-    content <- metadata$primary
-    cli_alert_info("Uploading '{metadata$title}' ...")
-    content_name <- path_ext_remove(content)
-    if (metadata$type == "Model") {
-      model_path <- path(content_folder, content)
-      model_obj <- readRDS(model_path)
-      vetiver_obj <- vetiver_model(
-        model = model_obj,
-        model_name = content_name,
-        description = metadata$description
-      )
-      vetiver_pin_write(board_connect, vetiver_obj)
-      metadata_vetiver <- yaml::read_yaml(path(
-        content_folder,
-        "metadata-1.yml"
-      ))
-      content_title <- paste0(content_name, ": a pinned list")
-      vetiver_title <- paste0("Access to Care - ", metadata_vetiver$title)
-      me <- client$me()
-      vetiver_deploy_rsconnect(
-        board = board_connect,
-        name = paste0(me$username, "/", content_name),
-        appTitle = vetiver_title
-      )
-      vetiver_item <- deploy_get_item(
-        client,
-        content_name = NULL,
-        vetiver_title,
-        ""
-      )
-      deploy_set_thumbnail(vetiver_item, content_folder, "thumbnail-1.png")
-      deploy_set_vanity(vetiver_item, metadata_vetiver$url)
     } else {
-      upload_pin <- pin_upload(
-        board = board_connect,
-        paths = path(content_folder, content),
-        title = content_title,
-        description = metadata$description,
-        name = content_name
+      board_connect <- board_connect(
+        server = client$server,
+        key = client$api_key
       )
+      content <- metadata$primary
+      cli_alert_info("Uploading '{metadata$title}' ...")
+      content_name <- path_ext_remove(content)
+      if (is_vetiver) {
+        model_path <- path(content_folder, content)
+        model_obj <- readRDS(model_path)
+        vetiver_obj <- vetiver_model(
+          model = model_obj,
+          model_name = content_name,
+          description = metadata$description
+        )
+        vetiver_pin_write(board_connect, vetiver_obj)
+        metadata_vetiver <- yaml::read_yaml(path(
+          content_folder,
+          "metadata-1.yml"
+        ))
+        content_title <- paste0(content_name, ": a pinned list")
+        vetiver_title <- paste0("Access to Care - ", metadata_vetiver$title)
+        me <- client$me()
+        capture.output(
+          vetiver_deploy_rsconnect(
+            board = board_connect,
+            name = paste0(me$username, "/", content_name),
+            appTitle = vetiver_title
+          )
+        )
+        vetiver_item <- deploy_get_item(
+          client,
+          content_name = NULL,
+          vetiver_title,
+          ""
+        )
+        deploy_set_thumbnail(vetiver_item, content_folder, "thumbnail-1.png")
+        deploy_set_vanity(vetiver_item, metadata_vetiver$url)
+        writeLines(vetiver_item$content$guid, connect_file)
+      } else {
+        upload_pin <- pin_upload(
+          board = board_connect,
+          paths = path(content_folder, content),
+          title = content_title,
+          description = metadata$description,
+          name = content_name
+        )
+      }
+      item <- deploy_get_item(client, content_name, content_title, "pin")
+      writeLines(item$content$guid, connect_file)
     }
-    item <- deploy_get_item(client, content_name, content_title, "pin")
   }
   if (is.null(item)) {
     return(NULL)
