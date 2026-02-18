@@ -4,7 +4,8 @@ test_that("create_content copies single content", {
   create_content(
     target = temp_dir,
     content = "app-r",
-    silent = TRUE
+    silent = TRUE,
+    manifest = FALSE
   )
 
   expect_true(dir.exists(file.path(temp_dir, "app-r")))
@@ -19,7 +20,8 @@ test_that("create_content copies all content", {
   create_content(
     target = temp_dir,
     content = "all",
-    silent = TRUE
+    silent = TRUE,
+    manifest = FALSE
   )
 
   # Should have 12 inst/content folders + plot-r + htmlwidgets-r + pins-data (dynamically generated) = 15 total
@@ -35,7 +37,8 @@ test_that("create_content respects force=FALSE", {
   create_content(
     target = temp_dir,
     content = "app-r",
-    silent = TRUE
+    silent = TRUE,
+    manifest = FALSE
   )
 
   # Try to create again without force
@@ -43,7 +46,8 @@ test_that("create_content respects force=FALSE", {
     create_content(
       target = temp_dir,
       content = "app-r",
-      silent = FALSE
+      silent = FALSE,
+      manifest = FALSE
     ),
     NA # Expect no error, just skip
   )
@@ -60,7 +64,8 @@ test_that("create_content with force=TRUE overwrites", {
   create_content(
     target = temp_dir,
     content = "app-r",
-    silent = TRUE
+    silent = TRUE,
+    manifest = FALSE
   )
 
   # Create again with force
@@ -68,7 +73,8 @@ test_that("create_content with force=TRUE overwrites", {
     target = temp_dir,
     content = "app-r",
     force = TRUE,
-    silent = TRUE
+    silent = TRUE,
+    manifest = FALSE
   )
 
   expect_true(dir.exists(file.path(temp_dir, "app-r")))
@@ -82,7 +88,8 @@ test_that("create_content generates plot-r content", {
   create_content(
     target = temp_dir,
     content = "plot-r",
-    silent = TRUE
+    silent = TRUE,
+    manifest = FALSE
   )
 
   expect_true(dir.exists(file.path(temp_dir, "plot-r")))
@@ -98,7 +105,8 @@ test_that("create_content generates htmlwidgets-r content", {
   create_content(
     target = temp_dir,
     content = "htmlwidgets-r",
-    silent = TRUE
+    silent = TRUE,
+    manifest = FALSE
   )
 
   expect_true(dir.exists(file.path(temp_dir, "htmlwidgets-r")))
@@ -113,7 +121,8 @@ test_that("create_content generates pins-data content", {
   create_content(
     target = temp_dir,
     content = "pins-data",
-    silent = TRUE
+    silent = TRUE,
+    manifest = FALSE
   )
 
   expect_true(dir.exists(file.path(temp_dir, "pins-data")))
@@ -130,7 +139,8 @@ test_that("create_content exports parquet for app-python", {
   create_content(
     target = temp_dir,
     content = "app-python",
-    silent = TRUE
+    silent = TRUE,
+    manifest = FALSE
   )
 
   expect_true(dir.exists(file.path(temp_dir, "app-python")))
@@ -148,7 +158,8 @@ test_that("create_content exports parquet for dashboard-python", {
   create_content(
     target = temp_dir,
     content = "dashboard-python",
-    silent = TRUE
+    silent = TRUE,
+    manifest = FALSE
   )
 
   expect_true(dir.exists(file.path(temp_dir, "dashboard-python")))
@@ -171,7 +182,8 @@ test_that("create_content exports parquet for api-python", {
   create_content(
     target = temp_dir,
     content = "api-python",
-    silent = TRUE
+    silent = TRUE,
+    manifest = FALSE
   )
 
   expect_true(dir.exists(file.path(temp_dir, "api-python")))
@@ -233,7 +245,8 @@ test_that("create_content with force preserves .connect files", {
   create_content(
     target = temp_dir,
     content = "pins-data",
-    silent = TRUE
+    silent = TRUE,
+    manifest = FALSE
   )
 
   # Add a .connect file
@@ -244,7 +257,8 @@ test_that("create_content with force preserves .connect files", {
     target = temp_dir,
     content = "pins-data",
     force = TRUE,
-    silent = TRUE
+    silent = TRUE,
+    manifest = FALSE
   )
 
   # Content should be recreated

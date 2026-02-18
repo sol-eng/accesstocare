@@ -150,21 +150,14 @@ create_single_manifest <- function(
       if (!silent) cli_alert_danger("No identified primary doc")
     }
   }
-  if (!silent) {
-    cli_alert_success("Full path: {full_path}")
-    cli_alert_info("Application files")
-    walk(
-      app_file_names,
-      ~ cli_text("  {col_cyan('---')} {.x}")
-    )
-    cli_text("{col_red('Primary file:')} {col_cyan(primary_doc)}")
-    cli_alert("Compiling manifest...")
-  }
-
   # Check if this is a Python app
   folder_name <- path_file(full_path)
   if (folder_name == "app-python" && primary_doc == "app.py") {
-    py_manifest("dash", full_path, c("dash", "dash-bootstrap-components", "plotly", "polars"))
+    py_manifest(
+      "dash",
+      full_path,
+      c("dash", "dash-bootstrap-components", "plotly", "polars")
+    )
   } else if (folder_name == "api-python" && primary_doc == "main.py") {
     py_manifest(
       "fastapi",
@@ -189,9 +182,7 @@ create_single_manifest <- function(
       qmd_file,
       c("polars", "plotnine", "pyarrow", "great-tables")
     )
-  } else if (
-    folder_name == "report-python" && grepl("\\.qmd$", primary_doc)
-  ) {
+  } else if (folder_name == "report-python" && grepl("\\.qmd$", primary_doc)) {
     qmd_file <- path(full_path, primary_doc)
     py_manifest(
       "quarto",
@@ -209,12 +200,12 @@ create_single_manifest <- function(
       appDir = full_path,
       appFiles = app_file_names,
       appPrimaryDoc = primary_doc,
-      appMode = app_mode
+      appMode = app_mode,
+      quiet = TRUE
     )
-  }
-
-  if (!silent) {
-    cli_alert_success("Manifest complete")
+    if (!silent) {
+      cli_alert_info("Manifest for '{path_file(folder_location)}' created")
+    }
   }
   mf <- path(full_path, "manifest.json")
   if (file_exists(mf)) {

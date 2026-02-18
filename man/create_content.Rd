@@ -10,7 +10,8 @@ create_content(
     "dashboard-python", "dashboard-r", "htmlwidgets-r", "pdf-r", "pins-data", "plot-r",
     "presentation-python", "presentation-r", "report-python", "report-r"),
   force = FALSE,
-  silent = FALSE
+  silent = FALSE,
+  manifest = TRUE
 )
 }
 \arguments{
@@ -27,6 +28,10 @@ a specific content name. Available options include: "all", "api-python",
 existing folders.}
 
 \item{silent}{If TRUE, suppresses console messages. Defaults to FALSE.}
+
+\item{manifest}{If TRUE (default), automatically creates a manifest.json file
+for each content folder (except pins content). Set to FALSE to skip manifest
+creation.}
 }
 \description{
 Copies example content from the package to a target directory.

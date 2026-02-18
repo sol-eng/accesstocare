@@ -10,6 +10,9 @@
 #' @param force If TRUE, overwrites existing folders. If FALSE (default), skips
 #' existing folders.
 #' @param silent If TRUE, suppresses console messages. Defaults to FALSE.
+#' @param manifest If TRUE (default), automatically creates a manifest.json file
+#' for each content folder (except pins content). Set to FALSE to skip manifest
+#' creation.
 #' @export
 create_content <- function(
   target = ".",
@@ -45,13 +48,20 @@ create_content <- function(
       if (!dir_exists(dest)) {
         dir_copy(folder, dest)
         finalize_content <- TRUE
+        if (!silent) {
+          cli_alert_info(
+            "Writting '{content_name}' - creating contents"
+          )
+        }
       } else if (force) {
         clear_folder_contents(dest)
         dir_copy(folder, target)
         finalize_content <- TRUE
-        cli_alert_info(
-          "Writting '{content_name}' - replacing existing contents"
-        )
+        if (!silent) {
+          cli_alert_info(
+            "Writting '{content_name}' - replacing existing contents"
+          )
+        }
       } else if (!silent) {
         cli_alert_warning("Skipping '{content_name}' - content already exists")
       }
@@ -120,11 +130,11 @@ create_content <- function(
             dest
           )
         }
+        # Manifest is created if not a pin
+        if (manifest && !grepl("pins - ", content_name)) {
+          create_single_manifest(dest, silent = silent)
+        }
       }
-    }
-    # Manifest is created if not a pin
-    if (manifest && !grepl("pins - ", content_name)) {
-      create_single_manifest(dest, silent = silent)
     }
   }
 }
