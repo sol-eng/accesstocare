@@ -28,6 +28,7 @@ create_content <- function(
     "htmlwidgets-r",
     "pdf-r",
     "pins-data",
+    "pins-model",
     "plot-r",
     "presentation-python",
     "presentation-r",
@@ -84,6 +85,11 @@ create_content <- function(
         if (content_name == "pins-data") {
           data_obj <- get("us_counties", envir = asNamespace("accesstocare"))
           write.csv(data_obj, path(dest, "us_counties.csv"))
+        }
+
+        if (content_name == "pins-model") {
+          model_obj <- get("us_atc_model", envir = asNamespace("accesstocare"))
+          saveRDS(model_obj, path(dest, "us_atc_model.rds"))
         }
 
         if (content_name == "app-python") {

@@ -34,7 +34,8 @@ Imports:
     reticulate,
     gert,
     connectapi,
-    pins
+    pins,
+    vetiver
 Suggests: 
     knitr,
     covr,

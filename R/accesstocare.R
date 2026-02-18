@@ -11,6 +11,7 @@
 #' @import connectapi
 #' @import ggplot2
 #' @import ggiraph
+#' @import vetiver
 #' @import rlang
 #' @import cli
 #' @import fs

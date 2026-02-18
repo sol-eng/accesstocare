@@ -45,7 +45,7 @@ deploy_git_backed <- function(
     repository <- sub("\\.git", "", repository)
     cli_alert_success("Repository: {.url {repository}}")
   }
-  if (file_exists(path(content_location, "manifest.json"))) {
+  if (file_exists(path(content_location, "metadata.yml"))) {
     cli_alert_info("Deploying single content item...")
     deploy_single(content_location, client, repository, branch)
   } else {
@@ -130,40 +130,82 @@ deploy_single <- function(
     content <- metadata$primary
     cli_alert_info("Uploading '{metadata$title}' ...")
     content_name <- path_ext_remove(content)
-    upload_pin <- pin_upload(
-      board = board_connect,
-      paths = path(content_folder, content),
-      title = content_title,
-      description = metadata$description,
-      name = content_name
-    )
-
-    tbl_content <- get_content(client, name = content_name)
-    tbl_content <- tbl_content[
-      tbl_content$title == content_title &&
-        tbl_content$content_category == "pin"
-    ]
-    if (nrow(tbl_content) == 1) {
-      item <- content_item(client, tbl_content$guid)
+    if (metadata$type == "Model") {
+      model_path <- path(content_folder, content)
+      model_obj <- readRDS(model_path)
+      vetiver_obj <- vetiver_model(
+        model = model_obj,
+        model_name = content_name,
+        description = metadata$description
+      )
+      vetiver_pin_write(board_connect, vetiver_obj)
+      metadata_vetiver <- yaml::read_yaml(path(
+        content_folder,
+        "metadata-1.yml"
+      ))
+      content_title <- paste0(content_name, ": a pinned list")
+      vetiver_title <- paste0("Access to Care - ", metadata_vetiver$title)
+      me <- client$me()
+      vetiver_deploy_rsconnect(
+        board = board_connect,
+        name = paste0(me$username, "/", content_name),
+        appTitle = vetiver_title
+      )
+      vetiver_item <- deploy_get_item(
+        client,
+        content_name = NULL,
+        vetiver_title,
+        ""
+      )
+      deploy_set_thumbnail(vetiver_item, content_folder, "thumbnail-1.png")
+      deploy_set_vanity(vetiver_item, metadata_vetiver$url)
     } else {
-      cli_alert_warning("Skipping '{folder_name}' - thumbnail and vanity URL")
-      return(NULL)
+      upload_pin <- pin_upload(
+        board = board_connect,
+        paths = path(content_folder, content),
+        title = content_title,
+        description = metadata$description,
+        name = content_name
+      )
     }
+    item <- deploy_get_item(client, content_name, content_title, "pin")
   }
+  if (is.null(item)) {
+    return(NULL)
+  }
+  deploy_set_thumbnail(item, content_folder, "thumbnail.png")
+  deploy_set_vanity(item, metadata$url)
+  cli_alert_success("Deployed '{content_title}'")
+  invisible(item)
+}
 
-  thumbnail_file <- path(content_folder, "thumbnail.png")
+deploy_get_item <- function(client, content_name, content_title, category) {
+  tbl_content <- get_content(client, name = content_name)
+  tbl_content <- tbl_content[!is.na(tbl_content$title), ]
+  tbl_content <- tbl_content[tbl_content$title == content_title, ]
+  tbl_content <- tbl_content[tbl_content$content_category == category, ]
+  if (nrow(tbl_content) == 1) {
+    item <- content_item(client, tbl_content$guid)
+  } else {
+    cli_alert_warning("Skipping '{content_name}' - thumbnail and vanity URL")
+    return(NULL)
+  }
+}
+
+deploy_set_thumbnail <- function(item, content_folder, file_name) {
+  thumbnail_file <- path(content_folder, file_name)
   if (file_exists(thumbnail_file)) {
     cli_text("  {col_cyan('---')} Setting thumbnail")
     set_thumbnail(item, thumbnail_file)
   }
+  return(invisible())
+}
 
-  name_url <- metadata$url
+deploy_set_vanity <- function(item, name_url) {
   if (!is.null(name_url)) {
     path_url <- paste0("/access-to-care/", name_url)
     cli_text("  {col_cyan('---')} Setting vanity URL: {.url {path_url}}")
     res <- set_vanity_url(item, path_url)
   }
-
-  cli_alert_success("Deployed '{metadata$title}'")
-  invisible(item)
+  return(invisible())
 }
