@@ -203,10 +203,13 @@ create_single_manifest <- function(
       appMode = app_mode,
       quiet = TRUE
     )
-    if (!silent) {
-      cli_alert_info("Manifest for '{path_file(folder_location)}' created")
-    }
   }
+
+  # Print success message for all content types
+  if (!silent) {
+    cli_alert_info("Manifest for '{path_file(folder_location)}' created")
+  }
+
   mf <- path(full_path, "manifest.json")
   if (file_exists(mf)) {
     mf
@@ -224,7 +227,9 @@ py_manifest <- function(command_type, target_path, libraries) {
   reticulate::uv_run_tool(
     "rsconnect",
     cmd,
-    with = libraries
+    with = libraries,
+    stdout = FALSE,
+    stderr = FALSE
   )
 }
 

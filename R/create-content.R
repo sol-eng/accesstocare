@@ -68,7 +68,7 @@ create_content <- function(
       if (finalize_content) {
         if (content_name == "plot-r") {
           p <- atc_plot_state_map("All US", top_cities = 0)
-          ggsave(plot = p, filename = path(dest, "map.png"))
+          suppressMessages(ggsave(plot = p, filename = path(dest, "map.png")))
           writeLines(
             "<img src=map.png width = 1000>",
             con = path(dest, "map.html")
