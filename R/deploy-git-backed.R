@@ -48,7 +48,13 @@ deploy_git_backed <- function(
     folders <- dir_ls(content_location, type = "directory")
     cli_alert_info("Found {length(folders)} subfolder{?s} to process")
     for (folder in folders) {
-      deploy_single(content_location, client, repository, branch, folder)
+      deploy_single(
+        content_location,
+        client,
+        repository,
+        branch,
+        path_file(folder)
+      )
     }
   }
   cli_alert_success("Deployment complete")
@@ -75,34 +81,53 @@ deploy_single <- function(
     content_folder <- path(content_location, sub_folder)
     folder_name <- path_file(sub_folder)
   }
-
-  if (!file_exists(path(content_folder, "manifest.json"))) {
+  if (
+    !file_exists(path(content_folder, "manifest.json")) &
+      !grepl("pins-", folder_name)
+  ) {
     cli_alert_warning("Skipping '{folder_name}' - no manifest.json found")
     return(NULL)
   }
-
   metadata <- yaml::read_yaml(path(content_folder, "metadata.yml"))
   connect_file <- path(content_folder, ".connect")
 
-  if (file_exists(connect_file)) {
-    target_guid <- readLines(connect_file)
-    cli_alert_info(
-      "Updating '{metadata$title}' (GUID: {substr(target_guid, 1, 8)}...)"
-    )
-    item <- content_item(client, target_guid)
-  } else {
-    cli_alert_info("Deploying '{metadata$title}' as new content...")
-    item <- deploy_repo(
-      client = client,
-      repository = repository,
-      branch = branch,
-      subdirectory = path_file(content_folder),
-      title = paste("Access to Care -", metadata$title)
-    )
-    writeLines(item$content$guid, path(content_folder, ".connect"))
-    cli_alert_success(
-      "Created .connect file with GUID: {substr(item$content$guid, 1, 8)}..."
-    )
+  if (!grepl("pins-", folder_name)) {
+    if (file_exists(connect_file)) {
+      target_guid <- readLines(connect_file)
+      cli_alert_info(
+        "Updating '{metadata$title}' (GUID: {substr(target_guid, 1, 8)}...)"
+      )
+      item <- content_item(client, target_guid)
+    } else {
+      cli_alert_info("Deploying '{metadata$title}' as new content...")
+      item <- deploy_repo(
+        client = client,
+        repository = repository,
+        branch = branch,
+        subdirectory = path_file(content_folder),
+        title = paste("Access to Care -", metadata$title)
+      )
+      writeLines(item$content$guid, path(content_folder, ".connect"))
+      cli_alert_success(
+        "Created .connect file with GUID: {substr(item$content$guid, 1, 8)}..."
+      )
+    }
+    else
+    {
+      board_connect <- board_connect(
+        server = client$server,
+        key = client$api_key
+      )
+      content <- metadata$primary
+      cli_alert_info("Uploading '{metadata$title}' ...")
+      upload_pin <- pin_upload(
+        board = board_connect,
+        paths = path(content_folder, content),
+        title = paste0("Access to Care - ", metadata$title),
+        description = metadata$description,
+        name = path_ext_remove(content)
+      )
+    }
   }
 
   thumbnail_file <- path(content_folder, "thumbnail.png")
