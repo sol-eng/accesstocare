@@ -4,8 +4,8 @@
 #' Defaults to current directory.
 #' @param content Which content to copy. Can be "all" to copy everything, or
 #' a specific content name. Available options include: "all", "api-python",
-#' "api-r", "app-python", "app-r", "connectwidgets", "dashboard-python",
-#' "dashboard-r", "htmlwidgets-r", "pdf-r", "pins-data", "plot-r",
+#' "api-r", "app-python", "app-r", "connectwidgets", "dashboard-r",
+#' "htmlwidgets-r", "pdf-r", "pins-data", "pins-model", "plot-r",
 #' "presentation-python", "presentation-r", "report-python", "report-r".
 #' @param force If TRUE, overwrites existing folders. If FALSE (default), skips
 #' existing folders.
@@ -23,7 +23,6 @@ create_content <- function(
     "app-python",
     "app-r",
     "connectwidgets",
-    "dashboard-python",
     "dashboard-r",
     "htmlwidgets-r",
     "pdf-r",
@@ -98,19 +97,6 @@ create_content <- function(
 
         if (content_name == "api-python") {
           export_data_parquet(c("us_counties", "us_states"), dest)
-        }
-
-        if (content_name == "dashboard-python") {
-          export_data_parquet(
-            c(
-              "us_counties",
-              "us_states",
-              "us_hex_positions",
-              "us_atc_county_polygons",
-              "us_large_cities"
-            ),
-            dest
-          )
         }
 
         if (content_name == "presentation-python") {

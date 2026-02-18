@@ -6,15 +6,6 @@
 coverage](https://codecov.io/gh/sol-eng/accesstocare/graph/badge.svg)](https://app.codecov.io/gh/sol-eng/accesstocare)
 <!-- badges: end -->
 
-- [Introduction](#introduction)
-- [Analysis Background](#analysis-background)
-- [Quick Start: Deploy to Posit
-  Connect](#quick-start-deploy-to-posit-connect)
-  - [Programmatic deployment](#programmatic-deployment)
-  - [Manual deployment](#manual-deployment)
-  - [Customizing content](#customizing-content)
-- [Available Content](#available-content)
-
 ## Introduction
 
 An R package to make it easy to view, copy, interact and publish the
@@ -60,14 +51,24 @@ deploy_git_backed(".")
 ```
 
 This will automatically deploy all example data products to your Posit
-Connect instance using Git-backed deployment. The function will:
+Connect instance. The function will:
 
+- Deploy most content using Git-backed deployment for version control
+  and easy updates
 - Set custom
   [thumbnails](https://docs.posit.co/connect/user/content-settings/#content-image)
   for each content item
 - Configure [vanity
   URLs](https://docs.posit.co/connect/user/content-settings/#vanity-url)
   for easy access
+
+**Note:** The [pins](https://pins.rstudio.com/) content (pins-data and
+pins-model) will be deployed directly from your local machine rather
+than using Git-backed deployment, as they leverage [Posit Connect’s pins
+board](https://docs.posit.co/connect/user/pins/) infrastructure.
+Additionally, a [Vetiver](https://vetiver.rstudio.com/) API endpoint
+will be created for the model pin, enabling model serving and
+predictions through a REST API.
 
 ### Manual deployment
 
@@ -107,14 +108,14 @@ create_content()
 6.  Deploy to Posit Connect:
 
 ``` r
-deploy_git_backed(".")
+deploy_git_backed()
 ```
 
 This will update any needed manifests and deploy your customized content
 
 ## Available Content
 
-The package includes 14 example data products demonstrating different
+The package includes 15 example data products demonstrating different
 ways to visualize and present the Access to Care analysis across
 multiple frameworks and languages:
 
@@ -123,12 +124,12 @@ multiple frameworks and languages:
 - `"app-python"` - Python Dash application
 - `"app-r"` - Shiny application
 - `"connectwidgets"` - Overview application listing all related content
-- `"dashboard-python"` - Quarto dashboard with Python, Polars, and
-  Plotnine
 - `"dashboard-r"` - Quarto dashboard with R
 - `"htmlwidgets-r"` - Interactive county-level plot
 - `"pdf-r"` - PDF report
 - `"pins-data"` - Data file for pins deployment
+- `"pins-model"` - Model file for pins deployment (linear regression for
+  hospital/population analysis)
 - `"plot-r"` - Static ggplot2 map of entire country
 - `"presentation-python"` - Quarto presentation (Python)
 - `"presentation-r"` - Quarto presentation (R)
