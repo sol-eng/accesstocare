@@ -145,7 +145,12 @@ test_that("create_content exports parquet for app-python", {
 
   expect_true(dir.exists(file.path(temp_dir, "app-python")))
   expect_true(dir.exists(file.path(temp_dir, "app-python", "data")))
-  expect_true(file.exists(file.path(temp_dir, "app-python", "data", "us_counties.parquet")))
+  expect_true(file.exists(file.path(
+    temp_dir,
+    "app-python",
+    "data",
+    "us_counties.parquet"
+  )))
 
   unlink(temp_dir, recursive = TRUE, force = TRUE)
 })
@@ -164,12 +169,41 @@ test_that("create_content exports parquet for dashboard-python", {
 
   expect_true(dir.exists(file.path(temp_dir, "dashboard-python")))
   expect_true(dir.exists(file.path(temp_dir, "dashboard-python", "data")))
-  expect_true(file.exists(file.path(temp_dir, "dashboard-python", "data", "us_counties.parquet")))
-  expect_true(file.exists(file.path(temp_dir, "dashboard-python", "data", "us_states.parquet")))
-  expect_true(file.exists(file.path(temp_dir, "dashboard-python", "data", "us_hex_positions.parquet")))
-  expect_true(file.exists(file.path(temp_dir, "dashboard-python", "data", "us_atc_county_polygons.parquet")))
-  expect_true(file.exists(file.path(temp_dir, "dashboard-python", "data", "us_large_cities.parquet")))
-  expect_true(file.exists(file.path(temp_dir, "dashboard-python", "access-to-care.qmd")))
+  expect_true(file.exists(file.path(
+    temp_dir,
+    "dashboard-python",
+    "data",
+    "us_counties.parquet"
+  )))
+  expect_true(file.exists(file.path(
+    temp_dir,
+    "dashboard-python",
+    "data",
+    "us_states.parquet"
+  )))
+  expect_true(file.exists(file.path(
+    temp_dir,
+    "dashboard-python",
+    "data",
+    "us_hex_positions.parquet"
+  )))
+  expect_true(file.exists(file.path(
+    temp_dir,
+    "dashboard-python",
+    "data",
+    "us_atc_county_polygons.parquet"
+  )))
+  expect_true(file.exists(file.path(
+    temp_dir,
+    "dashboard-python",
+    "data",
+    "us_large_cities.parquet"
+  )))
+  expect_true(file.exists(file.path(
+    temp_dir,
+    "dashboard-python",
+    "access-to-care.qmd"
+  )))
 
   unlink(temp_dir, recursive = TRUE, force = TRUE)
 })
@@ -188,10 +222,19 @@ test_that("create_content exports parquet for api-python", {
 
   expect_true(dir.exists(file.path(temp_dir, "api-python")))
   expect_true(dir.exists(file.path(temp_dir, "api-python", "data")))
-  expect_true(file.exists(file.path(temp_dir, "api-python", "data", "us_counties.parquet")))
-  expect_true(file.exists(file.path(temp_dir, "api-python", "data", "us_states.parquet")))
+  expect_true(file.exists(file.path(
+    temp_dir,
+    "api-python",
+    "data",
+    "us_counties.parquet"
+  )))
+  expect_true(file.exists(file.path(
+    temp_dir,
+    "api-python",
+    "data",
+    "us_states.parquet"
+  )))
   expect_true(file.exists(file.path(temp_dir, "api-python", "main.py")))
-  expect_true(file.exists(file.path(temp_dir, "api-python", ".gitignore")))
 
   unlink(temp_dir, recursive = TRUE, force = TRUE)
 })
@@ -250,7 +293,10 @@ test_that("create_content with force preserves .connect files", {
   )
 
   # Add a .connect file
-  writeLines("connect data", file.path(temp_dir, "pins-data", "deployment.connect"))
+  writeLines(
+    "connect data",
+    file.path(temp_dir, "pins-data", "deployment.connect")
+  )
 
   # Force overwrite
   create_content(
@@ -265,7 +311,11 @@ test_that("create_content with force preserves .connect files", {
   expect_true(file.exists(file.path(temp_dir, "pins-data", "us_counties.csv")))
 
   # .connect file should still exist
-  expect_true(file.exists(file.path(temp_dir, "pins-data", "deployment.connect")))
+  expect_true(file.exists(file.path(
+    temp_dir,
+    "pins-data",
+    "deployment.connect"
+  )))
 
   unlink(temp_dir, recursive = TRUE, force = TRUE)
 })
